@@ -1,0 +1,68 @@
+<template>
+  <div>
+    <com-block-header title="热门赛事" control-text="更多"/>
+    <div class="competition-list">
+      <div class="item" v-for="(item, index) in list" :key="index">
+        <div class="item__image-wrapper">
+          <img class="item__image" src="@/assets/images/home/competition.png" alt="competition">
+        </div>
+        <div class="item__footer">
+          <div class="item__text">LPL职业联赛</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      list: Array(4).fill(null)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .competition-list {
+    padding: 22px 7px 10px 22px;
+    font-size: 0;
+  }
+  .item {
+    position: relative;
+    display: inline-block;
+    width: 46%;
+    height: 0;
+    padding-bottom: 26.3%;
+    margin-right: 4%;
+    margin-bottom: 4%;
+  }
+  .item__image-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .item__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .item__footer {
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 18px;
+    background:rgba(0, 0, 0, 0.5);
+    line-height: 18px;
+    text-align: center;
+  }
+  .item__text {
+    color: #fff;
+    font-size: $font-size-extra-small;
+  }
+</style>

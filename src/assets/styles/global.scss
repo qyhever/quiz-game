@@ -1,0 +1,219 @@
+/**
+ * 全局公共变量、混入方法（直接使用，不用 @import）
+ */
+$header-height: 44px;
+$footer-height: 49px;
+
+$color-page-bg: #F5F5F5;
+// 主色调
+$--color-primary: #ffd938;
+// 辅助色（安全、警告、危险）
+$color-success: #60B12D;
+$color-warning: #FFAF20;
+$color-danger: #FF4A4D;
+// 文字颜色（主要、常规、次要/说明、占位）
+$color-text-primary: #333;
+$color-text-regular: #666;
+$color-text-secondary: #999;
+$color-text-placeholder: #ccc;
+// 线框颜色（一级、二级、三级）
+$border-color-base: #D1D5DE;
+$border-color-light: #E5E7F3;
+$border-color-lighter: #EFF3FC;
+// 字体
+$font-size-extra-large: 20px;
+$font-size-large: 18px;
+$font-size-medium: 16px;
+$font-size-base: 14px;
+$font-size-small: 13px;
+$font-size-extra-small: 12px;
+
+// rem转px
+@function rem2px($val, $rem: 100) {
+	@return $val/$rem + rem;
+}
+
+@mixin extend-click() {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+  }
+}
+
+// 设置 input placeholder 颜色
+@mixin input-placeholder($color: #0DC8FD) {
+  &::placeholder {
+    color: $color;
+    opacity: 1;
+  }
+
+  /* WebKit browsers*/
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+
+  /* Firefox 4-18*/
+  &:-moz-placeholder {
+    color: $color;
+    opacity: 1;
+  }
+
+  /* Firefox 19+*/
+  &::-moz-placeholder {
+    color: $color;
+    opacity: 1;
+  }
+
+  /* IE 10+*/
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+}
+
+@mixin limit-width() {
+  max-width: 750px;
+  min-width: 320px;
+  margin: 0 auto;
+}
+
+// 一行省略
+@mixin ellipsis() {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+// 多行省略
+@mixin ellipsis-multi($line: 3, $bg: #fff) {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.5em;
+  max-height: $line * 1.5em;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+
+  &:before {
+    background: $bg;
+    content: '...';
+    padding: 0 1px;
+    position: absolute;
+    right: 14px;
+    bottom: 0;
+  }
+
+  &:after {
+    background: white;
+    content: '';
+    margin-top: 0.2em;
+    position: absolute;
+    right: 14px;
+    width: 1em;
+    height: 1em;
+  }
+}
+
+// 边框
+@mixin border-1px($type, $color: #ccc) {
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    background-color: $color;
+
+    @if $type == top {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+    } @else if $type == bottom {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+    } @else if $type == left {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+    } @else if $type == right {
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 1px;
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+      -webkit-transform: scaleY(0.7);
+      transform: scaleY(0.7);
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+    }
+  }
+}
+
+@mixin border-top-1px($color: #ccc) {
+  @include border-1px(top, $color);
+}
+
+@mixin border-left-1px($color: #ccc) {
+  @include border-1px(left, $color);
+}
+
+@mixin border-right-1px($color: #ccc) {
+  @include border-1px(right, $color);
+}
+
+@mixin border-bottom-1px($color: #ccc) {
+  @include border-1px(bottom, $color);
+}
+
+// 三角形
+@mixin triangle($type: top, $width: 6px, $color: #000) {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  @if $type == top {
+    border-top: $width solid $color;
+    border-bottom: $width dashed transparent;
+    border-left: $width dashed transparent;
+    border-right: $width dashed transparent;
+  } @else if $type == left {
+    border-left: $width solid $color;
+    border-top: $width dashed transparent;
+    border-bottom: $width dashed transparent;
+    border-right: $width dashed transparent;
+  } @else if $type == right {
+    border-right: $width solid $color;
+    border-top: $width dashed transparent;
+    border-bottom: $width dashed transparent;
+    border-left: $width dashed transparent;
+  } @else if $type == bottom {
+    border-bottom: $width solid $color;
+    border-top: $width dashed transparent;
+    border-left: $width dashed transparent;
+    border-right: $width dashed transparent;
+  }
+}
+
+@mixin highlight($bg: #ddd) {
+  &:active {
+    background-color: $bg;
+  }
+}
+
+@mixin image($width: 100%, $height: 100%) {
+  width: $width;
+  height: $height;
+  object-fit: cover;
+}
