@@ -1,6 +1,6 @@
 <template>
   <com-page-tabbar-wrapper>
-    <van-nav-bar class="circle-navbar" fixed border title="圈子">
+    <van-nav-bar class="circle-navbar" fixed border title="圈子" @touchmove.prevent.stop.native>
     <div class="circle-navbar__right" slot="right">
       <div class="image-wrapper" @click="onSearch">
         <img class="image" src="@/assets/images/circle/search.png" alt="搜索">

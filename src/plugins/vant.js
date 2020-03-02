@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, NavBar, Field, CellGroup, Icon, Cell, Toast, Dialog, Tab, Tabs, Popup, DatetimePicker, Picker, Progress, Swipe, SwipeItem } from 'vant'
+import { Button, NavBar, Field, CellGroup, Icon, Cell, Toast, Dialog, Tab, Tabs, Popup, DatetimePicker, Picker, Progress, Swipe, SwipeItem, Checkbox } from 'vant'
 Vue
   .use(Button)
   .use(NavBar)
@@ -17,3 +17,4 @@ Vue
   .use(Progress)
   .use(Swipe)
   .use(SwipeItem)
+  .use(Checkbox)

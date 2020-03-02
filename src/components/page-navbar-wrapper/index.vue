@@ -7,7 +7,8 @@
       left-arrow
       @click-left="onClickLeft"
       v-bind="$attrs"
-      v-on="$listeners">
+      v-on="$listeners"
+      @touchmove.prevent.stop.native>
       <div slot="right">
         <slot name="header-right"></slot>
       </div>
