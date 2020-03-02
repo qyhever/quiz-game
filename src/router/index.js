@@ -11,11 +11,11 @@ const createRouter = () => new Router({
   base: '/',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
-    // {
-    //   path: '/login',
-    //   name: 'login',
-    //   component: () => import('@/views/login')
-    // },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/user/login')
+    },
     // {
     //   path: '/register',
     //   name: 'register',

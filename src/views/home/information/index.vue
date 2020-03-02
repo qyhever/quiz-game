@@ -1,7 +1,7 @@
 <template>
   <com-page-navbar-wrapper title="资讯列表">
     <div class="info-container">
-      <ul class="tab__nav">
+      <ul class="tab__nav" @touchmove.prevent.stop>
         <li
           class="tab__nav-item"
           :class="{active: currentNav === item.value}"
