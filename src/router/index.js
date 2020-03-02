@@ -7,7 +7,7 @@ Vue.use(Router)
 
 // 生成路由实例
 const createRouter = () => new Router({
-  mode: 'history',
+  mode: 'hash',
   base: '/',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
@@ -49,6 +49,11 @@ const createRouter = () => new Router({
       path: '/my',
       name: 'my',
       component: () => import('@/views/my')
+    },
+    {
+      path: '/information',
+      name: 'information',
+      component: () => import('@/views/home/information')
     }
   ]
 })

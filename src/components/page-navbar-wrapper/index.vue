@@ -2,9 +2,12 @@
   <div class="page-wrapper" :class="pageWrapperCls">
     <van-nav-bar
       class="navbar"
-      :title="title"
-      :left-arrow="back"
-      @click-left="handleBack">
+      fixed
+      border
+      left-arrow
+      @click-left="onClickLeft"
+      v-bind="$attrs"
+      v-on="$listeners">
       <div slot="right">
         <slot name="header-right"></slot>
       </div>
@@ -20,18 +23,18 @@
 <script>
   export default {
     props: {
-      title: {
-        type: String,
-        required: true
-      },
+      // title: {
+      //   type: String,
+      //   required: true
+      // },
       type: {
         type: String,
         default: ''
       },
-      back: {
-        type: Boolean,
-        default: true
-      },
+      // back: {
+      //   type: Boolean,
+      //   default: true
+      // },
       onBack: {
         type: Function
       }
@@ -44,7 +47,7 @@
       }
     },
     methods: {
-      handleBack() {
+      onClickLeft() {
         if (this.onBack) {
           this.onBack()
         } else {
@@ -60,21 +63,28 @@
     position: relative;
     width: 100%;
     height: 100%;
+    &.fullpage {
+      z-index: 99;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #fff;
+    }
   }
   .navbar {
-    background-color: $--color-primary;
+    height: $header-height;
+    line-height: $header-height;
+    background-color: #fff;
     &:after {
-      display: none;
+      border-color: #e6e6e6;
     }
-    .van-icon, .van-nav-bar__title {
-      color: #fff;
+    .van-icon-arrow-left {
+      color: #F95E5F;
     }
-    .van-nav-bar__left {
-      left: 0;
-      width: $header-height;
-      &:active {
-        opacity: 0.5;
-      }
+    .van-nav-bar__title {
+      color: $color-text-primary;
     }
   }
   .main-wrapper {

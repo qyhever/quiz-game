@@ -1,6 +1,6 @@
 <template>
   <div>
-    <com-block-header title="热门竞猜"/>
+    <com-block-header title="热门竞猜" @click-right="onToCompetition"/>
     <div class="hot-list">
       <div class="item" v-for="(item, index) in list" :key="index">
         <div class="item-header">
@@ -34,6 +34,7 @@
           </div>
           <div class="item-body__right">
             <div class="item-body__right-title">6099人竞猜</div>
+            <!-- settlement end -->
             <van-button class="item-body__right-button">参与竞猜</van-button>
           </div>
         </div>
@@ -58,6 +59,9 @@ export default {
   methods: {
     onPreviewMore() {
       console.log('onPreviewMore')
+    },
+    onToCompetition() {
+      this.$router.push('/competition')
     }
   }
 }
@@ -147,6 +151,14 @@ export default {
     background-color: #FFA31F;
     font-size: $font-size-extra-small;
     color: #fff;
+    &.settlement {
+      background-color: #153561;
+      color: #B9CAE0;
+    }
+    &.end {
+      background-color: #E6E6E6;
+      color: $color-text-secondary;
+    }
   }
   .more {
     display: flex;

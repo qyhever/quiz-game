@@ -28,8 +28,9 @@ const cdn = {
   }
 }
 module.exports = {
-  publicPath: '/',
+  publicPath: '/qg/',
   outputDir: 'dist',
+  productionSourceMap: false,
   devServer: {
     port: 2020,
     host: '0.0.0.0',

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <com-block-header title="热门资讯" control-text="更多"/>
+    <com-block-header title="热门资讯" control-text="更多" @click-right="onToInformation"/>
     <div class="info-list">
       <div class="item" v-for="(item, index) in list" :key="index">
         <div class="item__cover-wrapper">
@@ -23,6 +23,11 @@ export default {
   data() {
     return {
       list: Array(5).fill(null)
+    }
+  },
+  methods: {
+    onToInformation() {
+      this.$router.push('/information')
     }
   }
 }
