@@ -16,11 +16,26 @@ const createRouter = () => new Router({
       name: 'login',
       component: () => import('@/views/user/login')
     },
-    // {
-    //   path: '/register',
-    //   name: 'register',
-    //   component: () => import('@/views/register')
-    // },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/user/register')
+    },
+    {
+      path: '/forget-password',
+      name: 'forgetPassword',
+      component: () => import('@/views/user/forget-password')
+    },
+    {
+      path: '/mail',
+      name: 'mail',
+      component: () => import('@/views/user/mail')
+    },
+    {
+      path: '/mail-check-success',
+      name: 'mailCheckSuccess',
+      component: () => import('@/views/user/mail-check-success')
+    },
     {
       path: '/',
       redirect: '/home'

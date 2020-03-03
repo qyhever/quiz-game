@@ -17,9 +17,23 @@ export function validator(value, type) {
     password(str) {
       return /^(\w|\?\=\.\*\[!@#\$%\^&\(\)\]){6,18}$/.test(str)
     },
+    integer(str) {
+      return /^[1-9][0-9]*$/.test(str)
+    },
     // 两位小数
     numberTwoDecimal(str) {
       return /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(str)
+    },
+    // 图形验证码
+    imageVerifyCode(str) {
+      return /^(\w|\d){4}$/.test(str)
+    },
+    // 手机验证码
+    phoneVerifyCode(str) {
+      return /^\d{4}$/.test(str)
+    },
+    email(str) {
+      return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str)
     }
   }
   return rules[type] ? rules[type](value) : false

@@ -5,7 +5,7 @@
       <img class="logo" src="@/assets/images/logo.png" alt="logo">
     </div>
     <div class="sign-wrapper" slot="navbarRight">
-      <button class="sign-button">注册/登录</button>
+      <button class="sign-button" @click="onToLogin">注册/登录</button>
     </div>
     <cube-scroll ref="scroll">
       <!-- 轮播区域 -->
@@ -73,6 +73,9 @@ export default {
     },
     onBackTop() {
       this.$refs.scroll.scrollTo(0, 0, 500)
+    },
+    onToLogin() {
+      this.$router.push('/login')
     }
   }
 }

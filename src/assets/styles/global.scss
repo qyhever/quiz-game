@@ -46,32 +46,37 @@ $font-size-extra-small: 12px;
 }
 
 // 设置 input placeholder 颜色
-@mixin input-placeholder($color: #0DC8FD) {
+@mixin input-placeholder($color: #0DC8FD, $font-size: 14px) {
   &::placeholder {
     color: $color;
     opacity: 1;
+    font-size: $font-size;
   }
 
   /* WebKit browsers*/
   &::-webkit-input-placeholder {
     color: $color;
+    font-size: $font-size;
   }
 
   /* Firefox 4-18*/
   &:-moz-placeholder {
     color: $color;
     opacity: 1;
+    font-size: $font-size;
   }
 
   /* Firefox 19+*/
   &::-moz-placeholder {
     color: $color;
     opacity: 1;
+    font-size: $font-size;
   }
 
   /* IE 10+*/
   &:-ms-input-placeholder {
     color: $color;
+    font-size: $font-size;
   }
 }
 

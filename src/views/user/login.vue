@@ -9,17 +9,20 @@
       <div class="login__panel">
         <div class="panel__header">
           <div class="panel__title">登录</div>
-          <div class="panel__header-extra">忘记密码</div>
+          <router-link to="/forget-password" class="panel__header-extra">忘记密码</router-link>
         </div>
         <div class="panel__form">
           <div class="form-item">
             <div class="form-item__label">
-              <div class="form-item__label-icon-wrapper"></div>
+              <div class="form-item__label-icon-wrapper">
+                <img class="form-item__label-icon" src="@/assets/images/user/user.png" alt="user">
+              </div>
               <div class="form-item__label-text">账号</div>
             </div>
             <div class="form-item__content">
               <van-field
-                v-model="form.phone"
+                v-model.trim="form.phone"
+                type="tel"
                 clearable
                 maxlength="11"
                 placeholder="输入手机号码"
@@ -29,12 +32,14 @@
           </div>
           <div class="form-item">
             <div class="form-item__label">
-              <div class="form-item__label-icon-wrapper"></div>
+              <div class="form-item__label-icon-wrapper">
+                <img class="form-item__label-icon" src="@/assets/images/user/key.png" alt="key">
+              </div>
               <div class="form-item__label-text">密码</div>
             </div>
             <div class="form-item__content">
               <van-field
-                v-model="form.password"
+                v-model.trim="form.password"
                 type="password"
                 clearable
                 maxlength="25"
@@ -60,18 +65,19 @@
           </div>
           <div class="form-item--checkbox">
             <van-checkbox
-              v-model="autoLogin"
+              v-model.trim="autoLogin"
               checked-color="#328EFF"
+              icon-size="16px"
               shape="square">
               自动登录(勾选后一周内自动登录)
             </van-checkbox>
           </div>
           <div class="form-item--submit">
-            <van-button class="form-item__button--submit" block>登录</van-button>
+            <van-button class="form-item__button--submit" block :disabled="disabled" @click="onSubmit">登录</van-button>
           </div>
         </div>
         <div class="panel__footer">
-          <span class="panel__footer-text">没有账号，点我注册</span>
+          <router-link to="/register" class="panel__footer-text">没有账号，点我注册</router-link>
         </div>
       </div>
     </div>
@@ -79,6 +85,7 @@
 </template>
 
 <script>
+  import { validator } from '@/utils/validate'
   export default {
     data() {
       return {
@@ -90,9 +97,22 @@
         autoLogin: false
       }
     },
+    computed: {
+      disabled() {
+        const { phone, password, verifyCode } = this.form
+        return !phone || phone.length !== 11 || !password || !verifyCode
+      }
+    },
     methods: {
-      onNavToggle(value) {
-        this.currentNav = value
+      onSubmit() {
+        const { phone, password, verifyCode } = this.form
+        if (!validator(phone, 'mobile')) {
+          return this.$showModal('请输入正确的手机号')
+        }
+        if (!validator(verifyCode, 'imageVerifyCode')) {
+          return this.$showModal('验证码为数字和字母组合4位')
+        }
+        console.log({ phone, password, verifyCode })
       }
     }
   }
@@ -157,7 +177,11 @@
     height: 16px;
     margin-left: 12px;
     margin-right: 8px;
-    border: 1px solid #4D4D4D;
+  }
+  .form-item__label-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .form-item__label-text {
     color: #4D4D4D;
@@ -200,13 +224,11 @@
   .panel__form {
     /deep/ .van-checkbox {
       .van-checkbox__icon {
-        width: 16px;
-        height: 16px;
-        line-height: 16px;
-        border: 1px solid #328EFF;
-        border-radius: 5px;
-        overflow: hidden;
-        font-size: inherit;
+        .van-icon {
+          border-radius: 5px;
+          overflow: hidden;
+          border: 1px solid #328EFF;
+        }
       }
       .van-checkbox__label {
         color: #328EFF;
@@ -223,12 +245,15 @@
     height: 37px;
     line-height: 35px;
     color: #fff;
+    &.van-button--disabled {
+      background-color: #D9D9D9;
+    }
   }
   .panel__footer {
     text-align: center;
   }
   .panel__footer-text {
-    padding-bottom: 2px;
+    padding-bottom: 3px;
     border-bottom: 2px solid #E1E1E1;
     color: #808080;
   }
