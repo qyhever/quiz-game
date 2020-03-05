@@ -20,3 +20,17 @@
     opacity: 1;
   }
 }
+.com-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.com-gap {
+  height: 8px;
+  background-color: $color-page-bg;
+}
+.com-button {
+  height: 44px;
+  background-color: #F95E5F;
+  color: #fff;
+}

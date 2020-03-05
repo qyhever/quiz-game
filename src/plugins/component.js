@@ -9,6 +9,7 @@ import PageNavbarWrapper from '@/components/page-navbar-wrapper'
 import PageTransition from '@/components/page-transition'
 import DatetimePicker from '@/components/datetime-picker'
 import Loadmore from '@/components/loadmore'
+import Longtap from '@/components/longtap-container'
 
 Vue.component('com-page-tabbar-wrapper', PageTabbarWrapper)
 Vue.component('com-page-navbar-wrapper', PageNavbarWrapper)
@@ -17,3 +18,4 @@ Vue.component('com-svg-icon', SvgIcon)
 Vue.component('com-page-transition', PageTransition)
 Vue.component('com-datetime-picker', DatetimePicker)
 Vue.component('com-loadmore', Loadmore)
+Vue.component('com-longtap', Longtap)
