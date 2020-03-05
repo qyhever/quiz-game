@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "clipboard": "^2.0.5",
     "core-js": "^2.6.5",
     "cube-ui": "^1.12.34",
     "dayjs": "^1.8.17",

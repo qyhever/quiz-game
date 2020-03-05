@@ -84,6 +84,26 @@ const createRouter = () => new Router({
       path: '/information',
       name: 'information',
       component: () => import('@/views/home/information')
+    },
+    {
+      path: '/promote',
+      name: 'promote',
+      component: () => import('@/views/promote')
+    },
+    {
+      path: '/friend',
+      name: 'friend',
+      component: () => import('@/views/promote/friend')
+    },
+    {
+      path: '/withdrawal',
+      name: 'withdrawal',
+      component: () => import('@/views/promote/withdrawal')
+    },
+    {
+      path: '/promote-detail',
+      name: 'promote-detail',
+      component: () => import('@/views/promote/promote-detail')
     }
   ]
 })

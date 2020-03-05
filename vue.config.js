@@ -16,14 +16,14 @@ const cdn = {
   dev: {
     css: [],
     js: [
-      '//qiniu.qyhever.com/lib/echarts/4.0.4/echarts.js',
-      '//qiniu.qyhever.com/js/vconsole.min.js'
+      // '//qiniu.qyhever.com/lib/echarts/4.0.4/echarts.js',
+      // '//qiniu.qyhever.com/js/vconsole.min.js'
     ]
   },
   build: {
     css: [],
     js: [
-      '//qiniu.qyhever.com/lib/echarts/4.0.4/echarts.min.js'
+      // '//qiniu.qyhever.com/lib/echarts/4.0.4/echarts.min.js'
     ]
   }
 }
