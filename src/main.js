@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 
 // import './router/permission'
-import './icons'
+// import './icons'
 import './plugins'
 
 import './assets/styles/index.scss'
