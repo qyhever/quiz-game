@@ -61,6 +61,21 @@ const createRouter = () => new Router({
       component: () => import('@/views/circle')
     },
     {
+      path: '/personal-data',
+      name: 'personalData',
+      component: () => import('@/views/my/personal-data')
+    },
+    {
+      path: '/follow-match',
+      name: 'followMatch',
+      component: () => import('@/views/my/follow-match')
+    },
+    {
+      path: '/follow-team',
+      name: 'followTeam',
+      component: () => import('@/views/my/follow-team')
+    },
+    {
       path: '/my',
       name: 'my',
       component: () => import('@/views/my')

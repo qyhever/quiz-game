@@ -1,60 +1,64 @@
 <template>
   <com-page-tabbar-wrapper>
     <!-- 头部 -->
-    <div class="my-header">
+    <div class="my_header">
       <img src="../../assets/images/my/user-touxiang.png" alt />
-      <div class="header-message">
+      <div class="header_message">
         <p>中竞网瑞雯</p>
         <span>ID:23569331311</span>
       </div>
-      <img src="../../assets/images/my/user-change.png" alt />
+      <img @click="onToPersonalData" src="../../assets/images/my/user-change.png" alt />
     </div>
-    <div class="line-1"></div>
+    <div class="line_1"></div>
     <!-- 我的关注 -->
-    <div class="my-follow">
-      <span class="follow-tips">我的关注</span>
+    <div class="my_follow">
+      <span class="follow_tips">我的关注</span>
       <ul>
+        <router-link to="/follow-match">
         <li>
-          <img src='../../assets/images/my/user-game.png' />
-          <span>比赛</span>
+            <img src='../../assets/images/my/user-game.png' />
+            <span>比赛</span>
         </li>
+        </router-link>
+         <router-link to="/follow-team">
         <li>
            <img src='../../assets/images/my/user-zhandui.png' />
           <span>战队</span>
         </li>
+        </router-link>
         <li>
            <img src='../../assets/images/my/user-peo.png' />
           <span>选手</span>
         </li>
       </ul>
     </div>
-    <div class="line-2"></div>
+    <div class="line_2"></div>
     <!-- 操作栏 -->
-    <div class="my-operation">
+    <div class="my_operation">
       <ul>
-        <li class="operation-message">
-          <span class="my-bean">我的竞豆</span>
-          <span class="my-count">132662</span>
-          <span class="recharge-btn">充值</span>
+        <li class="operation_message">
+          <span class="my_bean">我的竞豆</span>
+          <span class="my_count">132662</span>
+          <span class="recharge_btn">充值</span>
         </li>
-        <div class="line-3"></div>
+        <div class="line_3"></div>
         <li>
           <span>我的竞猜</span>
           <van-icon name="arrow" />
         </li>
-        <div class="line-3"></div>
+        <div class="line_3"></div>
         <li>
           <span>我的订单</span>
           <van-icon name="arrow" />
         </li>
       </ul>
-      <div class="line-2"></div>
+      <div class="line_2"></div>
       <ul>
         <li>
           <span>代理推广</span>
           <van-icon name="arrow" />
         </li>
-         <div class="line-3"></div>
+         <div class="line_3"></div>
         <li>
           <span>系统消息</span>
           <span>12</span>
@@ -69,28 +73,33 @@
 export default {
   data() {
     return {}
+  },
+  methods: {
+     onToPersonalData() {
+      this.$router.push('/personal-data')
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.line-1 {
+.line_1 {
   width: 100%;
   height: 1px;
   background:rgba(242,242,242,1);
 }
-.line-2 {
+.line_2 {
   width: 100%;
   height: .12rem;
   background:rgba(242,242,242,1);
 }
-.line-3 {
+.line_3 {
   width: 100%;
   height: 1px;
   margin-bottom: .2rem;
   background:rgba(242,242,242,1); 
 }
-.my-header {
+.my_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -105,7 +114,7 @@ export default {
       height: 0.44rem;
     }
   }
-  .header-message {
+  .header_message {
   margin-left: -1.8rem;
   p {
     font-size:.32rem;
@@ -122,12 +131,12 @@ export default {
   }
 }
 }
-.my-follow {
+.my_follow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: .14rem 0 .14rem .31rem;
-  .follow-tips {
+  .follow_tips {
     flex: 2;
     font-size:.28rem;
     font-family:Microsoft YaHei;
@@ -158,7 +167,7 @@ export default {
   }
 }
 
-.my-operation {
+.my_operation {
   ul {
     display: flex;
     flex-direction: column;
@@ -181,17 +190,17 @@ export default {
           &::before {
             background: url('../../assets/images/my/user-p1.png') no-repeat center/100%;
           }
-          .my-bean {
+          .my_bean {
             margin-left: -6.6rem;
           }
-          .my-count {
+          .my_count {
             font-size:.28rem;
             font-family:Microsoft YaHei;
             font-weight:400;
             color:rgba(254,74,133,1);
              margin-left: -6.6rem;
           }
-          .recharge-btn {
+          .recharge_btn {
             display: inline-block;
             padding: .13rem .3rem;
             border:.01rem solid rgba(249,94,95,1);
