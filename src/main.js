@@ -2,13 +2,20 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
 // import './router/permission'
 // import './icons'
 import './plugins'
 
 import './assets/styles/index.scss'
 import './filters'
+
+import { Stepper, RadioGroup, Radio, Cell, CellGroup } from 'vant'
+
+Vue.use(Stepper)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(Cell)
+Vue.use(CellGroup)
 // store.dispatch('user/initUser')
 // if (process.env.NODE_ENV === 'development') {
 //   new window.VConsole()

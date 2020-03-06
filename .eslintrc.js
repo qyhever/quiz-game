@@ -69,7 +69,7 @@ module.exports = {
       'error',
       { 'max': 1 }
     ],
-    'semi': ['error', 'never'], // 禁止末尾分号
+    // 'semi': ['error', 'never'], // 禁止末尾分号
     'space-infix-ops': 2, // 操作符周围必须有空格
     'spaced-comment': ['error', 'always'], // 注释后面必须跟随至少一个空白
 

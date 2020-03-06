@@ -75,6 +75,31 @@ const createRouter = () => new Router({
       name: 'followTeam',
       component: () => import('@/views/my/follow-team')
     },
+     {
+      path: '/follow-player',
+      name: 'followPlayer',
+      component: () => import('@/views/my/follow-player')
+    },
+    {
+      path: '/bean-detailed',
+      name: 'beanDetailed',
+      component: () => import('@/views/my/bean-detailed')
+    },
+    {
+      path: '/bean-recharge',
+      name: 'beanRecharge',
+      component: () => import('@/views/my/bean-recharge')
+    },
+    {
+      path: '/guessing-competition',
+      name: 'guessingCompetition',
+      component: () => import('@/views/my/guessing-competition')
+    },
+    {
+      path: '/my-order',
+      name: 'myOrder',
+      component: () => import('@/views/my/my-order')
+    },
     {
       path: '/my',
       name: 'my',
