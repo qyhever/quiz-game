@@ -75,7 +75,7 @@ const createRouter = () => new Router({
       name: 'followTeam',
       component: () => import('@/views/my/follow-team')
     },
-     {
+    {
       path: '/follow-player',
       name: 'followPlayer',
       component: () => import('@/views/my/follow-player')
@@ -99,6 +99,26 @@ const createRouter = () => new Router({
       path: '/my-order',
       name: 'myOrder',
       component: () => import('@/views/my/my-order')
+    },
+    {
+      path: '/order-detailed',
+      name: 'orderDetailed',
+      component: () => import('@/views/my/order-detailed')
+    },
+    {
+      path: '/system-message',
+      name: 'systemMessage',
+      component: () => import('@/views/my/system-message')
+    },
+    {
+      path: '/edit-phone',
+      name: 'editPhone',
+      component: () => import('@/views/my/edit-phone')
+    },
+    {
+      path: '/edit-emial',
+      name: 'editEmial',
+      component: () => import('@/views/my/edit-emial')
     },
     {
       path: '/my',
@@ -135,7 +155,7 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
- // reset router
+// reset router
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher

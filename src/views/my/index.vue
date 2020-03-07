@@ -61,7 +61,7 @@
           <van-icon name="arrow" />
         </li>
         <div class="line_3"></div>
-        <li>
+        <li @click="onToMeunList('/system-message')">
           <span>系统消息</span>
           <span>12</span>
           <van-icon name="arrow" />

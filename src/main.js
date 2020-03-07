@@ -9,13 +9,14 @@ import './plugins'
 import './assets/styles/index.scss'
 import './filters'
 
-import { Stepper, RadioGroup, Radio, Cell, CellGroup } from 'vant'
+import { Stepper, RadioGroup, Radio, Cell, CellGroup, Popup } from 'vant'
 
 Vue.use(Stepper)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Cell)
 Vue.use(CellGroup)
+Vue.use(Popup)
 // store.dispatch('user/initUser')
 // if (process.env.NODE_ENV === 'development') {
 //   new window.VConsole()
