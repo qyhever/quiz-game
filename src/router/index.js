@@ -51,6 +51,21 @@ const createRouter = () => new Router({
       component: () => import('@/views/competition')
     },
     {
+      path: '/competition-intro',
+      name: 'competitionIntro',
+      component: () => import('@/views/competition/competition-intro')
+    },
+    {
+      path: '/team',
+      name: 'team',
+      component: () => import('@/views/team')
+    },
+    {
+      path: '/team-intro',
+      name: 'teamIntro',
+      component: () => import('@/views/team/team-intro')
+    },
+    {
       path: '/mall',
       name: 'mall',
       component: () => import('@/views/mall')
