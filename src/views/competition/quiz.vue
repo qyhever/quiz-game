@@ -1,8 +1,47 @@
 <template>
   <div>
-    <com-block-header title="热门竞猜" @click-right="onToCompetition"/>
-    <div class="hot-list">
-      <div class="item" v-for="(item, index) in list" :key="index">
+    <!-- 头部区域 -->
+    <div class="quiz-header">
+      <div class="header__team">
+        <div class="header__image-wrapper">
+          <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+        </div>
+        <p class="header__team-name">AG超玩会</p>
+      </div>
+      <div class="header__score">
+        <div class="header__score-text">
+          <span>1</span>
+          <span>:</span>
+          <span>1</span>
+        </div>
+        <van-button class="header__button">参与竞猜</van-button>
+      </div>
+      <div class="header__team">
+        <div class="header__image-wrapper">
+          <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+        </div>
+        <p class="header__team-name">AG超玩会</p>
+      </div>
+    </div>
+    <!-- tab nav区域 -->
+    <div class="tab-nav-wrapper">
+      <div class="tab-nav__icon-wrapper">
+        <img class="com-image" src="@/assets/images/competition/menu-active.png" alt="menu">
+      </div>
+      <div class="tab-nav">
+        <div
+          class="tab-nav-item"
+          :class="{active: activeNav === item.value}"
+          v-for="(item, index) in navs"
+          :key="index"
+          @click="onNavToggle(item.value)">
+          {{item.label}}
+        </div>
+      </div>
+    </div>
+    <!-- tab panel 区域 -->
+    <div class="quiz-list">
+      <div class="quiz-item" v-for="(item, index) in list" :key="index">
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
@@ -40,12 +79,6 @@
         </div>
       </div>
     </div>
-    <div class="more">
-      <div class="more__button" @click="onPreviewMore">
-        <div class="more__text">查看更多</div>
-        <van-icon class="more__icon" name="plus" />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -53,23 +86,110 @@
 export default {
   data() {
     return {
-      list: Array(3).fill(null)
+      navs: [
+        {label: '热门竞猜', value: '1'},
+        {label: '英雄联盟', value: '2'},
+        {label: '王者荣耀', value: '3'},
+        {label: '守望先锋', value: '4'}
+      ],
+      activeNav: '1',
+      list: Array(10).fill(null)
     }
   },
   methods: {
-    onPreviewMore() {
-      console.log('onPreviewMore')
-    },
-    onToCompetition() {
-      this.$router.push('/competition')
+    onNavToggle(value) {
+      this.activeNav = value
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .hot-list {
-    padding: 14px 0;
+  .quiz-header {
+    padding: 10px 5.33%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #FAFAFA;
+    border-bottom: 5px solid $color-page-bg;
+  }
+  .header__image-wrapper {
+    width: 75px;
+    height: 75px;
+  }
+  .header__team-name {
+    padding-top: 8px;
+    text-align: center;
+  }
+  .header__score {
+    text-align: center;
+  }
+  .header__score-text {
+    margin-bottom: 12px;
+    color: #FF4F4F;
+    font-size: 40px;
+  }
+  .header__button {
+    width: rem2px(200);
+    height: 36px;
+    line-height: 34px;
+    background-color: #FFA31F;
+    border-color: #FFA31F;
+    color: #fff;
+    font-size: $font-size-medium;
+    font-weight: 700;
+  }
+  // tab
+  .tab-nav-wrapper {
+    margin-top: 15px;
+    padding: 0 17px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #F5F5F5;
+  }
+  .tab-nav__icon-wrapper {
+    width: 22px;
+    height: 22px;
+  }
+  .tab-nav {
+    flex: 1;
+    margin-left: 14px;
+    height: 40px;
+    display: flex;
+  }
+  .tab-nav-item {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: font-size .15s;
+    color: $color-text-secondary;
+    &.active {
+      color: #000;
+      font-size: $font-size-medium;
+      font-weight: 700;
+      &:after {
+        width: 100%;
+      }
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      margin: 0 -2px;
+      transition: width .2s;
+      background-color: #F95E5F;
+    }
+  }
+  // tab panel
+  .quiz-list {
+    padding-top: 12px;
   }
   .item-header {
     height: 32px;
@@ -160,20 +280,6 @@ export default {
     &.end {
       background-color: #E6E6E6;
       color: $color-text-secondary;
-    }
-  }
-  .more {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 26px;
-    font-size: $font-size-base;
-    color: #B3B3B3;
-    .more__button {
-      @include extend-click();
-      display: flex;
-    }
-    .more__text {
-      margin-right: 7px;
     }
   }
 </style>

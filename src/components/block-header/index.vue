@@ -2,7 +2,7 @@
   <div class="block-header">
     <div class="block-header__inner">
       <div class="block-header__title">{{title}}</div>
-      <div class="block-header__control" @click="onControlClick">
+      <div class="block-header__control" v-if="rightVisible" @click="onControlClick">
         <div class="block-header__control-text">{{controlText}}</div>
         <div class="block-header__control-icon"></div>
       </div>
@@ -21,6 +21,10 @@ export default {
     controlText: {
       type: String,
       default: '全部'
+    },
+    rightVisible: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
