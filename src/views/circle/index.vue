@@ -6,7 +6,7 @@
           <img class="image" src="@/assets/images/circle/search.png" alt="搜索" />
         </div>
         <div class="image-wrapper" @click="onWrite">
-          <img class="image" src="@/assets/images/circle/write.png" alt="搜索" />
+          <img class="image" src="@/assets/images/circle/write.png" alt="发布" />
         </div>
       </div>
     </van-nav-bar>
@@ -23,7 +23,7 @@
         <!-- 推荐 -->
         <div class="circle_recommend">
           <ul>
-            <li class="recommend">推荐</li>
+            <li class="recommend">{{typeVal}}</li>
             <li v-for="(item,index) in recommendList" :key="index">
               <img :src="item.url" />
               <p>{{item.name}}</p>
@@ -62,36 +62,28 @@ export default {
         }
       ],
       currentNav: 1,
+      typeVal: "推荐",
       recommendList: [
         {
           name: "王者赛事圈",
-          url: require("../../assets/images/chat_p01.png")
-        },
-        {
-          name: "王者赛事圈",
-          url: require("../../assets/images/chat_p01.png")
-        },
-        {
-          name: "王者赛事圈",
-          url: require("../../assets/images/chat_p01.png")
+          url: require("../../assets/images/circle/chat_p01.png")
         },
         {
           name: "赛事直播",
-          url: require("../../assets/images/chat_p02.png")
+          url: require("../../assets/images/circle/chat_p02.png")
         },
         {
           name: "LOL战场",
-          url: require("../../assets/images/chat_p03.png")
+          url: require("../../assets/images/circle/chat_p03.png")
         },
         {
           name: "赛事直播",
-          url: require("../../assets/images/chat_p02.png")
+          url: require("../../assets/images/circle/chat_p02.png")
         },
         {
           name: "LOL战场",
-          url: require("../../assets/images/chat_p03.png")
-        },
-        { name: "LOL战场", url: require("../../assets/images/chat_p04.png") }
+          url: require("../../assets/images/circle/chat_p03.png")
+        }
       ]
     };
   },
@@ -100,10 +92,18 @@ export default {
       console.log("onSearch");
     },
     onWrite() {
-      console.log("onWrite");
+      this.$router.push("/circle-release");
     },
     onNavToggle(value) {
       this.currentNav = value;
+      switch (value) {
+        case 1:
+          this.typeVal = "推荐";
+          break;
+        default:
+          this.typeVal = "已关注";
+          break;
+      }
     },
     query() {
       // mock

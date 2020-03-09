@@ -4,9 +4,11 @@
     <div class="message_main">
       <div class="message_tips">
         <span>推荐好友领福利咯</span>
-        <van-icon name="arrow-down" size="0.27rem" />
+        <van-icon :name="iconType" size="0.27rem" @click="onToggle" />
       </div>
-      <div class="message_text">
+      <div class="message_text" :class="{'van-ellipsis':iconType=='arrow-up'}">
+        推荐好友最高可获得188竞豆！竞猜奖励多多哦~
+        快邀请您的好友一起来玩耍吧！
         推荐好友最高可获得188竞豆！竞猜奖励多多哦~
         快邀请您的好友一起来玩耍吧！
       </div>
@@ -15,7 +17,25 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      iconType: "arrow-up"
+    };
+  },
+  methods: {
+    onToggle() {
+      switch (this.iconType) {
+        case "arrow-up":
+          this.iconType = "arrow-down";
+          break;
+        default:
+          this.iconType = "arrow-up";
+          break;
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -44,10 +64,22 @@ export default {};
       align-items: center;
       justify-content: space-between;
       span {
+        position: relative;
         font-size: 0.28rem;
         font-family: Microsoft YaHei;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
+        &::before {
+          position: absolute;
+          top: -0.08rem;
+          left: -0.2rem;
+          display: inline-block;
+          width: 0.12rem;
+          height: 0.12rem;
+          content: "";
+          background: rgba(249, 94, 95, 1);
+          border-radius: 50%;
+        }
       }
     }
     .message_text {

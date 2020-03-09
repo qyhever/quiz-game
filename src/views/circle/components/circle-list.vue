@@ -1,7 +1,7 @@
 <template>
   <div class="circle_content">
     <div class="circle_head">
-      <img src="../../../assets/images/chat_p01.png" alt />
+      <img src="../../../assets/images/circle/chat_p01.png" alt />
       <div class="circle_info">
         <p>英雄联盟那些事</p>
         <span>15分钟前</span>
@@ -10,12 +10,29 @@
     </div>
     <div class="circle_body">
       <div class="circle_text">LPL全明星周末11月30日海口冯小刚电影公社正式开幕</div>
-      <img src="../../../assets/images/chat_p07.png" alt />
+      <!-- <img src="../../../assets/images/circle/chat_p07.png" alt /> -->
+      <ul class="img_list">
+        <li>
+          <img src="../../../assets/images/circle/chat_p08.png" alt />
+        </li>
+        <li>
+          <img src="../../../assets/images/circle/chat_p09.png" alt />
+        </li>
+        <li>
+          <img src="../../../assets/images/circle/chat_p10.png" alt />
+        </li>
+        <li>
+          <img src="../../../assets/images/circle/chat_p09.png" alt />
+        </li>
+        <li>
+          <img src="../../../assets/images/circle/chat_p10.png" alt />
+        </li>
+      </ul>
     </div>
     <div class="circle_foot">
       <ul>
         <li>
-          <van-icon name="good-job-o" size="0.32rem" />
+          <van-icon name="share" size="0.32rem" />
           <span>36</span>
         </li>
         <li>
@@ -91,6 +108,20 @@ export default {};
     img {
       width: 100%;
       height: 3.5rem;
+    }
+    .img_list {
+      display: flex;
+      flex-wrap: wrap;
+      li {
+        margin: 0 0.08rem 0.08rem 0;
+        &:nth-of-type(3n) {
+          margin-right: 0;
+        }
+        img {
+          width: 2.23rem;
+          height: 2.23rem;
+        }
+      }
     }
   }
   .circle_foot {
