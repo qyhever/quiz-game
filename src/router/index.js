@@ -81,9 +81,24 @@ const createRouter = () => new Router({
       component: () => import('@/views/mall/goods-detail')
     },
     {
+      path: '/mall-order',
+      name: 'mallOrder',
+      component: () => import('@/views/mall/mall-order')
+    },
+    {
+      path: '/add-address',
+      name: 'addAddress',
+      component: () => import('@/views/mall/add-address')
+    },
+    {
       path: '/circle',
       name: 'circle',
       component: () => import('@/views/circle')
+    },
+    {
+      path: '/circle-release',
+      name: 'circleRelease',
+      component: () => import('@/views/circle/circle-release')
     },
     {
       path: '/personal-data',
