@@ -86,6 +86,7 @@
 
 <script>
   import { validator } from '@/utils/validate'
+  import { login, getVeifyCode } from '@/api/user'
   export default {
     data() {
       return {
@@ -103,6 +104,13 @@
         return !phone || phone.length !== 11 || !password || !verifyCode
       }
     },
+    mounted() {
+      getVeifyCode().then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     methods: {
       onSubmit() {
         const { phone, password, verifyCode } = this.form
@@ -113,6 +121,15 @@
           return this.$showModal('验证码为数字和字母组合4位')
         }
         console.log({ phone, password, verifyCode })
+        login({
+          phone,
+          password,
+          code: verifyCode
+        }).then(data => {
+          console.log(data)
+        }).catch(err => {
+          console.log(err)
+        })
       }
     }
   }

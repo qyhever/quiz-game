@@ -71,6 +71,16 @@ const createRouter = () => new Router({
       component: () => import('@/views/mall')
     },
     {
+      path: '/shopcart',
+      name: 'shopcart',
+      component: () => import('@/views/mall/shop-cart')
+    },
+    {
+      path: '/goods-detail',
+      name: 'goodsDetail',
+      component: () => import('@/views/mall/goods-detail')
+    },
+    {
       path: '/circle',
       name: 'circle',
       component: () => import('@/views/circle')

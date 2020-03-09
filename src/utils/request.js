@@ -108,7 +108,7 @@ const _request = (
   options.headers = options.headers || {}
   const token = getToken()
   if (token) {
-    options.headers.Authorization = token
+    // options.headers.Authorization = token
   }
   if (showLoading) {
     Loading.open()
@@ -120,8 +120,8 @@ const _request = (
         return response
       }
       const responseData = response.data || {}
-      if (responseData.success) { // success code
-        return responseData.data
+      if (responseData.code === 200) { // success code
+        return responseData
       }
       // not success code
       if (showWarningMsg) {
@@ -141,7 +141,7 @@ const _request = (
       throw err
     })
     .catch(error => {
-      removePending(response) // 在请求结束后，移除本次请求
+      removePending(error) // 在请求结束后，移除本次请求
       if (error.name === 'warning') {
         throw error
       }

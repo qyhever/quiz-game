@@ -9,8 +9,8 @@
     @pulling-up="onPullingUp"
     @scroll="onScroll">
     <slot :list="list"></slot>
-    <div class="weui-loadmore weui-loadmore_line" v-if="allLoaded">
-      <span class="weui-loadmore__tips">我是有底线的</span>
+    <div class="loadmore loadmore_line" v-if="allLoaded">
+      <span class="loadmore__tips">我是有底线的</span>
     </div>
     <!--<template slot="pulldown" slot-scope="props">-->
       <!--<div-->
@@ -203,7 +203,25 @@
       }
     }
   }
-  .weui-loadmore {
+  .loadmore {
+    width: 65%;
+    margin: 1.5em auto;
+    line-height: 1.6em;
+    font-size: 14px;
+    text-align: center;
     background-color: #fff;
   }
+  .loadmore_line {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 2.4em;
+  }
+  .loadmore_line .loadmore__tips {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -0.9em;
+    padding: 0 0.55em;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.5);
+}
 </style>

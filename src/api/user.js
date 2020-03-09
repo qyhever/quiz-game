@@ -1,11 +1,10 @@
 import request from '@/utils/request'
 
-export const login = (fn, data) => {
-  return request(fn)({
+export const login = (data) => {
+  return request({
     method: 'post',
-    url: '/user/login',
-    data,
-    showLoading: false
+    url: '/auth/login',
+    data
   })
 }
 
@@ -15,6 +14,12 @@ export const register = (fn, data) => {
     url: '/user/register',
     data,
     showLoading: false
+  })
+}
+
+export const getVeifyCode = () => {
+  return request({
+    url: '/captchaImage'
   })
 }
 
