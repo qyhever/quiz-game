@@ -6,34 +6,36 @@
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
-              <img class="item-header__image" src="@/assets/images/home/icon1.png" alt="game">
+              <img class="item-header__image" :src="require(`@/assets/images/home/gameicon${item.picture}`)" alt="game">
             </div>
-            <div class="item-header__title">LPL职业联赛</div>
+            <div class="item-header__title">{{item.matchName}}</div>
           </div>
-          <div class="item-header__time">11-22 19:00</div>
+          <div class="item-header__time">{{item.matchTime | formatDate('MM-DD HH:mm')}}</div>
         </div>
         <div class="item-body">
           <div class="item-body__left">
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
+                <!-- TODO aicon 1001.PNG -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">LPL</p>
+              <p class="item-body__team-name">{{item.aname}}</p>
             </div>
             <div class="item-body__score">
-              <span>1</span>
+              <span>{{item.ascore}}</span>
               <span>:</span>
-              <span>1</span>
+              <span>{{item.bscore}}</span>
             </div>
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
+                <!-- TODO bicon 114.PNG -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">LPL</p>
+              <p class="item-body__team-name">{{item.bname}}</p>
             </div>
           </div>
           <div class="item-body__right">
-            <div class="item-body__right-title">6099人竞猜</div>
+            <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
             <!-- settlement end -->
             <van-button class="item-body__right-button">参与竞猜</van-button>
           </div>
@@ -51,9 +53,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      list: Array(3).fill(null)
+  props: {
+    list: {
+      type: Array,
+      default: () => ([])
     }
   },
   methods: {

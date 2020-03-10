@@ -62,7 +62,7 @@
             </div>
             <div class="form-item__content">
               <van-field
-                v-model.trim="form.nickName"
+                v-model.trim="form.nickname"
                 clearable
                 maxlength="20"
                 placeholder="输入昵称"
@@ -81,8 +81,8 @@
                 :border="false"
               />
             </div>
-            <div class="form-item__verify-image-wrapper">
-              <img class="form-item__verify-image" src="@/assets/images/user/verify.png" alt="verify">
+            <div class="form-item__verify-image-wrapper" @click="queryVerifyCode">
+              <img v-if="verifyCodeUrl" class="form-item__verify-image" :src="verifyCodeUrl" alt="verify">
             </div>
           </div>
           <div class="form-item form-item--verify">
@@ -117,7 +117,7 @@
           </div>
           <div class="form-item--checkbox">
             <van-checkbox
-              v-model="autouser"
+              v-model="agreed"
               checked-color="#328EFF"
               icon-size="16px"
               shape="square">
@@ -161,6 +161,8 @@
 
 <script>
   import { validator } from '@/utils/validate'
+  import { getDataURI } from '@/utils'
+  import { register, getVeifyCode } from '@/api/user'
   export default {
     data() {
       return {
@@ -168,13 +170,14 @@
           phone: '',
           password: '',
           confirmPassword: '',
-          nickName: '',
+          nickname: '',
           verifyCode: '',
           phoneVerifyCode: '',
           invitationCode: ''
         },
-        autouser: false,
-        visible: false
+        agreed: false,
+        visible: false,
+        verifyCodeUrl: ''
       }
     },
     computed: {
@@ -183,13 +186,24 @@
         return !phone || phone.length !== 11
       },
       disabled() {
-        const { phone, password, confirmPassword, nickName, verifyCode, phoneVerifyCode } = this.form
-        return !phone || phone.length !== 11 || !password || !confirmPassword || !nickName || !verifyCode || !phoneVerifyCode
+        const { phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode } = this.form
+        return !phone || phone.length !== 11 || !password || !confirmPassword || !nickname || !verifyCode || !phoneVerifyCode
       }
     },
+    mounted() {
+      this.queryVerifyCode()
+    },
     methods: {
-      onSubmit() {
-        const { phone, password, confirmPassword, nickName, verifyCode, phoneVerifyCode } = this.form
+      async queryVerifyCode() {
+        try {
+          const reponse = await getVeifyCode()
+          this.verifyCodeUrl = getDataURI(reponse.img)
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      async onSubmit() {
+        const { phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode, invitationCode } = this.form
         if (!validator(phone, 'mobile')) {
           return this.$showModal('请输入正确的手机号')
         }
@@ -202,8 +216,28 @@
         if (!validator(phoneVerifyCode, 'phoneVerifyCode')) {
           return this.$showModal('短信验证码应该为4位数字')
         }
-        console.log({ phone, password, confirmPassword, nickName, verifyCode, phoneVerifyCode })
-        this.visible = true
+        if (!this.agreed) {
+          return this.$showModal('请阅读并同意用户服务协议')
+        }
+        console.log({ phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode })
+        try {
+          const params = {
+            phone,
+            password,
+            confirmPassword,
+            nickname,
+            code: verifyCode,
+            phoneCode: phoneVerifyCode
+          }
+          if (invitationCode) {
+            params.invitationCode = invitationCode
+          }
+          const reponse = await register(params)
+          console.log(reponse)
+          this.visible = true
+        } catch (err) {
+          console.log(err)
+        }
       },
       close() {
         this.visible = false
@@ -264,6 +298,7 @@
   .form-item {
     height: 37px;
     display: flex;
+    align-items: center;
     margin-bottom: 13px;
   }
   .form-item__label {
@@ -278,7 +313,7 @@
   .form-item__content {
     flex: 1;
     /deep/ .van-cell {
-      padding: 6.5px 16px;
+      height: 37px;
       border-radius: 5px;
       background-color: #F0F0F0;
       .van-field__control {

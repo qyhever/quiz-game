@@ -59,8 +59,8 @@
                 :border="false"
               />
             </div>
-            <div class="form-item__verify-image-wrapper">
-              <img class="form-item__verify-image" src="@/assets/images/user/verify.png" alt="verify">
+            <div class="form-item__verify-image-wrapper" @click="queryVerifyCode">
+              <img class="form-item__verify-image" :src="verifyCodeUrl" alt="verify">
             </div>
           </div>
           <div class="form-item--checkbox">
@@ -86,7 +86,10 @@
 
 <script>
   import { validator } from '@/utils/validate'
+  import { getDataURI } from '@/utils'
   import { login, getVeifyCode } from '@/api/user'
+  const USER_DATA_KEY = 'quiz-login-user-data'
+  const USER_DATA_TIME_KEY = 'quiz-login-user-data-time'
   export default {
     data() {
       return {
@@ -95,7 +98,8 @@
           password: '',
           verifyCode: ''
         },
-        autoLogin: false
+        autoLogin: false,
+        verifyCodeUrl: ''
       }
     },
     computed: {
@@ -105,14 +109,36 @@
       }
     },
     mounted() {
-      getVeifyCode().then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      })
+      this.queryVerifyCode()
+      const currentTime = new Date().getTime() / 1000
+      const localTime = Number(window.localStorage.getItem(USER_DATA_TIME_KEY)) / 1000
+      const passTime = Math.floor(currentTime - localTime) // 已经过去的时间
+      const time7d = 7 * 24 * 60 * 60
+      if (passTime >= 0 && passTime < time7d) {
+        let localData = null
+        try {
+          localData = JSON.parse(window.localStorage.getItem(USER_DATA_KEY))
+        } catch (err) {
+          console.log(err)
+          window.localStorage.removeItem(USER_DATA_KEY)
+          window.localStorage.removeItem(USER_DATA_TIME_KEY)
+        }
+        if (localData) {
+          this.form.phone = localData.phone
+          this.form.password = localData.password
+        }
+      }
     },
     methods: {
-      onSubmit() {
+      async queryVerifyCode() {
+        try {
+          const reponse = await getVeifyCode()
+          this.verifyCodeUrl = getDataURI(reponse.img)
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      async onSubmit() {
         const { phone, password, verifyCode } = this.form
         if (!validator(phone, 'mobile')) {
           return this.$showModal('请输入正确的手机号')
@@ -120,16 +146,28 @@
         if (!validator(verifyCode, 'imageVerifyCode')) {
           return this.$showModal('验证码为数字和字母组合4位')
         }
+        if (this.autoLogin) { // 自动登录
+          const localData = JSON.stringify({
+            phone,
+            password
+          })
+          window.localStorage.setItem(USER_DATA_KEY, localData)
+          window.localStorage.setItem(USER_DATA_TIME_KEY, new Date().getTime())
+        } else {
+          window.localStorage.removeItem(USER_DATA_KEY)
+          window.localStorage.removeItem(USER_DATA_TIME_KEY)
+        }
         console.log({ phone, password, verifyCode })
-        login({
-          phone,
-          password,
-          code: verifyCode
-        }).then(data => {
-          console.log(data)
-        }).catch(err => {
+        try {
+          const reponse = await login({
+            phone,
+            password,
+            code: verifyCode
+          })
+          console.log(reponse)
+        } catch (err) {
           console.log(err)
-        })
+        }
       }
     }
   }
@@ -181,6 +219,7 @@
   .form-item {
     height: 37px;
     display: flex;
+    align-items: center;
     margin-bottom: 13px;
     border-radius: 5px;
     background-color: #F0F0F0;

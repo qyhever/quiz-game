@@ -17,7 +17,7 @@
             <template slot-scope="{list}">
               <div class="item" v-for="(item, index) in list" :key="index" @click="onToDetail(item)">
                 <div class="item__image-wrapper">
-                  <img class="item__image" src="@/assets/images/home/information.png" alt="information">
+                  <img class="item__image" src="@/assets/images/home/information1.png" alt="information">
                 </div>
                 <div class="item__body">
                   <div class="item__title">2019MDL 成都  Major 决战在即  英雄传承共见证！</div>
