@@ -15,7 +15,7 @@
         <div class="tab__panel">
           <com-loadmore :fetchData="query">
             <template slot-scope="{list}">
-              <match-list v-for="(item,index) in list" :key="index" :item="index"></match-list>
+              <match-list v-for="(item,index) in list" :key="index" :item="item"></match-list>
             </template>
           </com-loadmore>
         </div>
@@ -29,6 +29,7 @@
 <script>
 import MatchList from "./components/match-list";
 import GameMeun from "./components/game-meun";
+import { getFollowMatch } from "@/api/user";
 export default {
   components: {
     MatchList,
@@ -52,13 +53,12 @@ export default {
         this.show = true;
       }
     },
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    query({ page, count }) {
+      return getFollowMatch({ page, count })
+        .then(res => res.rows)
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

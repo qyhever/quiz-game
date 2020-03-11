@@ -61,9 +61,7 @@ export default {
     },
     query({ page, count }) {
       return getBeanDetailed({ page, count })
-        .then(res => {
-          return res.data;
-        })
+        .then(res => res.rows)
         .catch(err => {
           console.log(err);
         });

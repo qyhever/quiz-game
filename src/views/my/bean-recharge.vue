@@ -67,6 +67,7 @@
   </com-page-navbar-wrapper>
 </template>
 <script>
+import { getBeanRecharge } from "@/api/user";
 export default {
   data() {
     return {
@@ -106,7 +107,21 @@ export default {
       radio: 1
     };
   },
-  methods: {}
+  mounted() {
+    this.getBeanRecharge();
+  },
+  methods: {
+    // 获取充值列表
+    getBeanRecharge() {
+      getBeanRecharge()
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
 };
 </script>
 

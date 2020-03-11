@@ -18,7 +18,7 @@
       <!-- 定位 -->
       <div class="release_location">
         <van-icon name="location-o" size=".24rem" />
-        <span>你在哪</span>
+        <span @click="Tmap">{{defaultVal}}</span>
       </div>
       <div class="release_emoji">
         <van-icon name="photo-o" size=".44rem" />
@@ -36,6 +36,16 @@
         </div>
       </div>
     </div>
+
+    <iframe
+      id="geoPage"
+      width="0"
+      height="0"
+      frameborder="0"
+      style="display:none;"
+      scrolling="no"
+      src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"
+    ></iframe>
   </div>
 </template>
 
@@ -46,7 +56,9 @@ export default {
     return {
       fileList: [],
       isShow: false,
-      weiboIcon: testData
+      weiboIcon: testData,
+      defaultVal: "你在哪",
+      position: ""
     };
   },
   methods: {
@@ -79,6 +91,22 @@ export default {
           this.isShow = true;
           break;
       }
+    },
+    // 获取地理位置
+    Tmap() {
+      window.addEventListener(
+        "message",
+        event => {
+          console.log(event);
+          return;
+          // if (event.data !== undefined) {
+          //   this.position = event.data;
+          //   this.defaultVal = `${event.data.nation} ${event.data.province}`;
+          //   console.log(`位置${this.defaultVal}`);
+          // }
+        },
+        false
+      );
     }
   }
 };

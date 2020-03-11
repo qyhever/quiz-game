@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/order-detailed">
+  <router-link :to="{path:'/order-detailed',query: {orderId: item.id}}">
     <div class="order_content">
       <img src="../../../assets/images/dingdan_p2.png" alt />
       <div class="order_name">{{item.commodityName}}</div>

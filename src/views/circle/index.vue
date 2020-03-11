@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { getCircleInfo } from "@/api/circle";
 import CircleList from "./components/circle-list";
 export default {
   components: {
@@ -84,7 +85,8 @@ export default {
           name: "LOL战场",
           url: require("../../assets/images/circle/chat_p03.png")
         }
-      ]
+      ],
+      circleList: []
     };
   },
   methods: {
@@ -105,13 +107,12 @@ export default {
           break;
       }
     },
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    query({ page, count }) {
+      return getCircleInfo({ page, count, type: 1 })
+        .then(res => res.rows)
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

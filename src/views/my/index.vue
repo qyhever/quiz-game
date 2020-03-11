@@ -72,9 +72,13 @@
 </template>
 
 <script>
+import { getPersonalInfo } from "@/api/user";
 export default {
   data() {
     return {};
+  },
+  mounted() {
+    // this.getPersonalInfo();
   },
   methods: {
     onToPersonalData() {
@@ -82,6 +86,12 @@ export default {
     },
     onToMeunList(path) {
       this.$router.push(path);
+    },
+    // 获取个人信息
+    getPersonalInfo() {
+      getPersonalInfo({ phone: "15872406760" })
+        .then(res => console.log(res))
+        .catch();
     }
   }
 };

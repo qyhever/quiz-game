@@ -4,7 +4,10 @@
       <p>{{item.describe}}</p>
       <p>{{item.createTime | formatDate}}</p>
     </div>
-    <div class="bean_count" :class="item.status==1?'add':'reduce'">{{item.status==1?'+100':'-100'}}</div>
+    <div
+      class="bean_count"
+      :class="item.status==1?'add':'reduce'"
+    >{{item.status==1?`+${item.number}`:`-${item.number}`}}</div>
   </div>
 </template>
 

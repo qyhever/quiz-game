@@ -26,9 +26,7 @@ export default {
   methods: {
     query({ page, count }) {
       return getMyOrder({ page, count })
-        .then(res => {
-          return res.rows;
-        })
+        .then(res => res.rows)
         .catch(err => {
           console.log(err);
         });

@@ -26,9 +26,7 @@ export default {
   methods: {
     query({ page, count }) {
       return getMyBetting({ page, count })
-        .then(res => {
-          return res.data;
-        })
+        .then(res => res.rows)
         .catch(err => {
           console.log(err);
         });

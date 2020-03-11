@@ -16,16 +16,37 @@ export const register = data => {
   })
 }
 
+// 获取图片验证码
 export const getVeifyCode = () => {
   return request({
     url: '/captchaImage'
   })
 }
 
-export const getPersonalInfo = () => {
+// 用户信息
+export const getPersonalInfo = (data) => {
   return request({
     method: 'get',
-    url: '/user/my'
+    url: '/user',
+    params: data
+  })
+}
+
+// 修改手机号
+export const editPhone = (data) => {
+  return request({
+    method: 'get',
+    url: '/user/editPhone',
+    params: data
+  })
+}
+
+// 修改邮箱
+export const editEmail = (data) => {
+  return request({
+    method: 'get',
+    url: '/user/editEmail',
+    params: data
   })
 }
 
@@ -56,6 +77,24 @@ export const getMyOrder = (data) => {
   })
 }
 
+// 订单详情
+export const getOrderDetail = (data) => {
+  return request({
+    method: "get",
+    url: "/user/orderDetail",
+    params: data
+  })
+}
+
+// 我的竞豆-充值列表
+export const getBeanRecharge = (data) => {
+  return request({
+    method: "get",
+    url: "/user/beanRecharge",
+    params: data
+  })
+}
+
 // 我的竞豆-明细
 export const getBeanDetailed = (data) => {
   return request({
@@ -73,3 +112,22 @@ export const getFollowPlayer = (data) => {
     params: data
   })
 }
+
+// 关注战队
+export const getFollowTeam = (data) => {
+  return request({
+    method: "get",
+    url: "/user/followTeam",
+    params: data
+  })
+}
+
+// 关注赛事
+export const getFollowMatch = (data) => {
+  return request({
+    method: "get",
+    url: "/user/followMatch",
+    params: data
+  })
+}
+

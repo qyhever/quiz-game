@@ -4,37 +4,73 @@
       <div class="line"></div>
       <div class="emial_head emial">
         <p>输入已绑定邮箱号</p>
-        <input type="text" placeholder="请输入已绑定邮箱号" />
+        <input type="text" v-model="form.email" placeholder="请输入已绑定邮箱号" />
       </div>
       <div class="emial_body">
         <p>输入邮箱验证码</p>
         <div>
-          <input type="text" placeholder="请输入邮箱验证码" />
-          <button>发送</button>
+          <input type="text" v-model="form.code" placeholder="请输入邮箱验证码" />
+          <button @click="sendCode">发送</button>
         </div>
       </div>
       <div class="emial_foot emial">
         <p>输入新的邮箱号</p>
-        <input type="text" placeholder="请输入新的邮箱号" />
+        <input type="text" v-model="form.newEmail" placeholder="请输入新的邮箱号" />
       </div>
       <div class="emial_body">
         <p>输入新邮箱验证码</p>
         <div>
-          <input type="text" placeholder="请输入新邮箱验证码" />
-          <button>发送</button>
+          <input type="text" v-model="form.newCode" placeholder="请输入新邮箱验证码" />
+          <button @click="sendCode">发送</button>
         </div>
       </div>
 
-      <van-button type="info" block>确认修改</van-button>
+      <van-button type="info" block @click="onSubmit">确认修改</van-button>
     </div>
   </com-page-navbar-wrapper>
 </template>
 <script>
+import { validator } from "@/utils/validate";
+import { editEmail } from "@/api/user";
 export default {
   data() {
-    return {};
+    return {
+      form: {
+        email: "",
+        code: "",
+        newEmail: "",
+        newCode: ""
+      }
+    };
   },
-  methods: {}
+  methods: {
+    // 发送验证码
+    sendCode() {
+      const { email, newEmail } = this.form;
+      if (!validator(email, "email") || !validator(newEmail, "email")) {
+        return this.$showModal("请输入正确的邮箱号码");
+      }
+    },
+    onSubmit() {
+      const { email, code, newEmail, newCode } = this.form;
+      if (!validator(email, "email") || !validator(newEmail, "email")) {
+        return this.$showModal("请输入正确的邮箱号码");
+      }
+      if (
+        !validator(code, "phoneVerifyCode") ||
+        !validator(newCode, "phoneVerifyCode")
+      ) {
+        return this.$showModal("请输入四位数的验证码");
+      }
+      editEmail(this.form)
+        .then(res => {
+          if (res.code === 200) {
+            this.$showModal("邮箱号码修改成功");
+          }
+        })
+        .catch();
+    }
+  }
 };
 </script>
 

@@ -84,18 +84,22 @@
   </com-page-navbar-wrapper>
 </template>
 <script>
+import { getOrderDetail } from "@/api/user";
 export default {
   data() {
-    return {};
+    return {
+      orderDetail: {}
+    };
+  },
+  mounted() {
+    this.getOrderDetail();
   },
   methods: {
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    // 获取订单详情
+    getOrderDetail() {
+      getOrderDetail({ id: this.$route.query.orderId })
+        .then(res => console.log(res))
+        .catch();
     }
   }
 };
