@@ -5,7 +5,7 @@
         <div class="tab__panel">
           <com-loadmore :fetchData="query">
             <template slot-scope="{list}">
-              <order-list v-for="(item,index) in list" :key="index" :item="index"></order-list>
+              <order-list v-for="(item,index) in list" :key="index" :item="item"></order-list>
             </template>
           </com-loadmore>
         </div>
@@ -15,6 +15,7 @@
 </template>
 <script>
 import OrderList from "./components/order-list";
+import { getMyOrder } from "@/api/user";
 export default {
   components: {
     OrderList
@@ -23,13 +24,14 @@ export default {
     return {};
   },
   methods: {
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    query({ page, count }) {
+      return getMyOrder({ page, count })
+        .then(res => {
+          return res.rows;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

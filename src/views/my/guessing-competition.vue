@@ -15,6 +15,7 @@
 </template>
 <script>
 import GuessingList from "./components/guessing-list";
+import { getMyBetting } from "@/api/user";
 export default {
   components: {
     GuessingList
@@ -23,13 +24,14 @@ export default {
     return {};
   },
   methods: {
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    query({ page, count }) {
+      return getMyBetting({ page, count })
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

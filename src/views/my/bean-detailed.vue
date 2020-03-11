@@ -21,12 +21,12 @@
           @click="onNavToggle(item.value)"
         >{{item.label}}</li>
       </ul>
-      
+
       <div class="tab__panel-wrapper">
         <div class="tab__panel">
           <com-loadmore :fetchData="query" v-if="currentNav==1">
             <template slot-scope="{list}">
-              <bean-list v-for="(item,index) in list" :key="index" :item="index"></bean-list>
+              <bean-list v-for="(item,index) in list" :key="index" :item="item"></bean-list>
             </template>
           </com-loadmore>
           <div class="bean_earn" v-else>
@@ -41,6 +41,7 @@
 </template>
 <script>
 import BeanList from "./components/bean-list";
+import { getBeanDetailed } from "@/api/user";
 export default {
   components: {
     BeanList
@@ -58,13 +59,14 @@ export default {
     onNavToggle(value) {
       this.currentNav = value;
     },
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    query({ page, count }) {
+      return getBeanDetailed({ page, count })
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

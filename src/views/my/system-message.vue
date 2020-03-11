@@ -5,7 +5,7 @@
         <div class="tab__panel">
           <com-loadmore :fetchData="query">
             <template slot-scope="{list}">
-              <message-list v-for="(item,index) in list" :key="index" :item="index"></message-list>
+              <message-list v-for="(item,index) in list" :key="index" :item="item"></message-list>
             </template>
           </com-loadmore>
         </div>
@@ -15,6 +15,7 @@
 </template>
 <script>
 import MessageList from "./components/message-list";
+import { getSystemMessage } from "@/api/user";
 export default {
   components: {
     MessageList
@@ -23,13 +24,14 @@ export default {
     return {};
   },
   methods: {
-    query() {
-      // mock
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Array(10).fill(null));
-        }, 1500);
-      });
+    query({ page, count }) {
+      return getSystemMessage({ page, count })
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

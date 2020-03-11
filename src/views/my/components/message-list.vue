@@ -1,23 +1,24 @@
 <template>
   <div class="message_content">
-    <p class="message_time">11-28</p>
+    <p class="message_time">{{item.modifyTime}}</p>
     <div class="message_main">
       <div class="message_tips">
-        <span>推荐好友领福利咯</span>
+        <span>{{item.title}}</span>
         <van-icon :name="iconType" size="0.27rem" @click="onToggle" />
       </div>
-      <div class="message_text" :class="{'van-ellipsis':iconType=='arrow-up'}">
-        推荐好友最高可获得188竞豆！竞猜奖励多多哦~
-        快邀请您的好友一起来玩耍吧！
-        推荐好友最高可获得188竞豆！竞猜奖励多多哦~
-        快邀请您的好友一起来玩耍吧！
-      </div>
+      <div
+        class="message_text"
+        :class="{'van-ellipsis':iconType=='arrow-up'}"
+      >{{item.messageContent}}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    item: Object
+  },
   data() {
     return {
       iconType: "arrow-up"

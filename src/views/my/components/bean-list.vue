@@ -1,17 +1,17 @@
 <template>
   <div class="bean_content">
     <div class="bean_message">
-      <p>{{item%2==0?'竞猜赚取':'商品兑换'}}</p>
-      <p>2019-11-24</p>
+      <p>{{item.describe}}</p>
+      <p>{{item.createTime | formatDate}}</p>
     </div>
-    <div class="bean_count" :class="item%2==0?'add':'reduce'">{{item%2==0?'+100':'-100'}}</div>
+    <div class="bean_count" :class="item.status==1?'add':'reduce'">{{item.status==1?'+100':'-100'}}</div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    item: Number
+    item: Object
   }
 };
 </script>

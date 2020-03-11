@@ -2,14 +2,18 @@
   <router-link to="/order-detailed">
     <div class="order_content">
       <img src="../../../assets/images/dingdan_p2.png" alt />
-      <div class="order_name">游戏手办A款</div>
+      <div class="order_name">{{item.commodityName}}</div>
       <span>订单状态：已发货</span>
     </div>
   </router-link>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    item: Object
+  }
+};
 </script>
 
 <style lang="scss" scoped>

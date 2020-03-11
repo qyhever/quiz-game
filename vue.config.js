@@ -37,11 +37,16 @@ module.exports = {
     overlay: {
       warnings: true,
       errors: true
+    },
+    proxy: {
+      "/api": {
+        target: process.env.VUE_APP_API_SERVER, // 域名
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/"
+        }
+      }
     }
-    // proxy: {
-    //   // change xxx-api/login => mock/login
-    //   // detail: https://cli.vuejs.org/config/#devserver-proxy
-    // }
   },
   pluginOptions: {
     // import global scss variables and mixins
@@ -82,13 +87,13 @@ module.exports = {
       .use('image-webpack-loader')
       .loader('image-webpack-loader')
       .options({
-          disable: isDev
+        disable: isDev
       })
-      // cdn变量插入到 index.html 中
-      config.plugin('html').tap(args => {
-        args[0].cdn = isDev? cdn.dev : cdn.build
-        return args
-      })
+    // cdn变量插入到 index.html 中
+    config.plugin('html').tap(args => {
+      args[0].cdn = isDev ? cdn.dev : cdn.build
+      return args
+    })
   },
   css: {
     loaderOptions: {

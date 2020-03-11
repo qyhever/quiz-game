@@ -29,3 +29,48 @@ export const getPersonalInfo = () => {
     url: '/user/my'
   })
 }
+
+// 系统消息
+export const getSystemMessage = (data) => {
+  return request({
+    method: "get",
+    url: "/user/message",
+    params: data
+  })
+}
+
+// 我的竞猜
+export const getMyBetting = (data) => {
+  return request({
+    method: "get",
+    url: "/user/mybetting",
+    params: data
+  })
+}
+
+// 我的订单
+export const getMyOrder = (data) => {
+  return request({
+    method: "get",
+    url: "/user/myOrder",
+    params: data
+  })
+}
+
+// 我的竞豆-明细
+export const getBeanDetailed = (data) => {
+  return request({
+    method: "get",
+    url: "/user/beanDetailed",
+    params: data
+  })
+}
+
+// 关注选手
+export const getFollowPlayer = (data) => {
+  return request({
+    method: "get",
+    url: "/user/followPlayer",
+    params: data
+  })
+}
