@@ -27,7 +27,7 @@ export default {
     query({ page, count }) {
       return getSystemMessage({ page, count })
         .then(res => {
-          return res.data;
+          return res.rows;
         })
         .catch(err => {
           console.log(err);

@@ -19,7 +19,7 @@
           <div class="item-header">
             <div class="item-header__left">
               <div class="item-header__icon">
-                <img class="item-header__image" src="@/assets/images/home/icon1.png" alt="game">
+                <img class="item-header__image" src="@/assets/images/home/gameicon1.png" alt="game">
               </div>
               <div class="item-header__title">LPL职业联赛</div>
             </div>
@@ -66,7 +66,7 @@
       <div class="info-list">
         <div class="info-item" v-for="(item, index) in infos" :key="index">
           <div class="info-item__cover-wrapper">
-            <img class="info-item__cover" src="@/assets/images/home/information.png" alt="cover">
+            <img class="info-item__cover" src="@/assets/images/home/information1.png" alt="cover">
           </div>
           <div class="info-item__content">
             <div class="info-item__title">2019MDL 成都  Major 决战在即  英雄传承共见证！</div>

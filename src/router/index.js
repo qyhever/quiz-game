@@ -189,6 +189,11 @@ const createRouter = () => new Router({
       path: '/promote-detail',
       name: 'promote-detail',
       component: () => import('@/views/promote/promote-detail')
+    },
+    {
+      path: '/protocol',
+      name: 'protocol',
+      component: () => import('@/views/user/protocol')
     }
   ]
 })

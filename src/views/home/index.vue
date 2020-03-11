@@ -10,28 +10,22 @@
     <cube-scroll ref="scroll">
       <!-- 轮播区域 -->
       <van-swipe class="swipe" :autoplay="3000" indicator-color="white">
-        <van-swipe-item>
-          <img class="swipe-item-image" src="@/assets/images/home/banner.png" alt="swipe">
-        </van-swipe-item>
-        <van-swipe-item>
-          <img class="swipe-item-image" src="@/assets/images/home/banner.png" alt="swipe">
-        </van-swipe-item>
-        <van-swipe-item>
-          <img class="swipe-item-image" src="@/assets/images/home/banner.png" alt="swipe">
+        <van-swipe-item v-for="(item, index) in banners" :key="index">
+          <img class="swipe-item-image" :src="require(`@/assets/images/home/banner${item.picture}`)" alt="swipe">
         </van-swipe-item>
       </van-swipe>
       <!-- 游戏列表 -->
       <ul class="game-list clearfix">
-        <li class="game-item" v-for="(item, index) in gameList" :key="index">
+        <li class="game-item" v-for="(item, index) in games" :key="index">
           <div class="game-item__image-wrapper">
-            <img class="game-item__image" @load="onImageLoad" :src="require(`@/assets/images/home/icon${item.icon}.png`)" alt="game">
+            <img class="game-item__image" @load="onImageLoad" :src="require(`@/assets/images/home/gameicon${item.gameIcon}`)" alt="game">
           </div>
-          <p class="game-item__title">{{item.title}}</p>
+          <p class="game-item__title">{{item.gameName}}</p>
         </li>
       </ul>
-      <hot-quiz/>
-      <team-list/>
-      <hot-information/>
+      <hot-quiz :list="quizs"/>
+      <team-list :games="games" :list="teams"/>
+      <hot-information :list="infos"/>
       <hot-competition/>
       <div class="bottom-container">
         <div class="register-wrapper">
@@ -54,7 +48,7 @@ import HotQuiz from './components/hot-quiz'
 import TeamList from './components/team-list'
 import HotInformation from './components/hot-information'
 import HotCompetition from './components/hot-competition'
-const gameTextList = ['英雄联盟', '王者荣耀', '绝地求生', 'DOTA2', '守望先锋', '炉石传说', '魔兽争霸', 'CSGO']
+import { getBannerData, getTotalGames, getHotQuizData, getHotTeamData, getHotInfoData } from '@/api/home'
 export default {
   components: {
     HotQuiz,
@@ -64,10 +58,62 @@ export default {
   },
   data() {
     return {
-      gameList: gameTextList.map((title, index) => ({ icon: index + 1, title }))
+      banners: [],
+      games: [],
+      quizs: [],
+      teams: [],
+      infos: []
     }
   },
+  mounted() {
+    this.query()
+  },
   methods: {
+    query() {
+      const promises = [
+        this.queryBannerData(),
+        this.queryTotalGames(),
+        this.queryHotQuizData(),
+        this.queryHotTeamData(),
+        this.queryHotInfoData()
+      ]
+      this.$loading.open()
+      Promise.all(promises)
+        .then(data => {
+          console.log(data)
+          this.$loading.close()
+          const [banners, games, quizs, teams, infos] = data
+          this.banners = banners
+          this.games = games
+          this.quizs = quizs
+          this.teams = teams
+          this.infos = infos
+        })
+        .catch(err => {
+          this.$loading.close()
+          console.log(err)
+        })
+    },
+    // 轮播图
+    queryBannerData() {
+      return getBannerData().then(res => res.data)
+    },
+    // 全部游戏
+    queryTotalGames() {
+      return getTotalGames().then(res => res.data)
+    },
+    // 热门竞猜
+    queryHotQuizData() {
+      return getHotQuizData().then(res => res.data)
+    },
+    // 战队列表
+    queryHotTeamData() {
+      return getHotTeamData().then(res => res.rows)
+    },
+    // 热门资讯
+    queryHotInfoData() {
+      return getHotInfoData().then(res => res.rows)
+    },
     onImageLoad() {
       this.$refs.scroll.refresh()
     },
@@ -101,7 +147,7 @@ export default {
     font-size: $font-size-extra-small;
   }
   // swipe
-  .swipe .van-swipe-item {
+  .swipe, .swipe .van-swipe-item {
     height: 40vw;
   }
   .swipe-item-image {

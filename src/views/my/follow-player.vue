@@ -46,7 +46,7 @@ export default {
     query({ page, count }) {
       return getFollowPlayer({ page, count })
         .then(res => {
-          return res.data;
+          return res.rows;
         })
         .catch(err => {
           console.log(err);

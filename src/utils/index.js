@@ -1,5 +1,18 @@
 
 /**
+ * 获取 base64 图片 URI
+ * @param {String} str 源字符串
+ * @return {String} URI
+ */
+export function getDataURI(str) {
+  const prefix = 'data:image/jpeg;base64,'
+  if (str.indexOf(prefix) === 0) {
+    return str
+  }
+  return prefix + str
+}
+
+/**
  * 扁平数组 转 树状结构
  * @param {Array} list 源数组
  * @param {String|Number|null} id 父级ID值

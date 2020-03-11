@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export const login = (data) => {
+export const login = data => {
   return request({
     method: 'post',
     url: '/auth/login',
@@ -8,12 +8,11 @@ export const login = (data) => {
   })
 }
 
-export const register = (fn, data) => {
-  return request(fn)({
+export const register = data => {
+  return request({
     method: 'post',
     url: '/user/register',
-    data,
-    showLoading: false
+    data
   })
 }
 

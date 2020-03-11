@@ -45,7 +45,7 @@
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
-              <img class="item-header__image" src="@/assets/images/home/icon1.png" alt="game">
+              <img class="item-header__image" src="@/assets/images/home/gameicon1.png" alt="game">
             </div>
             <div class="item-header__title">LPL职业联赛</div>
           </div>

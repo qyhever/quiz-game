@@ -1,8 +1,8 @@
 <template>
   <div class="team-container">
     <com-block-header title="战队列表"/>
-    <van-tabs v-model="active" animated>
-      <van-tab v-for="(item, index) in gameList" :title="item" :key="index">
+    <van-tabs v-model="active">
+      <van-tab v-for="(item, index) in games" :title="item.gameName" :key="index">
         <cube-scroll
           class="scroll"
           ref="scroll"
@@ -39,6 +39,16 @@
 
 <script>
 export default {
+  props: {
+    games: {
+      type: Array,
+      default: () => ([])
+    },
+    list: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data() {
     return {
       active: 1,

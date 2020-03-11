@@ -4,13 +4,13 @@
     <div class="info-list">
       <div class="item" v-for="(item, index) in list" :key="index">
         <div class="item__cover-wrapper">
-          <img class="item__cover" src="@/assets/images/home/information.png" alt="cover">
+          <img class="item__cover" :src="require(`@/assets/images/home/information${item.picture}`)" alt="cover">
         </div>
         <div class="item__content">
-          <div class="item__title">2019MDL 成都  Major 决战在即  英雄传承共见证！</div>
+          <div class="item__title">{{item.title}}</div>
           <div class="item__content-footer">
-            <div class="item__tag">资讯</div>
-            <div class="item__date">日期：11-22</div>
+            <div class="item__tag">{{item.className}}</div>
+            <div class="item__date">{{item.releaseTime | formatDate('MM-DD HH:mm')}}</div>
           </div>
         </div>
       </div>
@@ -20,9 +20,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      list: Array(5).fill(null)
+  props: {
+    list: {
+      type: Array,
+      default: () => ([])
     }
   },
   methods: {
