@@ -3,13 +3,14 @@
     <div class="intro">
       <div class="intro-header">
         <div class="header__image-wrapper">
+          <!-- TODO combatTeamIcon -->
           <img class="com-image" src="@/assets/images/home/team.png" alt="team">
         </div>
         <div class="header__content">
-          <div class="header__title">EDG</div>
-          <div class="header__row">全名：EdwardGaming</div>
-          <div class="header__row">游戏：英雄联盟</div>
-          <div class="header__row">热度：536823</div>
+          <div class="header__title">{{intro.fullName}}</div>
+          <div class="header__row">全名：{{intro.combatTeamName}}</div>
+          <div class="header__row">游戏：{{intro.gameName}}</div>
+          <div class="header__row">热度：{{intro.calorificValue}}</div>
         </div>
       </div>
       <div class="intro__title">
@@ -17,14 +18,13 @@
         <div class="intro__title-text">战队介绍</div>
       </div>
       <div class="intro__desc">
-        EdwardGaming，LPL联盟成员之一，是中国最受欢迎、表现最为出色的队伍之一。2017年LPL夏季赛得胜之后，他们已经拿到了五届LPL冠军，连续五次捧起德玛西亚杯，从而荣获了“五冠王”的美称。同时，他们也是全球总决赛常客。2015季中冠军赛上，他们还击败了SKTelecomT1，成为除了SKT之外唯一一支夺得季中冠军赛奖杯的战队。
-       EDG是中国人最最耳熟能详的战队之一。他们在2014年取得LPL春季赛、夏季赛冠军，在2015年取得LPL春季赛冠军、MSI季中邀请赛冠军。在2016年取得LPL夏季赛冠军，德玛西亚杯五连冠。是一只强大的老牌电竞战队。                   
+        {{intro.combatTeamIntroduce}}
       </div>
       <div class="intro__title">
         <div class="intro__title-square"></div>
         <div class="intro__title-text">队员介绍</div>
       </div>
-      <div class="member-wrapper">
+      <div class="member-wrapper" v-if="intro.players && intro.players.length">
         <cube-scroll
           class="scroll"
           ref="scroll"
@@ -33,37 +33,58 @@
             <div
               class="member-item"
               :class="{active: active === memberIndex}"
-              v-for="(member, memberIndex) in memberList"
+              v-for="(member, memberIndex) in intro.players"
               :key="memberIndex"
               @click="onMemberToggle(member, memberIndex, $event)">
               <div class="item__image-wrapper">
+                <!-- TODO playerPicture -->
                 <img class="com-image" src="@/assets/images/home/member.png" alt="member">
               </div>
-              <p class="item__text">中单Doinb</p>
+              <p class="item__text">{{member.position}}{{member.playerName}}</p>
             </div>
           </div>
         </cube-scroll>
         <div class="member-padding" style="height: 10px; background: #fff"></div>
       </div>
       <div class="intro__desc intro__desc--member">
-        外号厂长、诺导。中国知名电子竞技选手，EDG战队打野选手。2012年8月加入WE，夺得中国LOL首个世界冠军，并帮助战队一年内获得十冠，并成为2013年全明星赛成员，从此声名大噪。2014年加入广州EDG电子竞技俱乐部，帮助战队迅速成长为国内顶尖强队。
+        {{memberIntro}}
       </div>
     </div>
   </com-page-navbar-wrapper>
 </template>
 
 <script>
+import { getTeamIntro } from '@/api/home'
 export default {
   data() {
     return {
       memberList: Array(12).fill(null),
-      active: 0
+      active: 0,
+      intro: {},
+      memberIntro: ''
+    }
+  },
+  mounted() {
+    if (!this.$route.query.id) {
+      this.$router.back()
+    } else {
+      this.query()
     }
   },
   methods: {
+    async query() {
+      try {
+        const res = await getTeamIntro(this.$route.query.id)
+        this.intro = res.data[0] || {}
+        this.memberIntro = this.intro.players[0].introduce
+      } catch (err) {
+        console.log(err)
+      }
+    },
     onMemberToggle(member, memberIndex, event) {
       console.log(member, event.target.offsetLeft)
       this.active = memberIndex
+      this.memberIntro = member.introduce
     }
   }
 }

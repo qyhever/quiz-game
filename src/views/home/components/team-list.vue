@@ -1,35 +1,41 @@
 <template>
   <div class="team-container">
-    <com-block-header title="战队列表"/>
+    <com-block-header title="战队列表" @click-right="onToTeamList"/>
     <van-tabs v-model="active">
-      <van-tab v-for="(item, index) in games" :title="item.gameName" :key="index">
-        <cube-scroll
-          class="scroll"
-          ref="scroll"
-          direction="horizontal"
-          v-for="(team, teamIndex) in teamList"
-          :key="teamIndex">
-          <div class="item van-hairline--bottom">
-            <div class="item__team">
-              <div class="item__team-image-wrapper">
-                <img class="item__team-image" src="@/assets/images/home/team.png" alt="team">
-              </div>
-              <p class="item__text">FPX</p>
-            </div>
-            <div class="item__member-list">
-              <div class="member-item" v-for="(member, memberIndex) in memberList" :key="memberIndex">
+      <van-tab v-for="(item, index) in games" :key="index" :title="item.gameName" :name="item.id">
+        <template v-if="teams.length">
+          <cube-scroll
+            class="scroll"
+            ref="scroll"
+            direction="horizontal"
+            v-for="(team, teamIndex) in teams"
+            :key="teamIndex">
+            <div class="item van-hairline--bottom" @click="onToTeamDetail(team)">
+              <div class="item__team">
                 <div class="item__team-image-wrapper">
-                  <img class="item__team-image" src="@/assets/images/home/member.png" alt="member">
+                  <!-- TODO combatTeamIcon 1001.PNG -->
+                  <img class="item__team-image" src="@/assets/images/home/team.png" alt="team">
                 </div>
-                <p class="item__text">中单Doinb</p>
+                <p class="item__text">{{team.combatTeamName}}</p>
               </div>
+              <div class="item__member-list" v-if="team.players && team.players.length">
+                <div class="member-item" v-for="(member, memberIndex) in team.players" :key="memberIndex">
+                  <div class="item__team-image-wrapper">
+                    <!-- TODO playerPicture -->
+                    <img class="item__team-image" src="@/assets/images/home/member.png" alt="member">
+                  </div>
+                  <p class="item__text">{{member.position}}{{member.playerName}}</p>
+                </div>
+              </div>
+              <div class="item__member-list" v-else></div>
             </div>
-          </div>
-        </cube-scroll>
+          </cube-scroll>
+        </template>
+        <div v-else class="com-empty">暂无数据</div>
       </van-tab>
     </van-tabs>
     <div class="more">
-      <div class="more__button" @click="onPreviewMore">
+      <div class="more__button" @click="onToTeamList">
         <div class="more__text">查看更多</div>
         <van-icon class="more__icon" name="plus" />
       </div>
@@ -38,32 +44,50 @@
 </template>
 
 <script>
+import { getHotTeamData } from '@/api/home'
 export default {
   props: {
     games: {
-      type: Array,
-      default: () => ([])
-    },
-    list: {
       type: Array,
       default: () => ([])
     }
   },
   data() {
     return {
-      active: 1,
-      gameList: [
-        '英雄联盟',
-        '王者荣耀',
-        '守望先锋'
-      ],
-      teamList: Array(3).fill(null),
-      memberList: Array(5).fill(null)
+      active: '',
+      teams: [],
+      cacheData: {}
+    }
+  },
+  watch: {
+    'games.length'(newVal) {
+      if (newVal) {
+        this.active = this.games[0].id
+      }
+    },
+    active() {
+      this.query()
     }
   },
   methods: {
-    onPreviewMore() {
-      console.log('onPreviewMore')
+    async query() {
+      if (this.cacheData[this.active]) {
+        this.teams = this.cacheData[this.active]
+      } else {
+        try {
+          const res = await getHotTeamData(this.active)
+          this.teams = res.rows || []
+          this.cacheData[this.active] = this.teams.slice() // copy一份到缓存中
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    },
+    onToTeamList() {
+      this.$router.push('/team')
+    },
+    onToTeamDetail({id}) {
+      this.$router.push(`/team-intro?id=${id}`)
     }
   }
 }

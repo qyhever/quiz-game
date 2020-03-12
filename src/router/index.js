@@ -51,6 +51,11 @@ const createRouter = () => new Router({
       component: () => import('@/views/competition')
     },
     {
+      path: '/quiz-detail',
+      name: 'quizDetail',
+      component: () => import('@/views/competition/quiz-detail')
+    },
+    {
       path: '/competition-intro',
       name: 'competitionIntro',
       component: () => import('@/views/competition/competition-intro')
@@ -169,6 +174,11 @@ const createRouter = () => new Router({
       path: '/information',
       name: 'information',
       component: () => import('@/views/home/information')
+    },
+    {
+      path: '/information-detail',
+      name: 'informationDetail',
+      component: () => import('@/views/home/information/detail')
     },
     {
       path: '/promote',

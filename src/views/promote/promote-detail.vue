@@ -1,24 +1,31 @@
 <template>
-  <com-page-navbar-wrapper title="推广明细" @touchmove.prevent.stop.native>
+  <com-page-navbar-wrapper title="推广明细">
     <div class="com-gap"></div>
     <div class="record-list">
-      <div class="record-item" v-for="(item, index) in list" :key="index">
-        <div class="record-item__left">
-          <div class="record-item__title">提现</div>
-          <div class="record-item__time">2019-11-24  21:00</div>
-        </div>
-        <!-- plus -->
-        <div class="record-item__count">+10</div>
-      </div>
+      <com-loadmore :fetchData="query">
+        <template slot-scope="{list}">
+          <div class="record-item" v-for="(item, index) in list" :key="index">
+            <div class="record-item__left">
+              <div class="record-item__title">{{item.title}}</div>
+              <div class="record-item__time">{{item.createTime | formatDate('YYYY-MM-DD HH:mm')}}</div>
+            </div>
+            <!-- TODO plus -->
+            <div class="record-item__count">{{item.number}}</div>
+          </div>
+        </template>
+      </com-loadmore>
     </div>
   </com-page-navbar-wrapper>
 </template>
 
 <script>
+  import { getPromoteDetail } from '@/api/user'
   export default {
-    data() {
-      return {
-        list: Array(3).fill(null)
+    methods: {
+      query() {
+        return getPromoteDetail().then(res => {
+          return res.rows || []
+        })
       }
     }
   }

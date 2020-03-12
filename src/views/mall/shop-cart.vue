@@ -2,28 +2,29 @@
   <com-page-navbar-wrapper title="购物车">
     <div class="shopcart">
       <div class="goods-list">
-        <com-loadmore :fetchData="query">
-          <template slot-scope="{list}">
-            <div
-              class="goods-item"
-              v-for="(item, index) in list"
-              :key="index">
-              <van-checkbox :key="index" v-model="item.checked" checked-color="#F95E5F"></van-checkbox>
-              <div class="goods-item__image-wrapper">
-                <img class="com-image" src="@/assets/images/mall/goods.png" alt="goods">
+        <cube-scroll :data="list">
+          <div
+            class="goods-item"
+            v-for="(item) in list"
+            :key="item.id">
+            <van-checkbox :key="item.id" v-model="item.checked" checked-color="#F95E5F"></van-checkbox>
+            <div class="goods-item__image-wrapper">
+              <img class="com-image" src="@/assets/images/mall/goods.png" alt="goods">
+            </div>
+            <div class="goods-item__content">
+              <div>
+                <div class="goods-item__name">游戏手办A款</div>
+                <div class="goods-item__amount">￥60+60竞豆</div>
               </div>
-              <div class="goods-item__content">
-                <div>
-                  <div class="goods-item__name">游戏手办A款</div>
-                  <div class="goods-item__amount">￥60+60竞豆</div>
-                </div>
-                <div class="goods-item__content-footer">
-                  <div class="shopcart-control">control</div>
+              <div class="goods-item__content-footer">
+                <div class="shopcart-control">
+                  <!--  TODO max -->
+                  <van-stepper class="step" v-model="item.count" />
                 </div>
               </div>
             </div>
-          </template>
-        </com-loadmore>
+          </div>
+        </cube-scroll>
       </div>
       <div class="footer">
         <div class="footer__left">
@@ -37,15 +38,36 @@
 </template>
 
 <script>
+import { getCartData } from '@/api/mall'
 export default {
   data() {
     return {
-      totalChecked: false
+      totalChecked: false,
+      list: []
     }
+  },
+  watch: {
+    totalChecked(newVal) {
+      this.list = this.list.map(item => Object.assign({}, item, {
+        checked: newVal
+      }))
+    }
+  },
+  mounted() {
+    this.query()
   },
   methods: {
     async query() {
-      return Array(9).fill({})
+      try {
+        const res = await getCartData()
+        const list = res.rows || []
+        this.list = list.map(item => Object.assign({}, item, {
+          checked: false,
+          count: 1
+        }))
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -79,6 +101,25 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 16px;
+  }
+  .step {
+    width: 100px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /deep/ .van-stepper__minus, /deep/ .van-stepper__plus {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #F85F5E;
+      color: #fff;
+    }
+    /deep/ .van-stepper__minus--disabled, /deep/ .van-stepper__plus--disabled {
+      background-color: #FFE7EB;
+    }
+    /deep/ .van-stepper__input {
+      background-color: #fff;
+    }
   }
   .goods-item__name {
     padding-bottom: 16px;

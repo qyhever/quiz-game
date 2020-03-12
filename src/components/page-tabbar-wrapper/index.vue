@@ -161,7 +161,7 @@ export default {
   }
   .tabbar {
     @include limit-width();
-    z-index: 99;
+    z-index: 1000;
     position: absolute;
     bottom: 0;
     left: 0;

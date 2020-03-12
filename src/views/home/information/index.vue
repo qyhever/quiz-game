@@ -31,16 +31,11 @@
         </div>
       </div>
     </div>
-    <information-detail ref="detail" />
   </com-page-navbar-wrapper>
 </template>
 
 <script>
-  import InformationDetail from './detail'
   export default {
-    components: {
-      InformationDetail
-    },
     data() {
       return {
         navs: [
@@ -58,7 +53,6 @@
       },
       onToDetail() {
         console.log('onToDetail')
-        this.$refs.detail.open()
       },
       query() {
         // mock

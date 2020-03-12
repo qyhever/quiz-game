@@ -1,49 +1,46 @@
 <template>
-  <com-page-transition>
-    <com-page-navbar-wrapper
-      title="资讯详情"
-      type="fullpage"
-      v-if="visible"
-      :zIndex="10"
-      :onBack="close">
+  <com-page-navbar-wrapper title="资讯详情">
       <div class="detail">
         <div class="detail__header">
-          <div class="detail__title">
-            LPL全明星周末11月30日海口冯小刚电影公社正式开幕
-          </div>
+          <div class="detail__title">{{detail.title}}</div>
           <div class="detail__desc">
             <div class="detail__desc-left">
-              <span class="text">来源：赛事官方</span>
-              <span class="text">作者：赛事红</span>
+              <span class="text">来源：{{detail.source}}</span>
+              <span class="text">作者：{{detail.author}}</span>
             </div>
-            <div class="detail__date">2019-12-02</div>
+            <div class="detail__date">{{detail.releaseTime | formatDate}}</div>
           </div>
         </div>
         <div class="detail__body">
-          备受瞩目的《英雄联盟》LPL全明星周末，即将于11月30日在海南海口冯小刚电影公社正式揭开帷幕，这里将点燃2019赛季的最后一把火焰，专属于LPL选手、主播和粉丝们的全明星赛终于到来。
+          <div v-html="detail.content"></div>
         </div>
       </div>
     </com-page-navbar-wrapper>
-  </com-page-transition>
 </template>
 
 <script>
+  import { getInfoDetail } from '@/api/home'
   export default {
     data() {
       return {
-        detail: {},
-        visible: false
+        detail: {}
+      }
+    },
+    mounted() {
+      if (!this.$route.query.id) {
+        this.$router.back()
+      } else {
+        this.query()
       }
     },
     methods: {
-      query() {
-        // ...
-      },
-      open() {
-        this.visible = true
-      },
-      close() {
-        this.visible = false
+      async query() {
+        try {
+          const res = await getInfoDetail(this.$route.query.id)
+          this.detail = res.data || {}
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
   }
@@ -54,6 +51,7 @@
     padding: 0 16px;
   }
   .detail__header {
+    padding-top: 10px;
     margin-bottom: 39px;
   }
   .detail__title {

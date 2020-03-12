@@ -1,13 +1,13 @@
 <template>
   <div>
-    <com-block-header title="热门赛事" control-text="更多"/>
+    <com-block-header title="热门赛事" control-text="更多" @click-right="onToCompetition"/>
     <div class="competition-list">
-      <div class="item" v-for="(item, index) in list" :key="index">
+      <div class="item" v-for="(item, index) in list" :key="index" @click="onToCompetitionDetail(item)">
         <div class="item__image-wrapper">
-          <img class="item__image" src="@/assets/images/home/competition.png" alt="competition">
+          <img class="item__image" :src="require(`@/assets/images/home/competition${item.picture}`)" alt="competition">
         </div>
         <div class="item__footer">
-          <div class="item__text">LPL职业联赛</div>
+          <div class="item__text">{{item.matchName}}</div>
         </div>
       </div>
     </div>
@@ -16,9 +16,18 @@
 
 <script>
 export default {
-  data() {
-    return {
-      list: Array(4).fill(null)
+  props: {
+    list: {
+      type: Array,
+      default: () => ([])
+    }
+  },
+  methods: {
+    onToCompetition() {
+      this.$router.push('/competition?type=competition')
+    },
+    onToCompetitionDetail({id}) {
+      this.$router.push(`/competition-intro?id=${id}`)
     }
   }
 }

@@ -4,7 +4,7 @@
       <div class="withdrawal-header__inner">
         <div class="withdrawal-header__left">
           <div class="withdrawal-header__icon-wrapper">
-            <!-- <img class="com-image" src="" alt="wx"> -->
+            <img class="com-image" src="@/assets/images/wechat.png" alt="wx">
           </div>
           <div class="withdrawal-header__label">微信</div>
         </div>
@@ -64,7 +64,6 @@
   .withdrawal-header__icon-wrapper {
     width: 22px;
     height: 22px;
-    border: 1px solid #eee;
     margin-right: 16px;
   }
   .withdrawal-header__arrow {

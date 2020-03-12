@@ -131,3 +131,10 @@ export const getFollowMatch = (data) => {
   })
 }
 
+// 推广明细
+export const getPromoteDetail = () => {
+  return request({
+    method: "get",
+    url: "/user/promotionDetails"
+  })
+}

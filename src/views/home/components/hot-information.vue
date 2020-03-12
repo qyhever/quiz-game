@@ -2,7 +2,7 @@
   <div>
     <com-block-header title="热门资讯" control-text="更多" @click-right="onToInformation"/>
     <div class="info-list">
-      <div class="item" v-for="(item, index) in list" :key="index">
+      <div class="item" v-for="(item, index) in list" :key="index" @click="onToInformationDetail(item)">
         <div class="item__cover-wrapper">
           <img class="item__cover" :src="require(`@/assets/images/home/information${item.picture}`)" alt="cover">
         </div>
@@ -29,6 +29,9 @@ export default {
   methods: {
     onToInformation() {
       this.$router.push('/information')
+    },
+    onToInformationDetail({id}) {
+      this.$router.push(`/information-detail?id=${id}`)
     }
   }
 }

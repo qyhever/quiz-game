@@ -2,7 +2,7 @@
   <div>
     <com-block-header title="热门竞猜" @click-right="onToCompetition"/>
     <div class="hot-list">
-      <div class="item" v-for="(item, index) in list" :key="index">
+      <div class="item" v-for="(item, index) in list" :key="index" @click="onToQuizDetail(item)">
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
@@ -36,14 +36,15 @@
           </div>
           <div class="item-body__right">
             <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
-            <!-- settlement end -->
+            <!-- TODO status -->
+            <!-- class settlement end -->
             <van-button class="item-body__right-button">参与竞猜</van-button>
           </div>
         </div>
       </div>
     </div>
     <div class="more">
-      <div class="more__button" @click="onPreviewMore">
+      <div class="more__button" @click="onToCompetition">
         <div class="more__text">查看更多</div>
         <van-icon class="more__icon" name="plus" />
       </div>
@@ -60,11 +61,11 @@ export default {
     }
   },
   methods: {
-    onPreviewMore() {
-      console.log('onPreviewMore')
-    },
     onToCompetition() {
-      this.$router.push('/competition')
+      this.$router.push('/competition?type=quiz')
+    },
+    onToQuizDetail({id}) {
+      this.$router.push(`/quiz-detail?id=${id}`)
     }
   }
 }

@@ -2,23 +2,21 @@
   <com-page-navbar-wrapper title="商品详情">
     <div class="goods">
       <div class="cover-wrapper">
+        <!-- TODO picture -->
         <img class="com-image" src="@/assets/images/mall/goods.png" alt="cover">
       </div>
       <div class="name-wrapper">
-        <div class="name">游戏手办</div>
-        <div class="type">A款</div>
+        <div class="name">{{detail.commodityName}}</div>
       </div>
       <div class="amount-wrapper">
-        <div class="amount">¥100</div>
-        <div class="remain">剩余：50件</div>
+        <div class="amount">¥{{detail.price}}</div>
+        <div class="remain">剩余：{{detail.stock}}件</div>
       </div>
       <div class="goods__title">兑换方式</div>
       <div class="count-control-wrapper">
         <div class="goods__label">选择数量</div>
         <div class="count-control">
-          <div class="count-control__button count-control__subtract"></div>
-          <div class="count-control__text">1</div>
-          <div class="count-control__button count-control__plus"></div>
+          <van-stepper class="step" :max="detail.stock" v-model="count" />
         </div>
       </div>
       <div class="exchange-wrapper">
@@ -42,7 +40,7 @@
       </div>
       <div class="goods__detail">
         <div class="goods__title">商品详情</div>
-        <div class="goods__detail-content">LOL游戏手办A款</div>
+        <div class="goods__detail-content">{{detail.detail}}</div>
       </div>
       <div class="footer">
         <div class="footer__left">
@@ -58,15 +56,33 @@
 </template>
 
 <script>
+import { getGoodsDetail } from '@/api/mall'
 export default {
   data() {
     return {
-      exchangeType: '1'
+      exchangeType: '1',
+      count: 1,
+      detail: {}
+    }
+  },
+  mounted() {
+    if (!this.$route.query.id) {
+      this.$router.back()
+    } else {
+      this.query()
     }
   },
   methods: {
     onNavToggle(value) {
       this.currentNav = value
+    },
+    async query() {
+      try {
+        const res = await getGoodsDetail(this.$route.query.id)
+        this.detail = res.data || {}
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -143,48 +159,14 @@ export default {
     border-radius: 17px;
     border: 1px solid #F95E5F;
   }
-  .count-control__button {
-    position: relative;
-    width: 22px;
-    height: 22px;
-    background-color: #E6E6E6;
-    border-radius: 50%;
-    color: #fff;
-    line-height: 22px;
-    text-align: center;
-  }
-  .count-control__subtract {
-    &:after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50%;
-      height: 1px;
-      background-color: #fff;
+  .step {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /deep/ .van-stepper__minus, /deep/ .van-stepper__plus {
+      border-radius: 50%;
     }
-  }
-  .count-control__plus {
-    background-color: #F95E5F;
-    &:before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 40%;
-      height: 1px;
-      background-color: #fff;
-    }
-    &:after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      height: 50%;
-      width: 1px;
+    /deep/ .van-stepper__input {
       background-color: #fff;
     }
   }

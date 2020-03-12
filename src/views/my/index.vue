@@ -56,7 +56,7 @@
       </ul>
       <div class="line_2"></div>
       <ul>
-        <li>
+        <li @click="onToMeunList('/promote')">
           <span>代理推广</span>
           <van-icon name="arrow" />
         </li>

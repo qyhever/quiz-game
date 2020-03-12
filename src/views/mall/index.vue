@@ -5,9 +5,10 @@
         <div class="header-item">
           <img class="header-item__icon" src="@/assets/images/mall/bean.png" alt="bean">
           <div class="header-item__text">我的竞豆</div>
+          <!-- TODO -->
           <div class="header-item__count">888</div>
         </div>
-        <div class="header-item">
+        <div class="header-item" @click="onToBean">
           <img class="header-item__icon" src="@/assets/images/mall/exchange.png" alt="bean">
           <div class="header-item__text">兑换记录</div>
         </div>
@@ -27,18 +28,19 @@
         <div class="goods-list">
           <com-loadmore :fetchData="query">
             <template slot-scope="{list}">
-              <div class="goods-item" v-for="(item, index) in list" :key="index" @click="onToGoodsDetail">
+              <div class="goods-item" v-for="(item, index) in list" :key="index" @click="onToGoodsDetail(item)">
                 <div class="goods-item__image-container">
                   <div class="goods-item__image-wrapper">
+                    <!-- TODO picture -->
                     <img class="com-image" src="@/assets/images/mall/goods.png" alt="goods">
                   </div>
                 </div>
                 <div class="goods-item__footer">
-                  <div class="goods-item__title">游戏皮肤A款</div>
+                  <div class="goods-item__title">{{item.commodityName}}</div>
                   <div class="goods-item__row">
                     <div class="goods-item__row-left">
                       <img class="goods-item__icon" src="@/assets/images/mall/bean-active.png" alt="bean">
-                      <div class="goods-item__amount">1888</div>
+                      <div class="goods-item__amount">{{item.conversionPrice}}</div>
                     </div>
                     <van-icon class="goods-item__cart" name="cart-o" />
                   </div>
@@ -48,8 +50,8 @@
           </com-loadmore>
         </div>
       </div>
-      <div class="shopcart">
-        <div class="shopcart-badge">12</div>
+      <div class="shopcart" @click="onToCart">
+        <div class="shopcart-badge" v-if="cartCount">{{cartCount}}</div>
         <img class="com-image" src="@/assets/images/mall/shopcart.png" alt="shopcart">
       </div>
     </div>
@@ -57,6 +59,7 @@
 </template>
 
 <script>
+import { getGoodsList, getCartData } from '@/api/mall'
 export default {
   data() {
     return {
@@ -66,18 +69,38 @@ export default {
         {label: '游戏皮肤', value: 'skin'},
         {label: '积分红包', value: 'integral'}
       ],
-      currentNav: ''
+      currentNav: '',
+      cartCount: 0
     }
   },
+  mounted() {
+    this.queryCartData()
+  },
   methods: {
+    async queryCartData() {
+      try {
+        const res = await getCartData()
+        this.cartCount = res.total || 0
+      } catch (err) {
+        console.log(err)
+      }
+    },
     onNavToggle(value) {
       this.currentNav = value
     },
-    onToGoodsDetail() {
-      console.log('onToGoodsDetail')
+    onToBean() {
+      this.$router.push('/bean-detailed')
     },
-    async query() {
-      return Array(9).fill(null)
+    onToGoodsDetail({id}) {
+      this.$router.push(`/goods-detail?id=${id}`)
+    },
+    onToCart() {
+      this.$router.push('/shopcart')
+    },
+    query() {
+      return getGoodsList().then(res => {
+        return res.rows || []
+      })
     }
   }
 }

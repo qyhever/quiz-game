@@ -30,7 +30,7 @@ export default {
         {label: '赛事列表', value: 'competition'},
         {label: '竞猜列表', value: 'quiz'}
       ],
-      currentNav: 'competition'
+      currentNav: this.$route.query.type || 'competition'
     }
   },
   methods: {

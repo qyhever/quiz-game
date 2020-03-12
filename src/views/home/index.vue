@@ -26,10 +26,10 @@
       <hot-quiz :list="quizs"/>
       <team-list :games="games" :list="teams"/>
       <hot-information :list="infos"/>
-      <hot-competition/>
+      <hot-competition :list="competitions"/>
       <div class="bottom-container">
         <div class="register-wrapper">
-          <van-button class="register-button">马上注册，即送188竞豆</van-button>
+          <van-button class="register-button" @click="onToRegister">马上注册，即送188竞豆</van-button>
         </div>
         <div class="home-back-top-wrapper">
           <div class="home-back-top" @click="onBackTop">
@@ -48,7 +48,7 @@ import HotQuiz from './components/hot-quiz'
 import TeamList from './components/team-list'
 import HotInformation from './components/hot-information'
 import HotCompetition from './components/hot-competition'
-import { getBannerData, getTotalGames, getHotQuizData, getHotTeamData, getHotInfoData } from '@/api/home'
+import { getHotQuizData, getHotInfoData, getBannerData, getTotalGames, getHotCompetitionData } from '@/api/home'
 export default {
   components: {
     HotQuiz,
@@ -62,7 +62,8 @@ export default {
       games: [],
       quizs: [],
       teams: [],
-      infos: []
+      infos: [],
+      competitions: []
     }
   },
   mounted() {
@@ -74,20 +75,19 @@ export default {
         this.queryBannerData(),
         this.queryTotalGames(),
         this.queryHotQuizData(),
-        this.queryHotTeamData(),
-        this.queryHotInfoData()
+        this.queryHotInfoData(),
+        this.queryHotCompetitionData()
       ]
       this.$loading.open()
       Promise.all(promises)
         .then(data => {
-          console.log(data)
           this.$loading.close()
-          const [banners, games, quizs, teams, infos] = data
+          const [banners, games, quizs, infos, competitions] = data
           this.banners = banners
           this.games = games
           this.quizs = quizs
-          this.teams = teams
           this.infos = infos
+          this.competitions = competitions
         })
         .catch(err => {
           this.$loading.close()
@@ -100,19 +100,19 @@ export default {
     },
     // 全部游戏
     queryTotalGames() {
-      return getTotalGames().then(res => res.data)
+      return getTotalGames().then(res => res.rows)
     },
     // 热门竞猜
     queryHotQuizData() {
-      return getHotQuizData().then(res => res.data)
-    },
-    // 战队列表
-    queryHotTeamData() {
-      return getHotTeamData().then(res => res.rows)
+      return getHotQuizData().then(res => res.rows)
     },
     // 热门资讯
     queryHotInfoData() {
       return getHotInfoData().then(res => res.rows)
+    },
+    // 热门赛事
+    queryHotCompetitionData() {
+      return getHotCompetitionData().then(res => res.rows)
     },
     onImageLoad() {
       this.$refs.scroll.refresh()
@@ -122,6 +122,9 @@ export default {
     },
     onToLogin() {
       this.$router.push('/login')
+    },
+    onToRegister() {
+      this.$router.push('/register')
     }
   }
 }

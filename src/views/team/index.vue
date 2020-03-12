@@ -18,35 +18,92 @@
         </div>
       </div>
       <!-- team -->
-      <div class="team-list">
-        <div class="team-item" v-for="(item, index) in teams" :key="index" @click="onToIntro">
+      <div class="team-list" v-if="teams.length">
+        <div class="team-item" v-for="(item, index) in teams" :key="index" @click="onToIntro(item)">
           <div class="team-item__image-wrapper">
+            <!-- TODO combatTeamIcon -->
             <img class="com-image" src="@/assets/images/home/team.png" alt="team">
           </div>
-          <div class="team-item__footer">BA黑凤梨</div>
+          <div class="team-item__footer">{{item.combatTeamName}}</div>
         </div>
       </div>
+      <div v-else class="com-empty">暂无数据</div>
     </div>
   </com-page-navbar-wrapper>
 </template>
 
 <script>
+import { getTotalGames, getHotTeamData, getTeamListByGameId } from '@/api/home'
+const HOT_COMPETITION_KEY = 'hot'
 export default {
   data() {
     return {
-      teams: Array(10).fill(null),
       navs: [
-        {label: '热门战队', value: '1'},
-        {label: '英雄联盟', value: '2'},
-        {label: '王者荣耀', value: '3'},
-        {label: '守望先锋', value: '4'}
+        {label: '热门战队', value: HOT_COMPETITION_KEY}
       ],
-      activeNav: '1'
+      activeNav: HOT_COMPETITION_KEY,
+      teams: [],
+      cacheData: {}
     }
   },
+  watch: {
+    activeNav() {
+      this.queryTeamList()
+    }
+  },
+  mounted() {
+    this.query()
+  },
   methods: {
-    onToIntro() {
-      this.$router.push('/team-intro')
+    query() {
+      const promises = [
+        this.queryTotalGames(),
+        this.queryHotTeamData()
+      ]
+      this.$loading.open()
+      Promise.all(promises)
+        .then(data => {
+          this.$loading.close()
+          const [games, hotTeams] = data
+          this.navs = this.navs.concat(games.map(v => ({
+            label: v.gameName,
+            value: v.id
+          })))
+          this.teams = hotTeams
+          this.cacheData[HOT_COMPETITION_KEY] = hotTeams.slice() // copy一份到缓存中
+        })
+        .catch(err => {
+          this.$loading.close()
+          console.log(err)
+        })
+    },
+    // 全部游戏
+    queryTotalGames() {
+      return getTotalGames().then(res => res.rows)
+    },
+    // 热门战队
+    queryHotTeamData() {
+      return getHotTeamData().then(res => res.rows)
+    },
+    // 战队列表
+    async queryTeamList() {
+      if (this.cacheData[this.activeNav]) { // 缓存数据
+        this.teams = this.cacheData[this.activeNav]
+      } else {
+        try {
+          const res = await getTeamListByGameId(this.activeNav)
+          this.teams = res.rows || []
+          this.cacheData[this.activeNav] = this.teams.slice() // copy一份到缓存中
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    },
+    onNavToggle(value) {
+      this.activeNav = value
+    },
+    onToIntro({id}) {
+      this.$router.push(`/team-intro?id=${id}`)
     }
   }
 }

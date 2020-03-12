@@ -3,9 +3,14 @@
  */
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
+import { isString } from './type'
 dayjs.locale('zh-cn')
 
 export const formatDate = (value = new Date(), str = 'YYYY-MM-DD') => {
+  if (isString(value)) {
+    const d = value.replace(/\-/g, '/').replace('T', ' ') // eslint-disable-line
+    return dayjs(new Date(d)).format(str)
+  }
   return dayjs(value).format(str)
 }
 export const formatDateTime = (value = new Date()) => {
