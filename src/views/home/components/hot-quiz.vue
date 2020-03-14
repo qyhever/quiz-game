@@ -2,7 +2,7 @@
   <div>
     <com-block-header title="热门竞猜" @click-right="onToCompetition"/>
     <div class="hot-list">
-      <div class="item" v-for="(item, index) in list" :key="index" @click="onToQuizDetail(item)">
+      <div class="item" v-for="(item, index) in list" :key="index">
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
@@ -15,7 +15,7 @@
         <div class="item-body">
           <div class="item-body__left">
             <div class="item-body__team">
-              <div class="item-body__image-wrapper">
+              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.ateamId)">
                 <!-- TODO aicon 1001.PNG -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
@@ -27,7 +27,7 @@
               <span>{{item.bscore}}</span>
             </div>
             <div class="item-body__team">
-              <div class="item-body__image-wrapper">
+              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bteamId)">
                 <!-- TODO bicon 114.PNG -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
@@ -38,7 +38,7 @@
             <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
             <!-- TODO status -->
             <!-- class settlement end -->
-            <van-button class="item-body__right-button">参与竞猜</van-button>
+            <van-button class="item-body__right-button" @click="onToQuizDetail(item)">参与竞猜</van-button>
           </div>
         </div>
       </div>
@@ -66,6 +66,9 @@ export default {
     },
     onToQuizDetail({id}) {
       this.$router.push(`/quiz-detail?id=${id}`)
+    },
+    onToTeamDetail(id) {
+      this.$router.push(`/team-intro?id=${id}`)
     }
   }
 }

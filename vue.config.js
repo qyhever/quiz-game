@@ -28,7 +28,7 @@ const cdn = {
   }
 }
 module.exports = {
-  publicPath: '/qg/',
+  publicPath: '/',
   outputDir: 'dist',
   productionSourceMap: false,
   devServer: {

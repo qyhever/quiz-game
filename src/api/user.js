@@ -138,3 +138,13 @@ export const getPromoteDetail = () => {
     url: "/user/promotionDetails"
   })
 }
+// 手机验证码
+export const getPhoneVerifyCode = phone => {
+  return request({
+    method: "get",
+    url: "/user/sendCode",
+    params: {
+      phone
+    }
+  })
+}

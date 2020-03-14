@@ -36,11 +36,13 @@
               v-for="(member, memberIndex) in intro.players"
               :key="memberIndex"
               @click="onMemberToggle(member, memberIndex, $event)">
-              <div class="item__image-wrapper">
-                <!-- TODO playerPicture -->
-                <img class="com-image" src="@/assets/images/home/member.png" alt="member">
+              <div class="member-item__inner">
+                <div class="item__image-wrapper">
+                  <!-- TODO playerPicture -->
+                  <img class="com-image" src="@/assets/images/home/member.png" alt="member">
+                </div>
+                <p class="item__text">{{member.position}}{{member.playerName}}</p>
               </div>
-              <p class="item__text">{{member.position}}{{member.playerName}}</p>
             </div>
           </div>
         </cube-scroll>
@@ -152,13 +154,19 @@ export default {
   .member-item {
     position: relative;
     display: inline-block;
-    width: 95px;
-    height: 95px;
+    width: 120px;
+    height: 120px;
     padding-top: 7px;
     background-color: #fff;
     border: 5px solid #ECECEC;
-    border-radius: 5px;
+    border-radius: 50%;
     font-size: $font-size-extra-small;
+    .member-item__inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
     &.active {
       border-color: #F95E5F;
       &:after {

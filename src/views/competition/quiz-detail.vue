@@ -9,6 +9,7 @@
       <div class="quiz-header-wrapper">
         <div class="notice">
           <div class="notice__left">
+            <!-- TODO -->
             <img src="@/assets/images/my/user-p1.png" alt="user" class="notice__icon">
             <div class="notice__title">竞豆池26659326</div>
           </div>
@@ -18,32 +19,35 @@
           <div class="quiz-header-top">
             <div class="quiz-header-top__left">
               <div class="quiz-header-top__icon">
+                <!-- TODO picture -->
                 <img class="quiz-header-top__image" src="@/assets/images/home/gameicon1.png" alt="game">
               </div>
-              <div class="quiz-header-top__title">LPL职业联赛</div>
+              <div class="quiz-header-top__title">{{match.matchName}}</div>
             </div>
-            <div class="quiz-header-top__time">11-22 19:00</div>
+            <div class="quiz-header-top__time">{{match.matchTime | formatDate('MM-DD HH:mm')}}</div>
           </div>
           <div class="quiz-header-body">
             <div class="header__team">
               <div class="header__image-wrapper">
+                <!-- TODO aicon -->
                 <img class="com-image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="header__team-name">AG超玩会</p>
+              <p class="header__team-name">{{match.aname}}</p>
             </div>
             <div class="header__score">
               <div class="header__status">比赛进行中</div>
               <div class="header__score-text">
-                <span>1</span>
+                <span>{{match.ascore}}</span>
                 <span>:</span>
-                <span>1</span>
+                <span>{{match.bscore}}</span>
               </div>
             </div>
             <div class="header__team">
               <div class="header__image-wrapper">
+                <!-- TODO bicon -->
                 <img class="com-image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="header__team-name">AG超玩会</p>
+              <p class="header__team-name">{{match.bname}}</p>
             </div>
           </div>
         </div>
@@ -94,11 +98,11 @@
             <div class="join-col">时间</div>
             <div class="join-col">竞豆</div>
           </div>
-          <div class="join-row" v-for="(item, index) in Array(6)" :key="index">
-            <div class="join-col join-col--name">小明</div>
-            <div class="join-col join-col--result">AG胜出</div>
-            <div class="join-col join-col--time">11-22 15:11</div>
-            <div class="join-col join-col--bean">1100</div>
+          <div class="join-row" v-for="(item, index) in join" :key="index">
+            <div class="join-col join-col--name">{{item.nickname}}</div>
+            <div class="join-col join-col--result">{{item.bettingName}}</div>
+            <div class="join-col join-col--time">{{item.createTime | formatDate('MM-DD HH:mm')}}</div>
+            <div class="join-col join-col--bean">{{item.bean}}</div>
           </div>
         </div>
       </div>
@@ -141,14 +145,21 @@
             </div>
             <div class="popup__row">
               <div class="popup__col">
-                <div class="popup__label">您已选择</div>
-                <div class="popup__value">AG超玩会胜出</div>
+                <div class="popup__label">剩余竞豆</div>
+                <div class="popup__value">38000</div>
               </div>
             </div>
-            <van-field v-model="count" placeholder="请输入投注数量" size="large" />
+            <van-field
+              v-model="count"
+              placeholder="请输入投注数量"
+              :border="false"
+              size="large"
+              clearable
+            />
             <div class="radio-list">
               <div
                 class="radio-item"
+                :class="{active: activeRadio === item.value}"
                 v-for="(item, index) in radios"
                 :key="index"
                 @click="onRadioClick(item.value)">
@@ -164,6 +175,7 @@
 </template>
 
 <script>
+  import { getQuizDetail } from '@/api/home'
   export default {
     data() {
       return {
@@ -176,10 +188,32 @@
           {label: '10000', value: '10000'},
           {label: '全部', value: 'all'}
         ],
-        activeRadio: 'all'
+        activeRadio: 'all',
+        count: '',
+        match: {}, // 赛事
+        betting: [], // 押注
+        join: [] // 参加
+      }
+    },
+    mounted() {
+      if (!this.$route.query.id) {
+        this.$router.back()
+      } else {
+        this.query()
       }
     },
     methods: {
+      async query() {
+        try {
+          const res = await getQuizDetail(this.$route.query.id)
+          const data = res.data || {}
+          this.match = data.match || {}
+          this.betting = data.betting || []
+          this.join = data.join || []
+        } catch (err) {
+          console.log(err)
+        }
+      },
       show() {
         this.visible = true
       },
@@ -432,6 +466,14 @@
   }
   .popup-container {
     background-color: #fff;
+    /deep/ .van-cell {
+      height: 42px;
+      border: 1px solid #D9D9D9;
+      border-radius: 21px;
+      .van-field__control {
+        text-align: center;
+      }
+    }
   }
   .popup-header {
     display: flex;
@@ -461,6 +503,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 16px;
   }
   .popup__col {
     display: flex;
@@ -469,7 +512,6 @@
   .popup__label {
     padding-right: 16px;
     color: #4D4D4D;
-    color: #F8A042;
     font-weight: 700;
   }
   .popup__value {
@@ -478,5 +520,35 @@
   }
   .popup__value--red {
     color: #FF4F4F;
+  }
+  .radio-list {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  .radio-item {
+    flex: 1;
+    margin-right: 16px;
+    background-color: #FFDFDF;
+    border-radius: 5px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    &:last-of-type {
+      margin-right: 0;
+    }
+    &.active {
+      background-color: #FF4F4F;
+      color: #fff;
+    }
+  }
+  .popup__button {
+    height: 36px;
+    line-height: 34px;
+    background-color: #FF4F4F;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
   }
 </style>

@@ -3,11 +3,12 @@
     <div class="intro">
       <div class="intro-video-wrapper">
         <div class="intro-video">
+          <!-- TODO videoUrl -->
           <img class="com-image" src="@/assets/images/competition/video.png" alt="video">
         </div>
       </div>
       <div class="intro-header">
-        <div class="intro__title">KPL职业赛</div>
+        <div class="intro__title">{{match.matchName}}</div>
         <div class="intro-header__right">
           <div class="intro-header__text">王者荣耀</div>
           <img class="intro-header__icon" src="@/assets/images/home/icon2.png" alt="game">
@@ -15,38 +16,39 @@
       </div>
       <com-block-header title="最新竞猜" control-text="更多" @click-right="onToCompetition"/>
       <div class="quiz-list">
-        <div class="quiz-item" v-for="(item, index) in list" :key="index">
+        <div class="quiz-item" v-for="(item, index) in guesses" :key="index">
           <div class="item-header">
             <div class="item-header__left">
               <div class="item-header__icon">
+                <!-- TODO picture -->
                 <img class="item-header__image" src="@/assets/images/home/gameicon1.png" alt="game">
               </div>
-              <div class="item-header__title">LPL职业联赛</div>
+              <div class="item-header__title">{{item.matchName}}</div>
             </div>
-            <div class="item-header__time">11-22 19:00</div>
+            <div class="item-header__time">{{item.matchTime | formatDate('MM-DD hh:mm')}}</div>
           </div>
           <div class="item-body">
             <div class="item-body__left">
               <div class="item-body__team">
-                <div class="item-body__image-wrapper">
+                <div class="item-body__image-wrapper" @click="onToTeamDetail(item.ateamId)">
                   <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
                 </div>
-                <p class="item-body__team-name">LPL</p>
+                <p class="item-body__team-name">{{item.aname}}</p>
               </div>
               <div class="item-body__score">
-                <span>1</span>
+                <span>{{item.ascore}}</span>
                 <span>:</span>
-                <span>1</span>
+                <span>{{item.bscore}}</span>
               </div>
               <div class="item-body__team">
-                <div class="item-body__image-wrapper">
+                <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bteamId)">
                   <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
                 </div>
-                <p class="item-body__team-name">LPL</p>
+                <p class="item-body__team-name">{{item.bname}}</p>
               </div>
             </div>
             <div class="item-body__right">
-              <div class="item-body__right-title">6099人竞猜</div>
+              <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
               <!-- settlement end -->
               <van-button class="item-body__right-button">参与竞猜</van-button>
             </div>
@@ -56,13 +58,14 @@
       <com-block-header title="参赛战队" :right-visible="false"/>
       <div class="team-list">
         <div class="team-item" v-for="(item, index) in teams" :key="index">
-          <div class="team-item__image-wrapper">
+          <div class="team-item__image-wrapper" @click="onToTeamDetail(item.id)">
+            <!-- TODO combatTeamIcon -->
             <img class="com-image" src="@/assets/images/home/team.png" alt="team">
           </div>
-          <div class="team-item__footer">BA黑凤梨</div>
+          <div class="team-item__footer">{{item.combatTeamName}}</div>
         </div>
       </div>
-      <com-block-header title="相关资讯" control-text="更多" @click-right="onToCompetition"/>
+      <com-block-header title="相关资讯" control-text="更多" @click-right="onToInformation"/>
       <div class="info-list">
         <div class="info-item" v-for="(item, index) in infos" :key="index">
           <div class="info-item__cover-wrapper">
@@ -82,17 +85,56 @@
 </template>
 
 <script>
+import { getBatchDetail, getMatchJoinTeam } from '@/api/home'
 export default {
   data() {
     return {
-      list: Array(3).fill(null),
-      teams: Array(10).fill(null),
-      infos: Array(5).fill(null)
+      list: Array(1).fill(null),
+      infos: Array(1).fill(null),
+      match: {},
+      guesses: [],
+      teams: []
+    }
+  },
+  mounted() {
+    if (!this.$route.query.id) {
+      this.$router.back()
+    } else {
+      this.query()
     }
   },
   methods: {
+    query() {
+      this.queryBasicData()
+      this.queryTeam()
+    },
+    async queryBasicData() {
+      try {
+        const res = await getBatchDetail(this.$route.query.id)
+        console.log(res)
+        const data = res.data || {}
+        this.match = data.matchVideo || {}
+        this.guesses = data.guessingCompetition.rows || []
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async queryTeam() {
+      try {
+        const res = await getMatchJoinTeam(this.$route.query.id)
+        this.teams = res.rows || []
+      } catch (err) {
+        console.log(err)
+      }
+    },
     onToCompetition() {
-      console.log('more')
+      this.$router.push('/competition?type=quiz')
+    },
+    onToInformation() {
+      this.$router.push('/information')
+    },
+    onToTeamDetail(id) {
+      this.$router.push(`/team-intro?id=${id}`)
     }
   }
 }

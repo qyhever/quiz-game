@@ -83,7 +83,7 @@ export default {
         .then(data => {
           this.$loading.close()
           const [banners, games, quizs, infos, competitions] = data
-          this.banners = banners
+          this.banners = banners.concat(banners).concat(banners)
           this.games = games
           this.quizs = quizs
           this.infos = infos

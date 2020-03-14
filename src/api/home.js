@@ -80,3 +80,30 @@ export const getInfoDetail = id => {
     }
   })
 }
+// 赛事详情
+export const getBatchDetail = id => {
+  return request({
+    url: 'home/matchDetail',
+    params: {
+      id
+    }
+  })
+}
+// 竞猜详情
+export const getQuizDetail = id => {
+  return request({
+    url: 'home/gcDetail',
+    params: {
+      id
+    }
+  })
+}
+// 赛事 - 参赛战队
+export const getMatchJoinTeam = matchId => {
+  return request({
+    url: 'home/joinTeam',
+    params: {
+      matchId
+    }
+  })
+}
