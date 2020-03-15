@@ -10,7 +10,7 @@
         <p>输入验证码</p>
         <div>
           <input type="text" v-model="form.code" placeholder="请输入验证码" />
-          <button @click="sendCode">发送</button>
+          <button :disabled="disabled" @click="sendCode">{{message}}</button>
         </div>
       </div>
       <div class="phone_foot phone">
@@ -24,7 +24,7 @@
 </template>
 <script>
 import { validator } from "@/utils/validate";
-import { editPhone } from "@/api/user";
+import { editPhone, getPhoneVerifyCode } from "@/api/user";
 export default {
   data() {
     return {
@@ -32,16 +32,37 @@ export default {
         phone: "",
         code: "",
         newPhone: ""
-      }
+      },
+      disabled: false,
+      count: 30,
+      message: "发送"
     };
   },
   methods: {
     // 发送验证码
     sendCode() {
+      const _this = this;
       const { phone } = this.form;
       if (!validator(phone, "mobile")) {
         return this.$showModal("请输入正确的手机号");
       }
+      getPhoneVerifyCode(this.form.phone)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      const countDown = setInterval(() => {
+        _this.disabled = true;
+        _this.count--;
+        _this.message = `${_this.count}S`;
+        if (_this.count === 0) {
+          _this.count = 30;
+          (_this.message = "发送"), (_this.disabled = false);
+          clearInterval(countDown);
+        }
+      }, 1000);
     },
     onSubmit() {
       const { phone, code, newPhone } = this.form;

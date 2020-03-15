@@ -64,6 +64,8 @@ export default {
       ],
       currentNav: 1,
       typeVal: "推荐",
+      type: 1,
+      pagingInfo: {},
       recommendList: [
         {
           name: "王者赛事圈",
@@ -101,14 +103,19 @@ export default {
       switch (value) {
         case 1:
           this.typeVal = "推荐";
+          this.type = 1;
+          this.query(this.pagingInfo);
           break;
         default:
           this.typeVal = "已关注";
+          this.type = 0;
+          this.query(this.pagingInfo);
           break;
       }
     },
     query({ page, count }) {
-      return getCircleInfo({ page, count, type: 1 })
+      this.pagingInfo = { page, count };
+      return getCircleInfo({ page, count, type: this.type })
         .then(res => res.rows)
         .catch(err => {
           console.log(err);
