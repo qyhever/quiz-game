@@ -2,19 +2,19 @@
   <com-page-navbar-wrapper title="确认订单">
     <div class="info-container">
       <!-- 订单地址(已选地址) -->
-      <!-- <div class="mall_message">
+      <div class="mall_message" v-if="addressInfo.name">
         <van-icon name="location-o" size="0.4rem" />
         <div class="mall_info">
           <p>
-            <span>瑞文</span>
-            <span>15872406760</span>
+            <span>{{addressInfo.name}}</span>
+            <span>{{addressInfo.phone}}</span>
           </p>
-          <p>浙江省杭州市江干区九环路五号302</p>
+          <p>{{`${addressInfo.province}${addressInfo.city}${addressInfo.region}${addressInfo.detailAddress}`}}</p>
         </div>
-        <van-icon name="arrow" size="0.3rem" />
-      </div>-->
+        <van-icon name="arrow" size="0.3rem" @click="toAddAddress" />
+      </div>
       <!-- 订单地址(未选地址) -->
-      <div class="mall_message">
+      <div class="mall_message" v-else>
         <van-icon name="location-o" size="0.4rem" />
         <div class="mall_info">添加收货地址</div>
         <van-icon name="add-o" size="0.36rem" color="rgba(240, 98, 98, 1)" @click="toAddAddress" />
@@ -62,6 +62,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    addressInfo() {
+      return this.$store.state.app.orderInfo;
+    }
   },
   methods: {
     toAddAddress() {

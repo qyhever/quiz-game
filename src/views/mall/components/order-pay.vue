@@ -143,6 +143,22 @@ export default {
             center/100%;
         }
       }
+      &:nth-of-type(2) {
+        span {
+          &::before {
+            background: url("../../../assets/images/wechat.png") no-repeat
+              center/100%;
+          }
+        }
+      }
+      &:nth-of-type(3) {
+        span {
+          &::before {
+            background: url("../../../assets/images/icon_ali.png") no-repeat
+              center/100%;
+          }
+        }
+      }
     }
   }
 }

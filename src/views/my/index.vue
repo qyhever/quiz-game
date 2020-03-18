@@ -49,6 +49,11 @@
           <van-icon name="arrow" />
         </li>
         <div class="line_3"></div>
+        <li @click="onToMeunList('/my-room')">
+          <span>我的房间</span>
+          <van-icon name="arrow" />
+        </li>
+        <div class="line_3"></div>
         <li @click="onToMeunList('/my-order')">
           <span>我的订单</span>
           <van-icon name="arrow" />
@@ -239,7 +244,12 @@ export default {
               center/100%;
           }
         }
-
+        &:nth-of-type(4) {
+          &::before {
+            background: url("../../assets/images/my/user-p3.png") no-repeat
+              center/100%;
+          }
+        }
         span {
           margin-left: -4.4rem;
           font-size: 0.28rem;

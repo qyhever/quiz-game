@@ -141,6 +141,11 @@ const createRouter = () => new Router({
       component: () => import('@/views/my/guessing-competition')
     },
     {
+      path: '/my-room',
+      name: 'myRoom',
+      component: () => import('@/views/my/my-room')
+    },
+    {
       path: '/my-order',
       name: 'myOrder',
       component: () => import('@/views/my/my-order')

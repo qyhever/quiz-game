@@ -6,13 +6,15 @@
       <div class="circle-navbar__right" slot="right" @click="onToRelease">发布</div>
     </van-nav-bar>
     <div class="release_content">
-      <textarea placeholder="分享我的动态" cols="30" rows="10"></textarea>
+      <textarea v-model="form.content" placeholder="分享我的动态" cols="30" rows="10"></textarea>
       <!-- 上传文件 -->
       <van-uploader
         v-model="fileList"
         multiple
         :max-count="9"
         :deletable="false"
+        :before-read="beforeRead"
+        :after-read="afterRead"
         preview-size="2.12rem"
       />
       <!-- 定位 -->
@@ -51,6 +53,7 @@
 
 <script>
 import testData from "../../utils/data";
+import { uploadFile, releaseCircle, releaseCircleDraft } from "@/api/circle";
 export default {
   data() {
     return {
@@ -58,7 +61,13 @@ export default {
       isShow: false,
       weiboIcon: testData,
       defaultVal: "你在哪",
-      position: ""
+      position: "",
+      form: {
+        content: "",
+        picture: "",
+        lng: "",
+        lat: ""
+      }
     };
   },
   methods: {
@@ -66,21 +75,40 @@ export default {
       console.log(val);
     },
     onToBack() {
-      //   this.$router.go(-1);
-      this.$dialog
-        .confirm({
-          title: "",
-          message: "是否保存本次编辑"
-        })
-        .then(() => {
+      for (const key in this.form) {
+        if (this.form[key]) {
+          this.$dialog
+            .confirm({
+              title: "",
+              message: "是否保存本次编辑"
+            })
+            .then(() => {
+              releaseCircleDraft(this.form).then(res => {
+                if (res.code === 200) {
+                  this.$router.go(-1);
+                }
+              });
+            })
+            .catch(() => {
+              this.$router.go(-1);
+            });
+        } else {
           this.$router.go(-1);
-        })
-        .catch(() => {
-          this.$router.go(-1);
-        });
+        }
+        return;
+      }
     },
     onToRelease() {
-      console.log("发布");
+      if (!this.form.content) {
+        this.$showModal("内容不得为空");
+        return;
+      }
+      releaseCircle(this.form).then(res => {
+        this.$showModal(res.msg);
+        for (const key in this.form) {
+          this.form[key] = "";
+        }
+      });
     },
     onShowToggle(isShow) {
       switch (isShow) {
@@ -91,6 +119,19 @@ export default {
           this.isShow = true;
           break;
       }
+    },
+    beforeRead(file) {
+      if (file.type.indexOf("image") !== 0) {
+        this.$showModal("请上传 jpg或png 格式图片");
+        return false;
+      }
+      return true;
+    },
+    afterRead(file) {
+      console.log(file);
+      uploadFile({ file: file.content }).then(res => {
+        console.log(res);
+      });
     },
     // 获取地理位置
     Tmap() {

@@ -16,7 +16,7 @@ import WeiboEmoji from 'weibo-emoji'
 
 Vue.use(WeiboEmoji)
 
-import { Stepper, RadioGroup, Radio, Cell, CellGroup, Popup, Uploader, Dialog } from 'vant'
+import { Stepper, RadioGroup, Radio, Cell, CellGroup, Popup, Uploader, Dialog, Area, Switch } from 'vant'
 
 Vue.use(Stepper)
 Vue.use(Radio)
@@ -26,6 +26,8 @@ Vue.use(CellGroup)
 Vue.use(Popup)
 Vue.use(Uploader)
 Vue.use(Dialog)
+Vue.use(Area)
+Vue.use(Switch)
 // store.dispatch('user/initUser')
 // if (process.env.NODE_ENV === 'development') {
 //   new window.VConsole()
