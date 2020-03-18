@@ -6,21 +6,27 @@
         <div class="header__image-wrapper">
           <img class="com-image" src="@/assets/images/home/team.png" alt="team">
         </div>
-        <p class="header__team-name">AG超玩会</p>
+        <p class="header__team-name">{{hotQuiz.aname}}</p>
       </div>
       <div class="header__score">
         <div class="header__score-text">
-          <span>1</span>
+          <span>{{hotQuiz.ascore}}</span>
           <span>:</span>
-          <span>1</span>
+          <span>{{hotQuiz.bscore}}</span>
         </div>
-        <van-button class="header__button">参与竞猜</van-button>
+        <van-button
+          class="header__button"
+          :class="getQuizStatusClass(hotQuiz.status)"
+          :disabled="hotQuiz.status !== 0"
+          @click="onToQuizDetail(hotQuiz)">
+          {{hotQuiz.status | filterQuizStatus}}
+        </van-button>
       </div>
       <div class="header__team">
         <div class="header__image-wrapper">
           <img class="com-image" src="@/assets/images/home/team.png" alt="team">
         </div>
-        <p class="header__team-name">AG超玩会</p>
+        <p class="header__team-name">{{hotQuiz.bname}}</p>
       </div>
     </div>
     <!-- tab nav区域 -->
@@ -40,65 +46,136 @@
       </div>
     </div>
     <!-- tab panel 区域 -->
-    <div class="quiz-list">
-      <div class="quiz-item" v-for="(item, index) in list" :key="index">
+    <div class="quiz-list" v-if="quizs.length">
+      <div class="quiz-item" v-for="(item, index) in quizs" :key="index">
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
+              <!-- TODO picture -->
               <img class="item-header__image" src="@/assets/images/home/gameicon1.png" alt="game">
             </div>
-            <div class="item-header__title">LPL职业联赛</div>
+            <div class="item-header__title">{{item.matchName}}</div>
           </div>
-          <div class="item-header__time">11-22 19:00</div>
+          <div class="item-header__time">{{item.matchTime | formatDate(('MM-DD HH:mm'))}}</div>
         </div>
         <div class="item-body">
           <div class="item-body__left">
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
+                <!-- TODO aicon -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">LPL</p>
+              <p class="item-body__team-name">{{item.aname}}</p>
             </div>
             <div class="item-body__score">
-              <span>1</span>
+              <span>{{item.ascore}}</span>
               <span>:</span>
-              <span>1</span>
+              <span>{{item.bscore}}</span>
             </div>
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
+                <!-- TODO aicon -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">LPL</p>
+              <p class="item-body__team-name">{{item.bname}}</p>
             </div>
           </div>
           <div class="item-body__right">
-            <div class="item-body__right-title">6099人竞猜</div>
-            <!-- settlement end -->
-            <van-button class="item-body__right-button">参与竞猜</van-button>
+            <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
+            <van-button
+              class="item-body__right-button"
+              :class="getQuizStatusClass(item.status)"
+              :disabled="item.status !== 0"
+              @click="onToQuizDetail(item)">
+              {{item.status | filterQuizStatus}}
+            </van-button>
           </div>
         </div>
       </div>
     </div>
+    <div v-else class="com-empty">暂无数据</div>
   </div>
 </template>
 
 <script>
+import { getTotalGames, getHotQuizData, getQuizsByGameId } from '@/api/home'
+const HOT_QUIZ_KEY = 'hot'
 export default {
   data() {
     return {
       navs: [
-        {label: '热门竞猜', value: '1'},
-        {label: '英雄联盟', value: '2'},
-        {label: '王者荣耀', value: '3'},
-        {label: '守望先锋', value: '4'}
+        {label: '热门竞猜', value: HOT_QUIZ_KEY}
       ],
-      activeNav: '1',
-      list: Array(10).fill(null)
+      activeNav: HOT_QUIZ_KEY,
+      hotQuiz: {},
+      quizs: [],
+      cacheData: {}
     }
   },
+  watch: {
+    activeNav() {
+      this.queryQuizs()
+    }
+  },
+  mounted() {
+    this.query()
+  },
   methods: {
+    onToQuizDetail({id}) {
+      this.$router.push(`/quiz-detail?id=${id}`)
+    },
+    query() {
+      const promises = [
+        this.queryTotalGames(),
+        this.queryHotQuizData()
+      ]
+      this.$loading.open()
+      Promise.all(promises)
+        .then(data => {
+          this.$loading.close()
+          const [games, hotQuizs] = data
+          this.navs = this.navs.concat(games.map(v => ({
+            label: v.gameName,
+            value: v.id
+          })))
+          this.quizs = hotQuizs
+          if (hotQuizs.length) {
+            // TODO 0
+            this.hotQuiz = hotQuizs[1]
+          }
+          this.cacheData[HOT_QUIZ_KEY] = hotQuizs.slice()
+        })
+        .catch(err => {
+          this.$loading.close()
+          console.log(err)
+        })
+    },
+    // 全部游戏
+    queryTotalGames() {
+      return getTotalGames().then(res => res.rows)
+    },
+    // 热门赛事
+    queryHotQuizData() {
+      return getHotQuizData().then(res => res.rows)
+    },
+    async queryQuizs() {
+      if (this.cacheData[this.activeNav]) { // 缓存数据
+        this.quizs = this.cacheData[this.activeNav]
+      } else {
+        try {
+          const res = await getQuizsByGameId(this.activeNav)
+          this.quizs = res.rows || []
+          this.cacheData[this.activeNav] = this.quizs.slice() // copy一份到缓存中
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    },
     onNavToggle(value) {
       this.activeNav = value
+    },
+    onToIntro({id}) {
+      this.$router.push(`/competition-intro?id=${id}`)
     }
   }
 }
@@ -273,13 +350,5 @@ export default {
     background-color: #FFA31F;
     font-size: $font-size-extra-small;
     color: #fff;
-    &.settlement {
-      background-color: #153561;
-      color: #B9CAE0;
-    }
-    &.end {
-      background-color: #E6E6E6;
-      color: $color-text-secondary;
-    }
   }
 </style>

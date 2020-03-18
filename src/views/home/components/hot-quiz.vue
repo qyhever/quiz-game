@@ -6,7 +6,7 @@
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
-              <img class="item-header__image" :src="require(`@/assets/images/home/gameicon${item.picture}`)" alt="game">
+              <img class="item-header__image" :src="require('@/assets/images/home/gameicon1.png')" alt="game">
             </div>
             <div class="item-header__title">{{item.matchName}}</div>
           </div>
@@ -36,9 +36,13 @@
           </div>
           <div class="item-body__right">
             <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
-            <!-- TODO status -->
-            <!-- class settlement end -->
-            <van-button class="item-body__right-button" @click="onToQuizDetail(item)">参与竞猜</van-button>
+            <van-button
+              class="item-body__right-button"
+              :class="getQuizStatusClass(item.status)"
+              :disabled="item.status !== 0"
+              @click="onToQuizDetail(item)">
+              {{item.status | filterQuizStatus}}
+            </van-button>
           </div>
         </div>
       </div>

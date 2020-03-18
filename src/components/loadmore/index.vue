@@ -13,6 +13,9 @@
       <span class="loadmore__tips">我是有底线的</span>
     </div> -->
     <div class="loadmore" v-if="allLoaded && list.length > paper.count">我是有底线的</div>
+    <div class="com-empty" v-if="empty && !list.length">
+      暂无数据
+    </div>
     <!--<template slot="pulldown" slot-scope="props">-->
       <!--<div-->
         <!--v-if="props.pullDownRefresh"-->
@@ -56,6 +59,10 @@
       backTop: {
         type: Boolean,
         default: true
+      },
+      empty: {
+        type: Boolean,
+        default: false
       }
     },
     data() {

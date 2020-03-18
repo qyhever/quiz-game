@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router'
 
 import store from './store'
-// import './router/permission'
+import './router/permission'
 // import './icons'
 import './plugins'
 
@@ -29,6 +29,7 @@ Vue.use(Dialog)
 Vue.use(Area)
 Vue.use(Switch)
 // store.dispatch('user/initUser')
+store.dispatch('user/initUser')
 // if (process.env.NODE_ENV === 'development') {
 //   new window.VConsole()
 // }

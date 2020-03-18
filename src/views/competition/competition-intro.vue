@@ -10,7 +10,7 @@
       <div class="intro-header">
         <div class="intro__title">{{match.matchName}}</div>
         <div class="intro-header__right">
-          <div class="intro-header__text">王者荣耀</div>
+          <div class="intro-header__text">{{match.gameName}}</div>
           <img class="intro-header__icon" src="@/assets/images/home/icon2.png" alt="game">
         </div>
       </div>
@@ -49,8 +49,13 @@
             </div>
             <div class="item-body__right">
               <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
-              <!-- settlement end -->
-              <van-button class="item-body__right-button">参与竞猜</van-button>
+              <van-button
+                class="item-body__right-button"
+                :class="getQuizStatusClass(item.status)"
+                :disabled="item.status !== 0"
+                @click="onToQuizDetail(item)">
+                {{item.status | filterQuizStatus}}
+              </van-button>
             </div>
           </div>
         </div>
@@ -66,34 +71,35 @@
         </div>
       </div>
       <com-block-header title="相关资讯" control-text="更多" @click-right="onToInformation"/>
-      <div class="info-list">
-        <div class="info-item" v-for="(item, index) in infos" :key="index">
+      <div class="info-list" v-if="infos.length">
+        <div class="info-item" v-for="(item, index) in infos" :key="index" @click="onToInformationDetail(item)">
           <div class="info-item__cover-wrapper">
+            <!-- TODO picture -->
             <img class="info-item__cover" src="@/assets/images/home/information1.png" alt="cover">
           </div>
           <div class="info-item__content">
-            <div class="info-item__title">2019MDL 成都  Major 决战在即  英雄传承共见证！</div>
+            <div class="info-item__title">{{item.title}}</div>
             <div class="info-item__content-footer">
-              <div class="info-item__tag">资讯</div>
-              <div class="info-item__date">日期：11-22</div>
+              <div class="info-item__tag">{{item.className}}</div>
+              <div class="info-item__date">日期：{{item.releaseTime | formatDate('MM-DD')}}</div>
             </div>
           </div>
         </div>
       </div>
+      <div v-else class="com-empty">暂无数据</div>
     </div>
   </com-page-navbar-wrapper>
 </template>
 
 <script>
-import { getBatchDetail, getMatchJoinTeam } from '@/api/home'
+import { getMatchDetail, getMatchJoinTeam, getMatchInfo } from '@/api/home'
 export default {
   data() {
     return {
-      list: Array(1).fill(null),
-      infos: Array(1).fill(null),
       match: {},
       guesses: [],
-      teams: []
+      teams: [],
+      infos: []
     }
   },
   mounted() {
@@ -107,11 +113,11 @@ export default {
     query() {
       this.queryBasicData()
       this.queryTeam()
+      this.queryMatchInfo()
     },
     async queryBasicData() {
       try {
-        const res = await getBatchDetail(this.$route.query.id)
-        console.log(res)
+        const res = await getMatchDetail(this.$route.query.id)
         const data = res.data || {}
         this.match = data.matchVideo || {}
         this.guesses = data.guessingCompetition.rows || []
@@ -127,6 +133,14 @@ export default {
         console.log(err)
       }
     },
+    async queryMatchInfo() {
+      try {
+        const res = await getMatchInfo(this.$route.query.id)
+        this.infos = res.rows || []
+      } catch (err) {
+        console.log(err)
+      }
+    },
     onToCompetition() {
       this.$router.push('/competition?type=quiz')
     },
@@ -135,6 +149,12 @@ export default {
     },
     onToTeamDetail(id) {
       this.$router.push(`/team-intro?id=${id}`)
+    },
+    onToQuizDetail({id}) {
+      this.$router.push(`/quiz-detail?id=${id}`)
+    },
+    onToInformationDetail({id}) {
+      this.$router.push(`/information-detail?id=${id}`)
     }
   }
 }

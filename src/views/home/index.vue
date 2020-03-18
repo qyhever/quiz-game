@@ -160,7 +160,7 @@ export default {
   }
   // game
   .game-list {
-    padding: 16px 0;
+    padding-top: 6px;
   }
   .game-item {
     position: relative;

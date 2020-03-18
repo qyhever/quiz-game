@@ -87,7 +87,7 @@
 <script>
   import { validator } from '@/utils/validate'
   import { getDataURI } from '@/utils'
-  import { login, getVeifyCode } from '@/api/user'
+  import { login, getVeifyCode, getUserInfo } from '@/api/user'
   const USER_DATA_KEY = 'quiz-login-user-data'
   const USER_DATA_TIME_KEY = 'quiz-login-user-data-time'
   export default {
@@ -96,7 +96,8 @@
         form: {
           phone: '',
           password: '',
-          verifyCode: ''
+          verifyCode: '',
+          uuid: ''
         },
         autoLogin: false,
         verifyCodeUrl: ''
@@ -132,14 +133,15 @@
     methods: {
       async queryVerifyCode() {
         try {
-          const reponse = await getVeifyCode()
-          this.verifyCodeUrl = getDataURI(reponse.img)
+          const response = await getVeifyCode()
+          this.verifyCodeUrl = getDataURI(response.img)
+          this.form.uuid = response.uuid
         } catch (err) {
           console.log(err)
         }
       },
       async onSubmit() {
-        const { phone, password, verifyCode } = this.form
+        const { phone, password, verifyCode, uuid } = this.form
         if (!validator(phone, 'mobile')) {
           return this.$showModal('请输入正确的手机号')
         }
@@ -157,14 +159,20 @@
           window.localStorage.removeItem(USER_DATA_KEY)
           window.localStorage.removeItem(USER_DATA_TIME_KEY)
         }
-        console.log({ phone, password, verifyCode })
         try {
           const reponse = await login({
             phone,
             password,
-            code: verifyCode
+            code: verifyCode,
+            uuid
           })
-          console.log(reponse)
+          const res = await getUserInfo(phone)
+          this.$store.dispatch('user/initUser', {
+            token: reponse.token,
+            user: res.data
+          }).then(() => {
+            this.$router.push('/')
+          })
         } catch (err) {
           console.log(err)
         }

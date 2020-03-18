@@ -81,11 +81,20 @@ export const getInfoDetail = id => {
   })
 }
 // 赛事详情
-export const getBatchDetail = id => {
+export const getMatchDetail = id => {
   return request({
     url: 'home/matchDetail',
     params: {
       id
+    }
+  })
+}
+// 赛事详情 - 相关资讯
+export const getMatchInfo = matchId => {
+  return request({
+    url: 'home/matchInformation',
+    params: {
+      id: matchId
     }
   })
 }
@@ -104,6 +113,30 @@ export const getMatchJoinTeam = matchId => {
     url: 'home/joinTeam',
     params: {
       matchId
+    }
+  })
+}
+// 资讯列表
+export const getInfoList = (classId = '') => {
+  return request({
+    url: 'home/information',
+    params: {
+      classId
+    }
+  })
+}
+// 资讯分类
+export const getInfoClasses = () => {
+  return request({
+    url: 'home/infoClass'
+  })
+}
+// 竞猜列表
+export const getQuizsByGameId = (gameId = '') => {
+  return request({
+    url: 'home/guessingCompetitionInfo',
+    params: {
+      gameId
     }
   })
 }

@@ -148,3 +148,24 @@ export const getPhoneVerifyCode = phone => {
     }
   })
 }
+// 获取好友数据
+export const getFriendData = () => {
+  return request({
+    method: "get",
+    url: "/user/friend"
+  })
+}
+// 推广码
+export const getPromoCode = () => {
+  return request({
+    method: "get",
+    url: "/user/promoCode"
+  })
+}
+// 用户信息
+export const getUserInfo = phone => {
+  return request({
+    method: "get",
+    url: `/user/${phone}`
+  })
+}

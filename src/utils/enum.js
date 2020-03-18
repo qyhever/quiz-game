@@ -20,13 +20,8 @@ function setEnumAndArray(list) {
   }
 }
 
-export const enumUserStatus = setEnumAndArray([
-  {k: '', v: '全部'},
-  {k: 1, v: '启用'},
-  {k: 0, v: '禁用'}
-])
-
-export const enumCategoryType = setEnumAndArray([
-  {k: 1, v: '支出'},
-  {k: 2, v: '收入'}
+export const enumQuizStatus = setEnumAndArray([
+  {k: 0, v: '参与竞猜'},
+  {k: 1, v: '结算中'},
+  {k: 2, v: '已结束'}
 ])

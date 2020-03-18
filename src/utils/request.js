@@ -108,7 +108,7 @@ const _request = (
   options.headers = options.headers || {}
   const token = getToken()
   if (token) {
-    // options.headers.Authorization = token
+    // options.headers.Authorization = 'Bearer ' + token
   }
   if (showLoading) {
     Loading.open()
