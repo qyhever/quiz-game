@@ -162,3 +162,10 @@ export const getPromoCode = () => {
     url: "/user/promoCode"
   })
 }
+// 用户信息
+export const getUserInfo = phone => {
+  return request({
+    method: "get",
+    url: `/user/${phone}`
+  })
+}

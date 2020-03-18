@@ -12,21 +12,7 @@ import './plugins'
 import './assets/styles/index.scss'
 import './filters'
 
-import WeiboEmoji from 'weibo-emoji'
-
-Vue.use(WeiboEmoji)
-
-import { Stepper, RadioGroup, Radio, Cell, CellGroup, Popup, Uploader, Dialog } from 'vant'
-
-Vue.use(Stepper)
-Vue.use(Radio)
-Vue.use(RadioGroup)
-Vue.use(Cell)
-Vue.use(CellGroup)
-Vue.use(Popup)
-Vue.use(Uploader)
-Vue.use(Dialog)
-// store.dispatch('user/initUser')
+store.dispatch('user/initUser')
 // if (process.env.NODE_ENV === 'development') {
 //   new window.VConsole()
 // }

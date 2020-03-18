@@ -87,7 +87,7 @@
 <script>
   import { validator } from '@/utils/validate'
   import { getDataURI } from '@/utils'
-  import { login, getVeifyCode } from '@/api/user'
+  import { login, getVeifyCode, getUserInfo } from '@/api/user'
   const USER_DATA_KEY = 'quiz-login-user-data'
   const USER_DATA_TIME_KEY = 'quiz-login-user-data-time'
   export default {
@@ -159,7 +159,6 @@
           window.localStorage.removeItem(USER_DATA_KEY)
           window.localStorage.removeItem(USER_DATA_TIME_KEY)
         }
-        console.log({ phone, password, verifyCode })
         try {
           const reponse = await login({
             phone,
@@ -167,7 +166,13 @@
             code: verifyCode,
             uuid
           })
-          console.log(reponse)
+          const res = await getUserInfo(phone)
+          this.$store.dispatch('user/initUser', {
+            token: reponse.token,
+            user: res.data
+          }).then(() => {
+            this.$router.push('/')
+          })
         } catch (err) {
           console.log(err)
         }

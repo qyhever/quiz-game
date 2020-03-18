@@ -81,11 +81,20 @@ export const getInfoDetail = id => {
   })
 }
 // 赛事详情
-export const getBatchDetail = id => {
+export const getMatchDetail = id => {
   return request({
     url: 'home/matchDetail',
     params: {
       id
+    }
+  })
+}
+// 赛事详情 - 相关资讯
+export const getMatchInfo = matchId => {
+  return request({
+    url: 'home/matchInformation',
+    params: {
+      id: matchId
     }
   })
 }

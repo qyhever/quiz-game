@@ -1,13 +1,19 @@
-import { getUser, setToken, removeToken, setUser, removeUser } from '@/utils/local'
+import { getUser, setToken, getToken, removeToken, setUser, removeUser } from '@/utils/local'
 // import router, { resetRouter } from '@/router'
 
 const state = {
-  info: {}
+  info: {},
+  token: getToken()
 }
 
 const mutations = {
   SET_INFO(state, data) {
-    state.info = data
+    state.info = data.user
+    setUser(data) // setUser local
+  },
+  SET_TOKEN(state, val) {
+    state.token = val
+    setToken(val) // saveToken local
   }
 }
 
@@ -15,6 +21,7 @@ const actions = {
   clearInfo({ commit }) {
     return new Promise(resolve => {
       commit('SET_INFO', {})
+      commit('SET_TOKEN', null)
       removeUser() // removeUser local
       removeToken() // removeToken local
       resolve()
@@ -31,11 +38,10 @@ const actions = {
       }
     }
     // 处理用户主动登录
-    const { token, user } = data
+    const { token } = data
     return new Promise(resolve => {
-      commit('SET_INFO', user)
-      setUser(data) // setUser local
-      setToken(token) // setToken local
+      commit('SET_INFO', data)
+      commit('SET_TOKEN', token)
       resolve()
     })
   }
