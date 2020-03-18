@@ -4,7 +4,7 @@
       <ul class="tab__nav" @touchmove.prevent.stop>
         <li
           class="tab__nav-item"
-          :class="{active: currentNav === item.value}"
+          :class="{active: activeNav === item.value}"
           v-for="(item, index) in navs"
           :key="index"
           @click="onNavToggle(item.value)">
@@ -13,16 +13,17 @@
       </ul>
       <div class="tab__panel-wrapper">
         <div class="tab__panel">
-          <com-loadmore :fetchData="query">
+          <com-loadmore :fetchData="queryInfoList" ref="scroll" empty>
             <template slot-scope="{list}">
               <div class="item" v-for="(item, index) in list" :key="index" @click="onToDetail(item)">
                 <div class="item__image-wrapper">
+                  <!-- TODO picture -->
                   <img class="item__image" src="@/assets/images/home/information1.png" alt="information">
                 </div>
                 <div class="item__body">
-                  <div class="item__title">2019MDL 成都  Major 决战在即  英雄传承共见证！</div>
+                  <div class="item__title">{{item.title}}</div>
                   <div class="item__body-footer">
-                    <div class="item__date">日期：11-22</div>
+                    <div class="item__date">日期：{{item.releaseTime | formatDate('MM-DD')}}</div>
                   </div>
                 </div>
               </div>
@@ -35,32 +36,54 @@
 </template>
 
 <script>
+  import { getInfoClasses, getInfoList } from '@/api/home'
   export default {
     data() {
       return {
         navs: [
-          {label: '全部', value: ''},
-          {label: '资讯', value: '1'},
-          {label: '赛事', value: '2'},
-          {label: '视频', value: '3'}
+          {label: '全部', value: ''}
         ],
-        currentNav: ''
+        activeNav: ''
       }
+    },
+    watch: {
+      activeNav() {
+        this.$refs.scroll.onPullingDown()
+      }
+    },
+    mounted() {
+      this.query()
     },
     methods: {
       onNavToggle(value) {
-        this.currentNav = value
+        this.activeNav = value
       },
-      onToDetail() {
-        console.log('onToDetail')
+      onToDetail({id}) {
+        this.$router.push(`/information-detail?id=${id}`)
       },
       query() {
-        // mock
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve(Array(10).fill(null))
-          }, 1500)
-        })
+        this.queryInfoClasses()
+      },
+      async queryInfoClasses() {
+        try {
+          const res = await getInfoClasses()
+          const list = res.rows || []
+          this.navs = this.navs.concat(list.map(v => ({
+            label: v.className,
+            value: v.id
+          })))
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      async queryInfoList() {
+        try {
+          const res = await getInfoList(this.activeNav)
+          return res.rows || []
+        } catch (err) {
+          console.log(err)
+          throw err
+        }
       }
     }
   }

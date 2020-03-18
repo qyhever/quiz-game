@@ -7,8 +7,8 @@
           <img class="com-image" src="@/assets/images/promote/avatar.png" alt="avatar">
         </div>
         <div class="friend-item__content">
-          <div class="friend-item__name">用户13312341113</div>
-          <!-- noregister -->
+          <div class="friend-item__name">{{item.nickname}}</div>
+          <!-- TODO noregister -->
           <div class="friend-item__status">已注册</div>
         </div>
       </div>
@@ -17,10 +17,24 @@
 </template>
 
 <script>
+  import { getFriendData } from '@/api/user'
   export default {
     data() {
       return {
-        list: Array(3).fill(null)
+        list: []
+      }
+    },
+    mounted() {
+      this.query()
+    },
+    methods: {
+      async query() {
+        try {
+          const res = await getFriendData()
+          this.list = res.rows || []
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
   }

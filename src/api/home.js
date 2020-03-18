@@ -107,3 +107,27 @@ export const getMatchJoinTeam = matchId => {
     }
   })
 }
+// 资讯列表
+export const getInfoList = (classId = '') => {
+  return request({
+    url: 'home/information',
+    params: {
+      classId
+    }
+  })
+}
+// 资讯分类
+export const getInfoClasses = () => {
+  return request({
+    url: 'home/infoClass'
+  })
+}
+// 竞猜列表
+export const getQuizsByGameId = (gameId = '') => {
+  return request({
+    url: 'home/guessingCompetitionInfo',
+    params: {
+      gameId
+    }
+  })
+}

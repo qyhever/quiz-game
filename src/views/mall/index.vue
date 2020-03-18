@@ -26,7 +26,7 @@
       </div>
       <div class="goods-wrapper">
         <div class="goods-list">
-          <com-loadmore :fetchData="query">
+          <com-loadmore ref="scroll" :fetchData="fetchData">
             <template slot-scope="{list}">
               <div class="goods-item" v-for="(item, index) in list" :key="index" @click="onToGoodsDetail(item)">
                 <div class="goods-item__image-container">
@@ -42,7 +42,7 @@
                       <img class="goods-item__icon" src="@/assets/images/mall/bean-active.png" alt="bean">
                       <div class="goods-item__amount">{{item.conversionPrice}}</div>
                     </div>
-                    <van-icon class="goods-item__cart" name="cart-o" />
+                    <van-icon @click.prevent.stop="onJoinCart(item)" class="goods-item__cart" name="cart-o" />
                   </div>
                 </div>
               </div>
@@ -59,28 +59,46 @@
 </template>
 
 <script>
-import { getGoodsList, getCartData } from '@/api/mall'
+import { getGoodsCategorys, getGoodsList, getCartData, addGoodsToCart } from '@/api/mall'
 export default {
   data() {
     return {
       navs: [
-        {label: '全部', value: ''},
-        {label: '游戏手办', value: 'game'},
-        {label: '游戏皮肤', value: 'skin'},
-        {label: '积分红包', value: 'integral'}
+        {label: '全部', value: ''}
       ],
       currentNav: '',
       cartCount: 0
     }
   },
+  watch: {
+    currentNav() {
+      this.$refs.scroll.onPullingDown()
+    }
+  },
   mounted() {
-    this.queryCartData()
+    this.query()
   },
   methods: {
+    query() {
+      this.queryCartData()
+      this.queryGoodsCategorys()
+    },
+    async queryGoodsCategorys() {
+      try {
+        const res = await getGoodsCategorys()
+        const list = res.rows || []
+        this.navs = this.navs.concat(list.map(v => ({
+          value: v.id,
+          label: v.categoryName
+        })))
+      } catch (err) {
+        console.log(err)
+      }
+    },
     async queryCartData() {
       try {
         const res = await getCartData()
-        this.cartCount = res.total || 0
+        this.cartCount = res.data.cart.length || 0
       } catch (err) {
         console.log(err)
       }
@@ -97,10 +115,18 @@ export default {
     onToCart() {
       this.$router.push('/shopcart')
     },
-    query() {
-      return getGoodsList().then(res => {
+    fetchData() {
+      return getGoodsList(this.currentNav).then(res => {
         return res.rows || []
       })
+    },
+    async onJoinCart({id}) {
+      try {
+        await addGoodsToCart(id)
+        this.queryCartData()
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }

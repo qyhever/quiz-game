@@ -7,6 +7,9 @@ import { isString } from './type'
 dayjs.locale('zh-cn')
 
 export const formatDate = (value = new Date(), str = 'YYYY-MM-DD') => {
+  if (!value) {
+    return ''
+  }
   if (isString(value)) {
     const d = value.replace(/\-/g, '/') // eslint-disable-line
     return dayjs(new Date(d)).format(str)

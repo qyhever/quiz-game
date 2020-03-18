@@ -96,7 +96,8 @@
         form: {
           phone: '',
           password: '',
-          verifyCode: ''
+          verifyCode: '',
+          uuid: ''
         },
         autoLogin: false,
         verifyCodeUrl: ''
@@ -132,14 +133,15 @@
     methods: {
       async queryVerifyCode() {
         try {
-          const reponse = await getVeifyCode()
-          this.verifyCodeUrl = getDataURI(reponse.img)
+          const response = await getVeifyCode()
+          this.verifyCodeUrl = getDataURI(response.img)
+          this.form.uuid = response.uuid
         } catch (err) {
           console.log(err)
         }
       },
       async onSubmit() {
-        const { phone, password, verifyCode } = this.form
+        const { phone, password, verifyCode, uuid } = this.form
         if (!validator(phone, 'mobile')) {
           return this.$showModal('请输入正确的手机号')
         }
@@ -162,7 +164,8 @@
           const reponse = await login({
             phone,
             password,
-            code: verifyCode
+            code: verifyCode,
+            uuid
           })
           console.log(reponse)
         } catch (err) {

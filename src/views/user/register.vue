@@ -98,7 +98,12 @@
               />
             </div>
             <div class="form-item__button--verify-wrapper">
-              <van-button class="form-item__button form-item__button--verify" :disabled="verifyDisabled" @click="onSendCode">获取</van-button>
+              <van-button
+                class="form-item__button form-item__button--verify"
+                :disabled="verifyDisabled"
+                @click="onSendCode">
+                {{count > 0 ? count + 's' : '获取' }}
+              </van-button>
             </div>
           </div>
           <div class="form-item">
@@ -162,7 +167,9 @@
 <script>
   import { validator } from '@/utils/validate'
   import { getDataURI } from '@/utils'
-  import { register, getVeifyCode } from '@/api/user'
+  import { register, getVeifyCode, getPhoneVerifyCode } from '@/api/user'
+  const PHONE_COUNT_TIME = 'phoneCountTime'
+  const DEFAULT_COUNT = 60
   export default {
     data() {
       return {
@@ -173,17 +180,19 @@
           nickname: '',
           verifyCode: '',
           phoneVerifyCode: '',
-          invitationCode: ''
+          invitationCode: '',
+          uuid: ''
         },
         agreed: false,
         visible: false,
-        verifyCodeUrl: ''
+        verifyCodeUrl: '',
+        count: 0
       }
     },
     computed: {
       verifyDisabled() {
         const { phone } = this.form
-        return !phone || phone.length !== 11
+        return !phone || phone.length !== 11 || this.count > 0
       },
       disabled() {
         const { phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode } = this.form
@@ -192,18 +201,20 @@
     },
     mounted() {
       this.queryVerifyCode()
+      this.initCount()
     },
     methods: {
       async queryVerifyCode() {
         try {
-          const reponse = await getVeifyCode()
-          this.verifyCodeUrl = getDataURI(reponse.img)
+          const response = await getVeifyCode()
+          this.verifyCodeUrl = getDataURI(response.img)
+          this.form.uuid = response.uuid
         } catch (err) {
           console.log(err)
         }
       },
       async onSubmit() {
-        const { phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode, invitationCode } = this.form
+        const { phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode, invitationCode, uuid } = this.form
         if (!validator(phone, 'mobile')) {
           return this.$showModal('请输入正确的手机号')
         }
@@ -227,7 +238,8 @@
             confirmPassword,
             nickname,
             code: verifyCode,
-            phoneCode: phoneVerifyCode
+            phoneCode: phoneVerifyCode,
+            uuid
           }
           if (invitationCode) {
             params.invitationCode = invitationCode
@@ -245,12 +257,42 @@
       onToMail() {
         this.$router.push('/mail')
       },
-      onSendCode() {
+      async onSendCode() {
         const { phone } = this.form
         if (!validator(phone, 'mobile')) {
           return this.$showModal('请输入正确的手机号')
         }
-        console.log(phone)
+        try {
+          await getPhoneVerifyCode(phone)
+          this.count = DEFAULT_COUNT
+          this.messageVisible = true
+          this.setCount()
+          window.localStorage.setItem(PHONE_COUNT_TIME, new Date().getTime())
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      // 从本地取时间进行初始化
+      initCount() {
+        const currentTime = new Date().getTime() / 1000
+        const localTime = Number(window.localStorage.getItem(PHONE_COUNT_TIME)) / 1000
+        const passTime = Math.floor(currentTime - localTime) // 已经过去的时间
+        if (passTime >= 0 && passTime < DEFAULT_COUNT) {
+          this.count = DEFAULT_COUNT - passTime // 剩余时间
+          this.setCount() // 开始计时
+        }
+      },
+      // 计时
+      setCount() {
+        if (this.count > 0) {
+          this.countTimer = setTimeout(() => {
+            this.count = this.count - 1
+            this.setCount()
+          }, 1000)
+        } else {
+          clearTimeout(this.countTimer)
+          this.count = 0
+        }
       }
     }
   }
