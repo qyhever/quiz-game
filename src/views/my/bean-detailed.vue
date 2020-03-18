@@ -31,8 +31,13 @@
           </com-loadmore>
           <div class="bean_earn" v-else>
             <p>您可以从以下活动赚取竞豆：</p>
-            <span>竞猜活动</span>
-            <span>代理推广</span>
+
+            <span>
+              <router-link to="/competition?type=quiz">竞猜活动</router-link>
+            </span>
+            <span>
+              <router-link to="/promote">代理推广</router-link>
+            </span>
           </div>
         </div>
       </div>
@@ -199,6 +204,9 @@ export default {
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: rgba(51, 51, 51, 1);
+    a {
+      color: rgba(51, 51, 51, 1);
+    }
   }
 }
 </style>

@@ -19,8 +19,7 @@
           @click="onNavToggle(item.value)"
         >{{item.name}}</li>
       </ul>
-      <cube-scroll ref="scroll" class="scroll" direction="horizontal">
-        <!-- 推荐 -->
+      <!-- <cube-scroll ref="scroll" class="scroll" direction="horizontal">
         <div class="circle_recommend">
           <ul>
             <li class="recommend">{{typeVal}}</li>
@@ -31,7 +30,7 @@
             </li>
           </ul>
         </div>
-      </cube-scroll>
+      </cube-scroll> -->
       <div class="tab__panel-wrapper">
         <com-loadmore :fetchData="query">
           <template slot-scope="{list}">
