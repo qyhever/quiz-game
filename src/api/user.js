@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getToken } from '@/utils/local'
 
 export const login = data => {
   return request({
@@ -163,9 +164,33 @@ export const getPromoCode = () => {
   })
 }
 // 用户信息
-export const getUserInfo = phone => {
+export const getUserInfo = token => {
   return request({
     method: "get",
-    url: `/user/${phone}`
+    url: '/user/info',
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+}
+// 发送邮箱
+export const sendMail = email => {
+  return request({
+    method: "get",
+    url: "/user/sendEmail",
+    params: {
+      email
+    },
+    headers: {
+      Authorization: 'Bearer ' + getToken()
+    }
+  })
+}
+// 邮箱绑定 提交
+export const userBindMail = data => {
+  return request({
+    method: "post",
+    url: "/user/emailCheck",
+    data
   })
 }

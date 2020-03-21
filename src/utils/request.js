@@ -90,6 +90,7 @@ const instance = axios.create({
  * @param {Boolean} [options.showWarningMsg=true] 是否显示接口错误提示（请求成功，但接口状态码非成功状态）
  * @param {Boolean} [options.showErrorMsg=true] 是否显示请求错误提示（请求失败）
  * @param {Boolean} [options.showLoading=true] 是否显示 loading
+ * @param {Boolean} [options.requiredToken=true] 是否传递请求头 token
  * @param {Function} fn loading 状态回调
  * @return {Promise} Promise
  */
@@ -99,6 +100,7 @@ const _request = (
     showWarningMsg = true,
     showErrorMsg = true,
     showLoading = true,
+    requiredToken = true,
     ...options
   } = {},
   fn = () => {} // eslint-disable-line
@@ -107,8 +109,8 @@ const _request = (
   addPending(options) // 添加本次请求到 pending 中
   options.headers = options.headers || {}
   const token = getToken()
-  if (token) {
-    // options.headers.Authorization = 'Bearer ' + token
+  if (token && requiredToken) {
+    options.headers.Authorization = 'Bearer ' + token
   }
   if (showLoading) {
     Loading.open()

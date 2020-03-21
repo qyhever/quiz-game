@@ -30,7 +30,7 @@ export function validator(value, type) {
     },
     // 手机验证码
     phoneVerifyCode(str) {
-      return /^\d{4}$/.test(str)
+      return /^\d{6}$/.test(str)
     },
     email(str) {
       return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str)

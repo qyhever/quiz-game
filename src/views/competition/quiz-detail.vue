@@ -32,58 +32,47 @@
                 <!-- TODO aicon -->
                 <img class="com-image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="header__team-name">{{match.aname}}</p>
+              <p class="header__team-name">{{match.aName}}</p>
             </div>
             <div class="header__score">
               <div class="header__status">比赛进行中</div>
               <div class="header__score-text">
-                <span>{{match.ascore}}</span>
+                <span>{{match.aScore}}</span>
                 <span>:</span>
-                <span>{{match.bscore}}</span>
+                <span>{{match.bScore}}</span>
               </div>
+              <van-button class="header__button">申请房主</van-button>
             </div>
             <div class="header__team">
               <div class="header__image-wrapper">
                 <!-- TODO bicon -->
                 <img class="com-image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="header__team-name">{{match.bname}}</p>
+              <p class="header__team-name">{{match.bName}}</p>
             </div>
           </div>
         </div>
       </div>
       <div class="stripe"></div>
-      <div class="block">
+      <div class="block" v-for="(item, index) in betting" :key="index">
         <div class="block-header">
           <div class="block-header__left">
-            <div class="block-header__tag">猜全场</div>
-            <div class="block-header__title">全场胜出战队是？</div>
+            <div class="block-header__tag">{{item.className}}</div>
+            <div class="block-header__title">{{item.title}}</div>
           </div>
+          <!-- TODO -->
           <div class="block-header__right">6天后结束</div>
         </div>
-        <div class="block-body">
-          <div class="quiz-item-wrapper" v-for="(item, index) in Array(2)" :key="index">
+        <div class="block-body" v-if="item.bettings && item.bettings.length">
+          <div
+            class="quiz-item-wrapper"
+            :class="{small: item.bettings.length > 2}"
+            v-for="(v, i) in item.bettings"
+            :key="i"
+            @click="show(item, v)">
             <div class="quiz-item">
-              <div class="quiz-item__title">AG超玩会胜出</div>
-              <div class="quiz-item__value">赔率1.16</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="stripe"></div>
-      <div class="block">
-        <div class="block-header">
-          <div class="block-header__left">
-            <div class="block-header__tag">猜比分</div>
-            <div class="block-header__title">全场比分是？</div>
-          </div>
-          <div class="block-header__right">6天后结束</div>
-        </div>
-        <div class="block-body">
-          <div class="quiz-item-wrapper" v-for="(item, index) in Array(4)" :key="index">
-            <div class="quiz-item">
-              <div class="quiz-item__title">AG超玩会胜出</div>
-              <div class="quiz-item__value">赔率1.16</div>
+              <div class="quiz-item__title">{{v.bettingName}}</div>
+              <div class="quiz-item__value">赔率{{v.odds}}</div>
             </div>
           </div>
         </div>
@@ -106,13 +95,13 @@
           </div>
         </div>
       </div>
-      <div class="footer" @click="show">
+      <div class="footer">
         <div class="footer__left">
           <img src="@/assets/images/my/user-touxiang.png" alt="avatar" class="footer__avatar">
           <div class="footer__name">瑞雯</div>
         </div>
         <div class="footer__right">
-          <div class="footer__right-text">16888</div>
+          <div class="footer__right-text">{{user.bean}}</div>
           <img class="footer__right-icon" src="@/assets/images/my/user-p1.png" alt="bean">
         </div>
       </div>
@@ -123,34 +112,35 @@
         </div>
         <div class="popup-container">
           <div class="popup-header">
-            <div class="popup-header__tag">猜全场</div>
-            <div class="popup__title">全场胜出战队是？</div>
+            <div class="popup-header__tag">{{currentData.className}}</div>
+            <div class="popup__title">{{currentData.title}}</div>
           </div>
           <div class="popup-body">
             <div class="popup__row">
               <div class="popup__col">
                 <div class="popup__label">您已选择</div>
-                <div class="popup__value popup__value--red">AG超玩会胜出</div>
+                <div class="popup__value popup__value--red">{{currentData.bettingName}}</div>
               </div>
             </div>
             <div class="popup__row">
               <div class="popup__col">
                 <div class="popup__label">赔率</div>
-                <div class="popup__value">1.16</div>
+                <div class="popup__value">{{currentData.odds}}</div>
               </div>
               <div class="popup__col">
                 <div class="popup__label">中奖可赢</div>
-                <div class="popup__value">6380.00</div>
+                <div class="popup__value">{{winCount}}</div>
               </div>
             </div>
             <div class="popup__row">
               <div class="popup__col">
                 <div class="popup__label">剩余竞豆</div>
-                <div class="popup__value">38000</div>
+                <div class="popup__value">{{user.bean}}</div>
               </div>
             </div>
             <van-field
               v-model="count"
+              maxlength="12"
               placeholder="请输入投注数量"
               :border="false"
               size="large"
@@ -163,10 +153,10 @@
                 v-for="(item, index) in radios"
                 :key="index"
                 @click="onRadioClick(item.value)">
-                {{item.label}}  
+                {{item.label}}
               </div>
             </div>
-            <van-button class="popup__button" block>确认投注</van-button>
+            <van-button class="popup__button" block @click="onSubmit">确认投注</van-button>
           </div>
         </div>
       </van-popup>
@@ -175,7 +165,8 @@
 </template>
 
 <script>
-  import { getQuizDetail } from '@/api/home'
+  import { mapGetters } from 'vuex'
+  import { getQuizDetail, bettingQuiz } from '@/api/home'
   export default {
     data() {
       return {
@@ -186,42 +177,98 @@
           {label: '100', value: '100'},
           {label: '1000', value: '1000'},
           {label: '10000', value: '10000'},
-          {label: '全部', value: 'all'}
+          {label: '全部', value: ''}
         ],
-        activeRadio: 'all',
+        activeRadio: '',
         count: '',
         match: {}, // 赛事
         betting: [], // 押注
-        join: [] // 参加
+        join: [], // 参加
+        currentData: {},
+        winCount: 0
       }
     },
+    watch: {
+      count(newVal) {
+        if (newVal) {
+          this.activeRadio = ''
+          const winCount = Number(this.currentData.odds || 0) * Number(newVal)
+          this.winCount = winCount.toFixed(2)
+        } else {
+          this.winCount = 0
+        }
+      },
+      activeRadio(newVal) {
+        if (newVal) {
+          this.count = ''
+          const winCount = Number(this.currentData.odds || 0) * Number(newVal)
+          this.winCount = winCount.toFixed(2)
+        } else {
+          this.winCount = 0
+        }
+      }
+    },
+    computed: {
+      ...mapGetters(['user'])
+    },
     mounted() {
-      if (!this.$route.query.id) {
+      if (!this.$route.query.id || !this.$route.query.matchInfoId) {
         this.$router.back()
       } else {
         this.query()
+        this.radios = this.radios.map(item => {
+          if (item.value === '') {
+            return {
+              ...item,
+              value: this.user.bean
+            }
+          }
+          return item
+        })
+        this.activeRadio = this.user.bean
       }
     },
     methods: {
       async query() {
         try {
-          const res = await getQuizDetail(this.$route.query.id)
+          const res = await getQuizDetail(this.$route.query.id, this.$route.query.matchInfoId)
           const data = res.data || {}
           this.match = data.match || {}
           this.betting = data.betting || []
-          this.join = data.join || []
+          this.join = (data.join || []).filter(Boolean)
         } catch (err) {
           console.log(err)
         }
       },
-      show() {
+      show(data, item) {
         this.visible = true
+        this.currentData = Object.assign({}, data, item)
       },
       hide() {
         this.visible = false
       },
       onRadioClick(value) {
         this.activeRadio = value
+      },
+      async onSubmit() {
+        try {
+          const bean = this.count ? this.count : this.activeRadio
+          await bettingQuiz({
+            matchInfoId: this.$route.query.matchInfoId,
+            bettingId: this.currentData.bettingId,
+            bean: Number(bean)
+          })
+          this.$toast.success({
+            mask: true,
+            forbidClick: true,
+            message: '投注成功'
+          })
+          setTimeout(() => {
+            this.$router.back()
+          }, 2000)
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
   }
@@ -318,12 +365,12 @@
   }
   .header__button {
     width: rem2px(200);
-    height: 36px;
-    line-height: 34px;
+    height: 24px;
+    line-height: 22px;
     background-color: #FFA31F;
     border-color: #FFA31F;
     color: #fff;
-    font-size: $font-size-medium;
+    font-size: 12px;
     font-weight: 700;
   }
   .stripe {
@@ -374,6 +421,9 @@
     background-color: #FFEBEB;
     border: 2px solid #FF4F4F;
     border-radius: 2px;
+    &.small {
+      width: 28.8%;
+    }
   }
   .quiz-item {
     display: flex;

@@ -13,6 +13,7 @@
         </div>
         <div class="detail__body">
           <div v-html="detail.content"></div>
+          <video class="video" controls src="@/assets/video/v.mp4"></video>
         </div>
       </div>
     </com-page-navbar-wrapper>
@@ -71,5 +72,9 @@
     .text + .text {
       margin-left: 12px;
     }
+  }
+  .video {
+    width: 100%;
+    height: 56.53vw;
   }
 </style>

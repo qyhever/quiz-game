@@ -3,8 +3,7 @@
     <div class="intro">
       <div class="intro-video-wrapper">
         <div class="intro-video">
-          <!-- TODO videoUrl -->
-          <img class="com-image" src="@/assets/images/competition/video.png" alt="video">
+          <video class="video" controls src="@/assets/video/v.mp4"></video>
         </div>
       </div>
       <div class="intro-header">
@@ -176,6 +175,10 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
+  }
+  .video {
+    width: 100%;
+    height: 100%;
   }
   .intro-header {
     display: flex;
