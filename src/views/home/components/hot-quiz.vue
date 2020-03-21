@@ -15,23 +15,23 @@
         <div class="item-body">
           <div class="item-body__left">
             <div class="item-body__team">
-              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.ateamId)">
+              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.aTeamId)">
                 <!-- TODO aicon 1001.PNG -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">{{item.aname}}</p>
+              <p class="item-body__team-name">{{item.aName}}</p>
             </div>
             <div class="item-body__score">
-              <span>{{item.ascore}}</span>
+              <span>{{item.aScore}}</span>
               <span>:</span>
-              <span>{{item.bscore}}</span>
+              <span>{{item.bScore}}</span>
             </div>
             <div class="item-body__team">
-              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bteamId)">
+              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bTeamId)">
                 <!-- TODO bicon 114.PNG -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">{{item.bname}}</p>
+              <p class="item-body__team-name">{{item.bName}}</p>
             </div>
           </div>
           <div class="item-body__right">
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     list: {
@@ -64,12 +65,25 @@ export default {
       default: () => ([])
     }
   },
+  computed: {
+    ...mapGetters(['token'])
+  },
   methods: {
     onToCompetition() {
       this.$router.push('/competition?type=quiz')
     },
-    onToQuizDetail({id}) {
-      this.$router.push(`/quiz-detail?id=${id}`)
+    onToQuizDetail({id, matchInfoId}) {
+      if (!this.token) {
+        this.$router.push('/login')
+        return
+      }
+      this.$router.push({
+        path: '/quiz-detail',
+        query: {
+          id,
+          matchInfoId
+        }
+      })
     },
     onToTeamDetail(id) {
       this.$router.push(`/team-intro?id=${id}`)

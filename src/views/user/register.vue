@@ -92,7 +92,7 @@
                 v-model.trim="form.phoneVerifyCode"
                 type="tel"
                 clearable
-                maxlength="4"
+                maxlength="6"
                 placeholder="请输入短信验证码"
                 :border="false"
               />
@@ -167,7 +167,7 @@
 <script>
   import { validator } from '@/utils/validate'
   import { getDataURI } from '@/utils'
-  import { register, getVeifyCode, getPhoneVerifyCode } from '@/api/user'
+  import { register, getVeifyCode, getPhoneVerifyCode, getUserInfo } from '@/api/user'
   const PHONE_COUNT_TIME = 'phoneCountTime'
   const DEFAULT_COUNT = 60
   export default {
@@ -225,12 +225,11 @@
           return this.$showModal('验证码应该为数字和字母组合4位')
         }
         if (!validator(phoneVerifyCode, 'phoneVerifyCode')) {
-          return this.$showModal('短信验证码应该为4位数字')
+          return this.$showModal('短信验证码应该为6位数字')
         }
         if (!this.agreed) {
           return this.$showModal('请阅读并同意用户服务协议')
         }
-        console.log({ phone, password, confirmPassword, nickname, verifyCode, phoneVerifyCode })
         try {
           const params = {
             phone,
@@ -244,15 +243,21 @@
           if (invitationCode) {
             params.invitationCode = invitationCode
           }
-          const reponse = await register(params)
-          console.log(reponse)
-          this.visible = true
+          const response = await register(params)
+          const res = await getUserInfo(phone)
+          this.$store.dispatch('user/initUser', {
+            token: response.token,
+            user: res.data
+          }).then(() => {
+            this.visible = true
+          })
         } catch (err) {
           console.log(err)
         }
       },
       close() {
         this.visible = false
+        this.$router.push('/')
       },
       onToMail() {
         this.$router.push('/mail')

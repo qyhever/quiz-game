@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getTotalGames, getHotQuizData, getQuizsByGameId } from '@/api/home'
 const HOT_QUIZ_KEY = 'hot'
 export default {
@@ -117,12 +118,25 @@ export default {
       this.queryQuizs()
     }
   },
+  computed: {
+    ...mapGetters(['token'])
+  },
   mounted() {
     this.query()
   },
   methods: {
-    onToQuizDetail({id}) {
-      this.$router.push(`/quiz-detail?id=${id}`)
+    onToQuizDetail({id, matchInfoId}) {
+      if (!this.token) {
+        this.$router.push('/login')
+        return
+      }
+      this.$router.push({
+        path: '/quiz-detail',
+        query: {
+          id,
+          matchInfoId
+        }
+      })
     },
     query() {
       const promises = [
@@ -140,8 +154,7 @@ export default {
           })))
           this.quizs = hotQuizs
           if (hotQuizs.length) {
-            // TODO 0
-            this.hotQuiz = hotQuizs[1]
+            this.hotQuiz = hotQuizs[0]
           }
           this.cacheData[HOT_QUIZ_KEY] = hotQuizs.slice()
         })

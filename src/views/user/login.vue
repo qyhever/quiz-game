@@ -160,15 +160,15 @@
           window.localStorage.removeItem(USER_DATA_TIME_KEY)
         }
         try {
-          const reponse = await login({
+          const response = await login({
             phone,
             password,
             code: verifyCode,
             uuid
           })
-          const res = await getUserInfo(phone)
+          const res = await getUserInfo(response.token)
           this.$store.dispatch('user/initUser', {
-            token: reponse.token,
+            token: response.token,
             user: res.data
           }).then(() => {
             this.$router.push('/')

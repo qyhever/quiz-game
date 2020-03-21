@@ -1,5 +1,5 @@
 <template>
-  <com-page-navbar-wrapper title="登录/注册" @touchmove.prevent.stop.native>
+  <com-page-navbar-wrapper title="登录/注册" @touchmove.prevent.stop.native :onBack="onBack">
     <div class="user-container">
       <div class="user__header">
         <div class="user__header-logo-wrapper">
@@ -66,6 +66,8 @@
 
 <script>
   import { validator } from '@/utils/validate'
+  // userBindMail
+  import { sendMail } from '@/api/user'
   const MAIL_COUNT_TIME = 'mailCountTime'
   const DEFAULT_COUNT = 10
   export default {
@@ -101,18 +103,26 @@
       this.initCount()
     },
     methods: {
+      onBack() {
+        this.$router.push('/')
+      },
       onSubmit() {
         const { mail, verifyCode } = this.form
         console.log({ mail, verifyCode })
         this.$router.push('/mail-check-success')
       },
       // 发送验证码
-      onSendCode() {
-        // req
-        this.count = DEFAULT_COUNT
-        this.messageVisible = true
-        this.setCount()
-        window.localStorage.setItem(MAIL_COUNT_TIME, new Date().getTime())
+      async onSendCode() {
+        try {
+          const res = await sendMail(this.form.mail)
+          console.log(res)
+        } catch (err) {
+          console.log(err)
+        }
+        // this.count = DEFAULT_COUNT
+        // this.messageVisible = true
+        // this.setCount()
+        // window.localStorage.setItem(MAIL_COUNT_TIME, new Date().getTime())
       },
       // 从本地取时间进行初始化
       initCount() {

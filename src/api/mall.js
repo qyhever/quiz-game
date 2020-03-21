@@ -3,7 +3,8 @@ import request from '@/utils/request'
 // 商品分类
 export const getGoodsCategorys = () => {
   return request({
-    url: '/mall/commodityCategory'
+    url: '/mall/commodityCategory',
+    requiredToken: false
   })
 }
 // 商品列表
@@ -12,7 +13,8 @@ export const getGoodsList = categoryId => {
     url: '/mall/commodity',
     params: {
       categoryId
-    }
+    },
+    requiredToken: false
   })
 }
 // 商品详情
@@ -21,7 +23,8 @@ export const getGoodsDetail = id => {
     url: '/mall/detail',
     params: {
       id
-    }
+    },
+    requiredToken: false
   })
 }
 // 购物车

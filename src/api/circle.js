@@ -5,7 +5,8 @@ export const getCircleInfo = (data) => {
     return request({
         method: 'get',
         url: '/circle/info',
-        params: data
+        params: data,
+        requiredToken: false
     })
 }
 
