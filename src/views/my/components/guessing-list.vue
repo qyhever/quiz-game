@@ -1,7 +1,7 @@
 <template>
   <div class="guessing_content">
     <div class="guessing_time">
-      <span>11-28 23:09</span>
+      <span>{{item.createTime | formatDate('MM-DD hh:mm')}}</span>
       <span
         :class="[0,1].includes(item.bettingResult)?'guessing_success':'guessing_fail'"
       >{{[0,1].includes(item.bettingResult)?'已结算':'未结算'}}</span>
