@@ -5,7 +5,7 @@
         <div class="tab__panel">
           <com-loadmore :fetchData="query">
             <template slot-scope="{list}">
-              <guessing-list v-for="(item,index) in list" :key="index" :item="index"></guessing-list>
+              <guessing-list v-for="(item,index) in list" :key="index" :item="item"></guessing-list>
             </template>
           </com-loadmore>
         </div>

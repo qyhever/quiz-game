@@ -97,7 +97,7 @@ export default {
   methods: {
     // 获取订单详情
     getOrderDetail() {
-      getOrderDetail({ id: this.$route.query.orderId })
+      getOrderDetail(this.$route.query.orderId)
         .then(res => console.log(res))
         .catch();
     }

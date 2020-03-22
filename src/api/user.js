@@ -29,7 +29,7 @@ export const getVeifyCode = () => {
 export const getPersonalInfo = (data) => {
   return request({
     method: 'get',
-    url: '/user',
+    url: '/user/info',
     params: data
   })
 }
@@ -92,8 +92,7 @@ export const getMyOrder = (data) => {
 export const getOrderDetail = (data) => {
   return request({
     method: "get",
-    url: "/user/orderDetail",
-    params: data
+    url: `/user/orderDetail/${data}`
   })
 }
 

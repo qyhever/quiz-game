@@ -2,37 +2,45 @@
   <div class="guessing_content">
     <div class="guessing_time">
       <span>11-28 23:09</span>
-      <span>未结算</span>
+      <span
+        :class="[0,1].includes(item.bettingResult)?'guessing_success':'guessing_fail'"
+      >{{[0,1].includes(item.bettingResult)?'已结算':'未结算'}}</span>
     </div>
     <ul>
       <li>
         <img src="../../../assets/images/player-touxiang.png" alt />
-        <p>LPL职业联赛</p>
-        <span>测胜利</span>
+        <p>{{item.matchName}}</p>
+        <span>{{item.className}}</span>
       </li>
       <li>
         <div class="guessing_left">
           <span>已投</span>
-          <span>QGhappy胜出（1.26）</span>
+          <span>{{item.bettingName}}({{item.odds}})</span>
         </div>
         <div class="guessing_right">
           <span>竞豆</span>
-          <span>5000</span>
+          <span>{{item.bean}}</span>
         </div>
       </li>
       <li>
         <div class="guessing_left">
           <span>赛果</span>
-          <span>QGhappy胜出</span>
+          <span>{{item.bettingName}}</span>
         </div>
-        <div class="guessing_right">预测成功</div>
+        <div
+          :class="item.bettingResult===0?'guessing_right_success':'guessing_right_fail'"
+        >{{item.bettingResult===0?'预测成功':'预测失败'}}</div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    item: Object
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -49,16 +57,24 @@ export default {};
         font-weight: 400;
         color: rgba(166, 166, 166, 1);
       }
-
-      &:nth-of-type(2) {
-        padding: 0.1rem 0.25rem;
-        background: rgba(255, 163, 31, 1);
-        border-radius: 0.04rem;
-        font-size: 0.24rem;
-        font-family: Microsoft YaHei;
-        font-weight: 400;
-        color: rgba(255, 255, 255, 1);
-      }
+    }
+    .guessing_fail {
+      padding: 0.1rem 0.25rem;
+      background: rgba(255, 163, 31, 1);
+      border-radius: 0.04rem;
+      font-size: 0.24rem;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+    }
+    .guessing_success {
+      padding: 0.1rem 0.25rem;
+      background: rgba(82, 140, 244, 1);
+      border-radius: 0.04rem;
+      font-size: 0.24rem;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
     }
   }
 
@@ -146,12 +162,19 @@ export default {};
             }
           }
         }
-        .guessing_right {
+        .guessing_right_success {
           align-items: center;
           font-size: 0.28rem;
           font-family: Microsoft YaHei;
           font-weight: bold;
           color: rgba(41, 217, 54, 1);
+        }
+        .guessing_right_fail {
+          align-items: center;
+          font-size: 0.28rem;
+          font-family: Microsoft YaHei;
+          font-weight: bold;
+          color: rgba(255, 142, 143, 1);
         }
       }
       img {

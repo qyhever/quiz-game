@@ -6,7 +6,7 @@
           <div class="bean_message">
             <div class="bean_count">
               <p>当前竞豆</p>
-              <p>13122</p>
+              <p>{{userInfo.bean}}</p>
             </div>
           </div>
         </div>
@@ -43,13 +43,13 @@
           <h2>选择支付方式</h2>
           <van-radio-group v-model="radio">
             <van-cell-group>
-              <van-cell title="支付宝支付" clickable @click="radio = '1'">
+              <van-cell title="支付宝支付" class="icon_ali" clickable @click="radio = '1'">
                 <van-radio slot="right-icon" checked-color="#07c160" name="1" />
               </van-cell>
-              <van-cell title="微信支付" clickable @click="radio = '2'">
+              <van-cell title="微信支付" class="icon_wechat" clickable @click="radio = '2'">
                 <van-radio slot="right-icon" checked-color="#07c160" name="2" />
               </van-cell>
-              <van-cell title="银联云闪付" clickable @click="radio = '3'">
+              <van-cell title="银联云闪付" class="icon_card" clickable @click="radio = '3'">
                 <van-radio slot="right-icon" checked-color="#07c160" name="3" />
               </van-cell>
             </van-cell-group>
@@ -106,6 +106,11 @@ export default {
       value: 1,
       radio: 1
     };
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.user.info;
+    }
   },
   mounted() {
     this.getBeanRecharge();
@@ -300,18 +305,45 @@ export default {
   }
 }
 
-.van-cell__title {
-  &::before {
-    display: inline-block;
-    content: "";
-    width: 0.44rem;
-    height: 0.44rem;
-    background: url("../../assets/images/icon_ali.png") no-repeat center/100%;
-    vertical-align: middle;
-    margin-right: 0.24rem;
+.icon_ali {
+  .van-cell__title {
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 0.44rem;
+      height: 0.44rem;
+      background: url("../../assets/images/icon_ali.png") no-repeat center/100%;
+      vertical-align: middle;
+      margin-right: 0.24rem;
+    }
   }
 }
-
+.icon_wechat {
+  .van-cell__title {
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 0.44rem;
+      height: 0.44rem;
+      background: url("../../assets/images/wechat.png") no-repeat center/100%;
+      vertical-align: middle;
+      margin-right: 0.24rem;
+    }
+  }
+}
+.icon_card {
+  .van-cell__title {
+    &::before {
+      display: inline-block;
+      content: "";
+      width: 0.44rem;
+      height: 0.44rem;
+      background: url("../../assets/images/icon_pay.png") no-repeat center/100%;
+      vertical-align: middle;
+      margin-right: 0.24rem;
+    }
+  }
+}
 .payment_btn {
   display: flex;
   flex-direction: column;

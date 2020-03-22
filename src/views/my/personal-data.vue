@@ -9,7 +9,7 @@
         </li>
         <li>
           <span>昵称</span>
-          <span class="personal_name">中竞网瑞雯</span>
+          <span class="personal_name">{{userInfo.nickname}}</span>
           <van-icon name="arrow" />
         </li>
       </ul>
@@ -34,21 +34,28 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    userInfo() {
+      return this.$store.state.user.info;
+    }
+  },
   methods: {
     onToMeunList(path) {
       this.$router.push(path);
     },
     onLogout() {
       this.$dialog({
-        message: '确定要退出吗？',
+        message: "确定要退出吗？",
         showCancelButton: true
-      }).then(() => {
-        this.$store.dispatch('user/clearInfo').then(() => {
-          this.$router.push('/')
-        })
-      }).catch(() => {
-        // on cancel
       })
+        .then(() => {
+          this.$store.dispatch("user/clearInfo").then(() => {
+            this.$router.push("/");
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
     }
   }
 };

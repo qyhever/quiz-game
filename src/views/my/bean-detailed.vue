@@ -5,7 +5,7 @@
         <div class="bean_message">
           <div class="bean_count">
             <p>当前竞豆</p>
-            <p>13122</p>
+            <p>{{userInfo.bean}}</p>
           </div>
           <router-link to="/bean-recharge">
             <div class="bean_btn">充值</div>
@@ -59,6 +59,11 @@ export default {
       ],
       currentNav: "1"
     };
+  },
+   computed: {
+    userInfo() {
+      return this.$store.state.user.info;
+    }
   },
   methods: {
     onNavToggle(value) {

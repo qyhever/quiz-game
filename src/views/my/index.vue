@@ -4,8 +4,8 @@
     <div class="my_header">
       <img src="../../assets/images/my/user-touxiang.png" alt />
       <div class="header_message">
-        <p>中竞网瑞雯</p>
-        <span>ID:23569331311</span>
+        <p>{{userInfo.nickname}}</p>
+        <span>ID:{{userInfo.id}}</span>
       </div>
       <img @click="onToPersonalData" src="../../assets/images/my/user-change.png" alt />
     </div>
@@ -39,8 +39,10 @@
     <div class="my_operation">
       <ul>
         <li class="operation_message" @click="onToMeunList('/bean-detailed')">
-          <span class="my_bean">我的竞豆</span>
-          <span class="my_count">132662</span>
+          <div>
+            <span class="my_bean">我的竞豆</span>
+            <span class="my_count">{{userInfo.bean}}</span>
+          </div>
           <span class="recharge_btn">充值</span>
         </li>
         <div class="line_3"></div>
@@ -68,7 +70,7 @@
         <div class="line_3"></div>
         <li @click="onToMeunList('/system-message')">
           <span>系统消息</span>
-          <span>12</span>
+          <span>1</span>
           <van-icon name="arrow" />
         </li>
       </ul>
@@ -77,13 +79,14 @@
 </template>
 
 <script>
-import { getPersonalInfo } from "@/api/user";
 export default {
   data() {
     return {};
   },
-  mounted() {
-    // this.getPersonalInfo();
+  computed: {
+    userInfo() {
+      return this.$store.state.user.info;
+    }
   },
   methods: {
     onToPersonalData() {
@@ -91,12 +94,6 @@ export default {
     },
     onToMeunList(path) {
       this.$router.push(path);
-    },
-    // 获取个人信息
-    getPersonalInfo() {
-      getPersonalInfo({ phone: "15872406760" })
-        .then(res => console.log(res))
-        .catch();
     }
   }
 };
@@ -207,19 +204,24 @@ export default {
           height: 0.44rem;
         }
         &:nth-of-type(1) {
+          position: relative;
           &::before {
             background: url("../../assets/images/my/user-p1.png") no-repeat
               center/100%;
           }
-          .my_bean {
-            margin-left: -6.6rem;
-          }
-          .my_count {
-            font-size: 0.28rem;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: rgba(254, 74, 133, 1);
-            margin-left: -6.6rem;
+          div {
+            position: absolute;
+            left: 0.72rem;
+            .my_bean {
+              margin-left: 0;
+            }
+            .my_count {
+              font-size: 0.28rem;
+              font-family: Microsoft YaHei;
+              font-weight: 400;
+              color: rgba(254, 74, 133, 1);
+              margin-left: 0.1rem;
+            }
           }
           .recharge_btn {
             display: inline-block;
