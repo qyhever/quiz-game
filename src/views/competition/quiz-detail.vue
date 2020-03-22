@@ -95,10 +95,10 @@
           </div>
         </div>
       </div>
-      <div class="footer">
+      <div class="footer" v-if="user.id">
         <div class="footer__left">
           <img src="@/assets/images/my/user-touxiang.png" alt="avatar" class="footer__avatar">
-          <div class="footer__name">瑞雯</div>
+          <div class="footer__name">{{user.nickname}}</div>
         </div>
         <div class="footer__right">
           <div class="footer__right-text">{{user.bean}}</div>
@@ -209,7 +209,7 @@
       }
     },
     computed: {
-      ...mapGetters(['user'])
+      ...mapGetters(['user', 'token'])
     },
     mounted() {
       if (!this.$route.query.id || !this.$route.query.matchInfoId) {
@@ -251,6 +251,10 @@
         this.activeRadio = value
       },
       async onSubmit() {
+        if (!this.token) {
+          this.$router.push('/login')
+          return
+        }
         try {
           const bean = this.count ? this.count : this.activeRadio
           await bettingQuiz({

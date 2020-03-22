@@ -50,7 +50,7 @@
           </com-loadmore>
         </div>
       </div>
-      <div class="shopcart" @click="onToCart">
+      <div v-if="token" class="shopcart" @click="onToCart">
         <div class="shopcart-badge" v-if="cartCount">{{cartCount}}</div>
         <img class="com-image" src="@/assets/images/mall/shopcart.png" alt="shopcart">
       </div>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { getGoodsCategorys, getGoodsList, getCartData, addGoodsToCart } from '@/api/mall'
 export default {
   data() {
@@ -70,6 +71,9 @@ export default {
       cartCount: 0
     }
   },
+  computed: {
+    ...mapGetters(['token'])
+  },
   watch: {
     currentNav() {
       this.$refs.scroll.onPullingDown()
@@ -80,7 +84,9 @@ export default {
   },
   methods: {
     query() {
-      this.queryCartData()
+      if (this.token) {
+        this.queryCartData()
+      }
       this.queryGoodsCategorys()
     },
     async queryGoodsCategorys() {
@@ -121,6 +127,10 @@ export default {
       })
     },
     async onJoinCart({id}) {
+      if (!this.token) {
+        this.$router.push('/login')
+        return
+      }
       try {
         await addGoodsToCart(id)
         this.queryCartData()

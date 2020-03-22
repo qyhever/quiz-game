@@ -244,12 +244,13 @@
             params.invitationCode = invitationCode
           }
           const response = await register(params)
-          const res = await getUserInfo(phone)
+          const res = await getUserInfo(response.data)
           this.$store.dispatch('user/initUser', {
-            token: response.token,
+            token: response.data,
             user: res.data
           }).then(() => {
-            this.visible = true
+            this.$router.push('/')
+            // this.visible = true
           })
         } catch (err) {
           console.log(err)

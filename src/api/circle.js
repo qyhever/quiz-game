@@ -5,8 +5,7 @@ export const getCircleInfo = (data) => {
     return request({
         method: 'get',
         url: '/circle/info',
-        params: data,
-        requiredToken: false
+        params: data
     })
 }
 
@@ -36,4 +35,11 @@ export const releaseCircleDraft = (data) => {
         params: data
     })
 }
-
+// 圈子关注
+export const circleFollow = (data) => {
+    return request({
+        method: 'get',
+        url: '/circle/follow',
+        params: data
+    })
+}

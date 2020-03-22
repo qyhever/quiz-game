@@ -88,6 +88,7 @@
   import { validator } from '@/utils/validate'
   import { getDataURI } from '@/utils'
   import { login, getVeifyCode, getUserInfo } from '@/api/user'
+  import axios from 'axios'
   const USER_DATA_KEY = 'quiz-login-user-data'
   const USER_DATA_TIME_KEY = 'quiz-login-user-data-time'
   export default {
@@ -167,6 +168,13 @@
             uuid
           })
           const res = await getUserInfo(response.token)
+          axios.get('http://120.24.224.218:8080/user/info', {
+            headers: {
+              Authorization: 'Bearer ' + response.token
+            }
+          }).then(res => {
+            console.log(res)
+          })
           this.$store.dispatch('user/initUser', {
             token: response.token,
             user: res.data

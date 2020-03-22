@@ -24,7 +24,7 @@
         </li>
       </ul>
 
-      <van-button type="info" block>注销登录</van-button>
+      <van-button type="info" block @click="onLogout">注销登录</van-button>
     </div>
   </com-page-navbar-wrapper>
 </template>
@@ -37,6 +37,18 @@ export default {
   methods: {
     onToMeunList(path) {
       this.$router.push(path);
+    },
+    onLogout() {
+      this.$dialog({
+        message: '确定要退出吗？',
+        showCancelButton: true
+      }).then(() => {
+        this.$store.dispatch('user/clearInfo').then(() => {
+          this.$router.push('/')
+        })
+      }).catch(() => {
+        // on cancel
+      })
     }
   }
 };

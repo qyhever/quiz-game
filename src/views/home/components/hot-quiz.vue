@@ -73,10 +73,6 @@ export default {
       this.$router.push('/competition?type=quiz')
     },
     onToQuizDetail({id, matchInfoId}) {
-      if (!this.token) {
-        this.$router.push('/login')
-        return
-      }
       this.$router.push({
         path: '/quiz-detail',
         query: {

@@ -20,7 +20,7 @@ const mutations = {
 const actions = {
   clearInfo({ commit }) {
     return new Promise(resolve => {
-      commit('SET_INFO', {})
+      commit('SET_INFO', {user: {}})
       commit('SET_TOKEN', null)
       removeUser() // removeUser local
       removeToken() // removeToken local
