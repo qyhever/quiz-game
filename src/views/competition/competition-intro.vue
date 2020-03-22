@@ -32,28 +32,28 @@
                 <div class="item-body__image-wrapper" @click="onToTeamDetail(item.ateamId)">
                   <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
                 </div>
-                <p class="item-body__team-name">{{item.aname}}</p>
+                <p class="item-body__team-name">{{item.aName}}</p>
               </div>
               <div class="item-body__score">
-                <span>{{item.ascore}}</span>
+                <span>{{item.aScore}}</span>
                 <span>:</span>
-                <span>{{item.bscore}}</span>
+                <span>{{item.bScore}}</span>
               </div>
               <div class="item-body__team">
                 <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bteamId)">
                   <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
                 </div>
-                <p class="item-body__team-name">{{item.bname}}</p>
+                <p class="item-body__team-name">{{item.bName}}</p>
               </div>
             </div>
             <div class="item-body__right">
               <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
+              <!-- :disabled="item.status !== 0" -->
               <van-button
                 class="item-body__right-button"
-                :class="getQuizStatusClass(item.status)"
-                :disabled="item.status !== 0"
+                :class="getQuizStatusClass(item.status || 0)"
                 @click="onToQuizDetail(item)">
-                {{item.status | filterQuizStatus}}
+                {{item.status || 0 | filterQuizStatus}}
               </van-button>
             </div>
           </div>
@@ -149,8 +149,14 @@ export default {
     onToTeamDetail(id) {
       this.$router.push(`/team-intro?id=${id}`)
     },
-    onToQuizDetail({id}) {
-      this.$router.push(`/quiz-detail?id=${id}`)
+    onToQuizDetail({id, matchInfoId}) {
+      this.$router.push({
+        path: '/quiz-detail',
+        query: {
+          id,
+          matchInfoId
+        }
+      })
     },
     onToInformationDetail({id}) {
       this.$router.push(`/information-detail?id=${id}`)

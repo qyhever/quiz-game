@@ -20,7 +20,8 @@ export const register = data => {
 // 获取图片验证码
 export const getVeifyCode = () => {
   return request({
-    url: '/captchaImage'
+    url: '/captchaImage',
+    requiredToken: false
   })
 }
 

@@ -6,13 +6,13 @@
         <div class="header__image-wrapper">
           <img class="com-image" src="@/assets/images/home/team.png" alt="team">
         </div>
-        <p class="header__team-name">{{hotQuiz.aname}}</p>
+        <p class="header__team-name">{{hotQuiz.aName}}</p>
       </div>
       <div class="header__score">
         <div class="header__score-text">
-          <span>{{hotQuiz.ascore}}</span>
+          <span>{{hotQuiz.aScore}}</span>
           <span>:</span>
-          <span>{{hotQuiz.bscore}}</span>
+          <span>{{hotQuiz.bScore}}</span>
         </div>
         <van-button
           class="header__button"
@@ -26,7 +26,7 @@
         <div class="header__image-wrapper">
           <img class="com-image" src="@/assets/images/home/team.png" alt="team">
         </div>
-        <p class="header__team-name">{{hotQuiz.bname}}</p>
+        <p class="header__team-name">{{hotQuiz.bName}}</p>
       </div>
     </div>
     <!-- tab nav区域 -->
@@ -65,19 +65,19 @@
                 <!-- TODO aicon -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">{{item.aname}}</p>
+              <p class="item-body__team-name">{{item.aName}}</p>
             </div>
             <div class="item-body__score">
-              <span>{{item.ascore}}</span>
+              <span>{{item.aScore}}</span>
               <span>:</span>
-              <span>{{item.bscore}}</span>
+              <span>{{item.bScore}}</span>
             </div>
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
                 <!-- TODO aicon -->
                 <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
               </div>
-              <p class="item-body__team-name">{{item.bname}}</p>
+              <p class="item-body__team-name">{{item.bName}}</p>
             </div>
           </div>
           <div class="item-body__right">
@@ -126,10 +126,6 @@ export default {
   },
   methods: {
     onToQuizDetail({id, matchInfoId}) {
-      if (!this.token) {
-        this.$router.push('/login')
-        return
-      }
       this.$router.push({
         path: '/quiz-detail',
         query: {

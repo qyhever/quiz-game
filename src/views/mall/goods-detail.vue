@@ -47,7 +47,7 @@
           <div class="footer__icon-wrapper">
             <img class="com-image" src="@/assets/images/mall/buycar.png" alt="buycar">
           </div>
-          <div class="footer__left-text">加购物车</div>
+          <div class="footer__left-text" @click="onJoinCart">加购物车</div>
         </div>
         <van-button class="footer__button">立即兑换</van-button>
       </div>
@@ -56,7 +56,8 @@
 </template>
 
 <script>
-import { getGoodsDetail } from '@/api/mall'
+import { mapGetters } from 'vuex'
+import { getGoodsDetail, addGoodsToCart } from '@/api/mall'
 export default {
   data() {
     return {
@@ -64,6 +65,9 @@ export default {
       count: 1,
       detail: {}
     }
+  },
+  computed: {
+    ...mapGetters(['token'])
   },
   mounted() {
     if (!this.$route.query.id) {
@@ -80,6 +84,22 @@ export default {
       try {
         const res = await getGoodsDetail(this.$route.query.id)
         this.detail = res.data || {}
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async onJoinCart() {
+      if (!this.token) {
+        this.$router.push('/login')
+        return
+      }
+      try {
+        await addGoodsToCart(this.$route.query.id)
+        this.$toast.success({
+          mask: true,
+          forbidClick: true,
+          message: '添加成功'
+        })
       } catch (err) {
         console.log(err)
       }

@@ -69,9 +69,9 @@ export const deleteAddress = id => {
 // 添加到购物车
 export const addGoodsToCart = (commodityId, count = 1) => {
   return request({
-    method: 'get',
+    method: 'post',
     url: '/mall/addCart',
-    params: {
+    data: {
       commodityId,
       count
     }

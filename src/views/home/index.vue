@@ -5,7 +5,7 @@
       <img class="logo" src="@/assets/images/logo.png" alt="logo">
     </div>
     <div class="sign-wrapper" slot="navbarRight">
-      <button class="sign-button" @click="onToLogin">注册/登录</button>
+      <button v-if="!token" class="sign-button" @click="onToLogin">注册/登录</button>
     </div>
     <cube-scroll ref="scroll">
       <!-- 轮播区域 -->
@@ -28,7 +28,7 @@
       <hot-information :list="infos"/>
       <hot-competition :list="competitions"/>
       <div class="bottom-container">
-        <div class="register-wrapper">
+        <div class="register-wrapper" v-if="!token">
           <van-button class="register-button" @click="onToRegister">马上注册，即送188竞豆</van-button>
         </div>
         <div class="home-back-top-wrapper">
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import HotQuiz from './components/hot-quiz'
 import TeamList from './components/team-list'
 import HotInformation from './components/hot-information'
@@ -65,6 +66,9 @@ export default {
       infos: [],
       competitions: []
     }
+  },
+  computed: {
+    ...mapGetters(['token'])
   },
   mounted() {
     this.query()
