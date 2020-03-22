@@ -69,6 +69,15 @@ export const getMyBetting = (data) => {
   })
 }
 
+// 我的房间
+export const getMyRoom = (data) => {
+  return request({
+    method: "get",
+    url: "/user/myRoom",
+    params: data
+  })
+}
+
 // 我的订单
 export const getMyOrder = (data) => {
   return request({

@@ -15,7 +15,7 @@
 </template>
 <script>
 import RoomList from "./components/room-list";
-import { getMyBetting } from "@/api/user";
+import { getMyRoom } from "@/api/user";
 export default {
   components: {
     RoomList
@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     query({ page, count }) {
-      return getMyBetting({ page, count })
+      return getMyRoom({ page, count })
         .then(res => res.rows)
         .catch(err => {
           console.log(err);

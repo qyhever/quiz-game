@@ -13,7 +13,7 @@
             <span>
               KPL
               <s>vs</s>
-               LPL
+              LPL
             </span>
           </p>
         </div>
@@ -21,20 +21,23 @@
       </li>
       <li>
         <div class="room_left">
-          <span>已投</span>
-          <span>QGhappy胜出（1.26）</span>
+          <span>共计投注</span>
+          <span>5000</span>
         </div>
         <div class="room_right">
-          <span>竞豆</span>
-          <span>5000</span>
+          <span>赛果</span>
+          <span>进行中...</span>
         </div>
       </li>
       <li>
         <div class="room_left">
-          <span>赛果</span>
-          <span>QGhappy胜出</span>
+          <span>盈亏情况</span>
+          <span>等待结算</span>
         </div>
-        <div class="room_right">预测成功</div>
+         <div class="room_right">
+          <span>房主收益</span>
+          <span>等待结算</span>
+        </div>
       </li>
     </ul>
   </div>
