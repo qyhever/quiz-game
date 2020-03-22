@@ -6,7 +6,7 @@ export const getCircleInfo = (data) => {
         method: 'get',
         url: '/circle/info',
         params: data,
-        requiredToken: false
+        requiredToken: data.type === 0
     })
 }
 
@@ -22,9 +22,9 @@ export const uploadFile = (data) => {
 // 圈子发布
 export const releaseCircle = (data) => {
     return request({
-        method: 'get',
+        method: 'post',
         url: '/circle/post',
-        params: data
+        data
     })
 }
 
@@ -36,11 +36,30 @@ export const releaseCircleDraft = (data) => {
         params: data
     })
 }
-// 圈子关注
+// 圈子关注列表
 export const circleFollow = (data) => {
     return request({
         method: 'get',
         url: '/circle/follow',
         params: data
+    })
+}
+
+// 圈子推荐列表
+export const circleRecommend = (data) => {
+    return request({
+        method: 'get',
+        url: '/circle/recommend',
+        params: data,
+        requiredToken: false
+    })
+}
+
+// 圈子关注
+export const addFollowCircle = (data) => {
+    return request({
+        method: 'post',
+        url: '/user/addFollowCircle',
+        data
     })
 }

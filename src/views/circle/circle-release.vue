@@ -20,7 +20,7 @@
       <!-- 定位 -->
       <div class="release_location">
         <van-icon name="location-o" size=".24rem" />
-        <span @click="Tmap">{{defaultVal}}</span>
+        <span>{{defaultVal}}</span>
       </div>
       <div class="release_emoji">
         <van-icon name="photo-o" size=".44rem" />
@@ -38,16 +38,6 @@
         </div>
       </div>
     </div>
-
-    <iframe
-      id="geoPage"
-      width="0"
-      height="0"
-      frameborder="0"
-      style="display:none;"
-      scrolling="no"
-      src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"
-    ></iframe>
   </div>
 </template>
 
@@ -64,11 +54,14 @@ export default {
       position: "",
       form: {
         content: "",
-        picture: "",
+        picture: [],
         lng: "",
         lat: ""
       }
     };
+  },
+  mounted() {
+    this.addressDetail();
   },
   methods: {
     changeEmoji(val) {
@@ -103,11 +96,13 @@ export default {
         this.$showModal("内容不得为空");
         return;
       }
+      this.form.picture = this.form.picture.toString();
       releaseCircle(this.form).then(res => {
-        this.$showModal(res.msg);
-        for (const key in this.form) {
-          this.form[key] = "";
-        }
+        this.$dialog({
+          message: res.msg
+        }).then(() => {
+          this.$router.push("/circle");
+        });
       });
     },
     onShowToggle(isShow) {
@@ -128,26 +123,24 @@ export default {
       return true;
     },
     afterRead(file) {
-      console.log(file);
-      uploadFile({ file: file.content }).then(res => {
-        console.log(res);
+      const param = new FormData();
+      param.append("file", file.file);
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      uploadFile(param, config).then(res => {
+        this.form.picture.push(res.data.realFileName);
       });
     },
     // 获取地理位置
-    Tmap() {
-      window.addEventListener(
-        "message",
-        event => {
-          console.log(event);
-          return;
-          // if (event.data !== undefined) {
-          //   this.position = event.data;
-          //   this.defaultVal = `${event.data.nation} ${event.data.province}`;
-          //   console.log(`位置${this.defaultVal}`);
-          // }
-        },
-        false
-      );
+    addressDetail() {
+      // var self = this;
+      const geolocation = new window.BMap.Geolocation();
+      geolocation.getCurrentPosition(r => {
+        this.defaultVal = `${r.address.province}${r.address.city}`;
+        this.form.lng = r.longitude;
+        this.form.lat = r.latitude;
+      });
     }
   }
 };
@@ -196,7 +189,7 @@ export default {
     border: none;
   }
   .release_location {
-    width: 1.44rem;
+    width: auto;
     display: flex;
     align-items: center;
     background: rgba(245, 245, 245, 1);

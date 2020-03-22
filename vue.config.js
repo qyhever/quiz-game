@@ -10,6 +10,7 @@ const externals = {
   // 'vue-router': 'VueRouter',
   // 'vuex': 'Vuex',
   // 'axios': 'axios'
+  "BMap": "BMap"
 }
 // 配置 cdn 资源链接
 const cdn = {

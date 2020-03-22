@@ -54,8 +54,9 @@ export const setDefaultAddress = id => {
 // 添加收货地址
 export const addAddress = data => {
   return request({
+    method: "post",
     url: '/mall/addAddress',
-    params: data
+    data
   })
 }
 

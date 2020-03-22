@@ -5,11 +5,11 @@
       <ul class="tab__nav" @touchmove.prevent.stop>
         <li
           class="tab__nav-item"
-          :class="{active: currentNav === item.value}"
-          v-for="(item, index) in navs"
+          :class="{active: currentNav === item.id}"
+          v-for="(item, index) in navList"
           :key="index"
-          @click="onNavToggle(item.value)"
-        >{{item.label}}</li>
+          @click="onNavToggle(item.id)"
+        >{{item.gameName}}</li>
       </ul>
       <div class="tab__panel-wrapper">
         <div class="tab__panel">
@@ -45,6 +45,12 @@ export default {
       currentNav: "1",
       show: false
     };
+  },
+  computed: {
+    navList() {
+      console.log(this.$store.state.app.gameList);
+      return this.$store.state.app.gameList;
+    }
   },
   methods: {
     onNavToggle(value) {

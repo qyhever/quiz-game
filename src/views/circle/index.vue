@@ -24,9 +24,9 @@
           <ul>
             <li class="recommend">{{typeVal}}</li>
             <li v-for="(item,index) in recommendList" :key="index">
-              <img :src="item.url" />
-              <p>{{item.name}}</p>
-              <span>关注</span>
+              <img src="../../assets/images/circle/chat_p01.png" />
+              <p>{{item.circleName}}</p>
+              <span @click="addFollowCircle(item)">关注</span>
             </li>
           </ul>
         </div>
@@ -43,7 +43,12 @@
 </template>
 
 <script>
-import { getCircleInfo } from "@/api/circle";
+import {
+  getCircleInfo,
+  circleFollow,
+  circleRecommend,
+  addFollowCircle
+} from "@/api/circle";
 import CircleList from "./components/circle-list";
 export default {
   components: {
@@ -65,30 +70,12 @@ export default {
       typeVal: "推荐",
       type: 1,
       pagingInfo: {},
-      recommendList: [
-        {
-          name: "王者赛事圈",
-          url: require("../../assets/images/circle/chat_p01.png")
-        },
-        {
-          name: "赛事直播",
-          url: require("../../assets/images/circle/chat_p02.png")
-        },
-        {
-          name: "LOL战场",
-          url: require("../../assets/images/circle/chat_p03.png")
-        },
-        {
-          name: "赛事直播",
-          url: require("../../assets/images/circle/chat_p02.png")
-        },
-        {
-          name: "LOL战场",
-          url: require("../../assets/images/circle/chat_p03.png")
-        }
-      ],
+      recommendList: [],
       circleList: []
     };
+  },
+  mounted() {
+    this.circleRecommend();
   },
   methods: {
     onSearch() {
@@ -103,11 +90,13 @@ export default {
         case 1:
           this.typeVal = "推荐";
           this.type = 1;
+          this.circleRecommend();
           this.query(this.pagingInfo);
           break;
         default:
           this.typeVal = "已关注";
           this.type = 0;
+          this.circleFollow();
           this.query(this.pagingInfo);
           break;
       }
@@ -119,6 +108,26 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+
+    // 圈子关注列表
+    circleFollow() {
+      circleFollow().then(res => {
+        this.recommendList = res.rows;
+      });
+    },
+
+    // 圈子推荐列表
+    circleRecommend() {
+      circleRecommend().then(res => {
+        this.recommendList = res.rows;
+      });
+    },
+    // 圈子关注
+    addFollowCircle(item) {
+      addFollowCircle({ circleId: item.circleId }).then(
+        // item.
+      );
     }
   }
 };
