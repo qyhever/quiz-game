@@ -35,7 +35,7 @@
               <van-field
                 v-model.trim="form.verifyCode"
                 clearable
-                maxlength="4"
+                maxlength="6"
                 placeholder="输入验证码"
                 :border="false"
               />
@@ -66,10 +66,9 @@
 
 <script>
   import { validator } from '@/utils/validate'
-  // userBindMail
-  import { sendMail } from '@/api/user'
+  import { sendMail, userBindMail } from '@/api/user'
   const MAIL_COUNT_TIME = 'mailCountTime'
-  const DEFAULT_COUNT = 10
+  const DEFAULT_COUNT = 60
   export default {
     data() {
       return {
@@ -106,23 +105,36 @@
       onBack() {
         this.$router.push('/')
       },
-      onSubmit() {
+      async onSubmit() {
         const { mail, verifyCode } = this.form
-        console.log({ mail, verifyCode })
-        this.$router.push('/mail-check-success')
+        try {
+          await userBindMail({
+            email: mail,
+            code: verifyCode
+          })
+          this.$toast.success({
+            mask: true,
+            forbidClick: true,
+            message: '邮箱验证成功'
+          })
+          setTimeout(() => {
+            this.$router.push('/mail-check-success')
+          }, 2000)
+        } catch (err) {
+          console.log(err)
+        }
       },
       // 发送验证码
       async onSendCode() {
         try {
-          const res = await sendMail(this.form.mail)
-          console.log(res)
+          await sendMail(this.form.mail)
+          this.count = DEFAULT_COUNT
+          // this.messageVisible = true
+          this.setCount()
+          window.localStorage.setItem(MAIL_COUNT_TIME, new Date().getTime())
         } catch (err) {
           console.log(err)
         }
-        // this.count = DEFAULT_COUNT
-        // this.messageVisible = true
-        // this.setCount()
-        // window.localStorage.setItem(MAIL_COUNT_TIME, new Date().getTime())
       },
       // 从本地取时间进行初始化
       initCount() {
@@ -193,6 +205,7 @@
   .form-item {
     height: 37px;
     display: flex;
+    align-items: center;
     margin-bottom: 13px;
   }
   .form-item__label {
@@ -217,11 +230,17 @@
   .form-item__content {
     flex: 1;
     /deep/ .van-cell {
-      padding: 6.5px 16px;
+      height: 37px;
+      line-height: 37px;
       border-radius: 5px;
       background-color: #F0F0F0;
       .van-field__control {
         @include input-placeholder(#A6A6A6);
+        height: 26px;
+        line-height: 26px;
+      }
+      .van-field__body {
+        height: 100%;
       }
     }
   }

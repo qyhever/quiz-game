@@ -9,9 +9,10 @@
       <div class="dialog-header">
         <van-icon class="dialog__icon--close" name="cross" @click="close" />
         <div class="header__avatar-wrapper">
-          <img class="header__avatar" src="@/assets/images/promote/avatar.png" alt="avatar">
+          <img v-if="user.avatar" class="header__avatar" :src="user.avatar" alt="avatar">
+          <img v-else src="@/assets/images/promote/avatar.png" class="header__avatar" alt="avatar">
         </div>
-        <div class="header__title">中竞网瑞雯</div>
+        <div class="header__title">{{user.nickname}}</div>
         <div class="header__content">
           <div class="header__text">这里真的太好玩了！注册即送188竞豆！</div>
           <div class="header__text">和我一起竞猜赢大奖吧！</div>
@@ -19,7 +20,7 @@
       </div>
       <div class="dialog-body">
         <com-longtap @longtap="handleSaveImage">
-          <div class="qrcode__image-wrapper"></div>
+          <vue-qrcode class="qrcode__image-wrapper" :value="invitationCode || ' '"></vue-qrcode>
         </com-longtap>
         <van-button class="dialog__button">长按图片保存至相册</van-button>
       </div>
@@ -28,7 +29,21 @@
 </template>
 
 <script>
+  import VueQrcode from 'vue-qrcode'
   export default {
+    props: {
+      user: {
+        type: Object,
+        default: () => ({})
+      },
+      invitationCode: {
+        type: String,
+        default: ''
+      }
+    },
+    components: {
+      VueQrcode
+    },
     data() {
       return {
         visible: false

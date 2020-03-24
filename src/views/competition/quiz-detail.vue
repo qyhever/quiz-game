@@ -11,9 +11,9 @@
           <div class="notice__left">
             <!-- TODO -->
             <img src="@/assets/images/my/user-p1.png" alt="user" class="notice__icon">
-            <div class="notice__title">竞豆池26659326</div>
+            <div class="notice__title">竞豆池{{match.beanNumber}}</div>
           </div>
-          <div>6099人参与</div>
+          <div>{{match.number}}人参与</div>
         </div>
         <div class="quiz-header">
           <div class="quiz-header-top">
@@ -41,7 +41,14 @@
                 <span>:</span>
                 <span>{{match.bScore}}</span>
               </div>
-              <van-button class="header__button">申请房主</van-button>
+              <!-- ownerStatus 0:未申请/1:已申请/2：已过期 -->
+              <van-button
+                v-if="isInFourDays(match.matchTime)"
+                class="header__button"
+                @click="onApplyHouseGroup"
+                :disabled="match.ownerStatus !== 0">
+                申请房主
+              </van-button>
             </div>
             <div class="header__team">
               <div class="header__image-wrapper">
@@ -61,7 +68,7 @@
             <div class="block-header__title">{{item.title}}</div>
           </div>
           <!-- TODO -->
-          <div class="block-header__right">6天后结束</div>
+          <div class="block-header__right">{{item.endTime | formatDateTime}} 结束</div>
         </div>
         <div class="block-body" v-if="item.bettings && item.bettings.length">
           <div
@@ -97,7 +104,8 @@
       </div>
       <div class="footer" v-if="user.id">
         <div class="footer__left">
-          <img src="@/assets/images/my/user-touxiang.png" alt="avatar" class="footer__avatar">
+          <img v-if="user.avatar" :src="user.avatar" alt="avatar" class="footer__avatar">
+          <img v-else src="@/assets/images/promote/avatar.png" alt="avatar" class="footer__avatar">
           <div class="footer__name">{{user.nickname}}</div>
         </div>
         <div class="footer__right">
@@ -167,6 +175,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getQuizDetail, bettingQuiz } from '@/api/home'
+  import { applyHouseGroup } from '@/api/user'
   export default {
     data() {
       return {
@@ -212,6 +221,7 @@
       ...mapGetters(['user', 'token'])
     },
     mounted() {
+      console.log(this.isInFourDays('2020-03-28 22:43'))
       if (!this.$route.query.id || !this.$route.query.matchInfoId) {
         this.$router.back()
       } else {
@@ -249,6 +259,20 @@
       },
       onRadioClick(value) {
         this.activeRadio = value
+      },
+      async onApplyHouseGroup() {
+        try {
+          const res = await applyHouseGroup(this.$route.query.matchInfoId)
+          console.log(res)
+          this.$toast.success({
+            mask: true,
+            forbidClick: true,
+            message: '申请成功'
+          })
+          this.match.ownerStatus = 1
+        } catch (err) {
+          console.log(err)
+        }
       },
       async onSubmit() {
         if (!this.token) {

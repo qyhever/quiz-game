@@ -25,7 +25,7 @@
             <img
               class="game-item__image"
               @load="onImageLoad"
-              :src="require(`@/assets/images/home/gameicon${item.gameIcon}`)"
+              :src="require(`@/assets/images/home/gameicon1.png`)"
               alt="game"
             />
           </div>

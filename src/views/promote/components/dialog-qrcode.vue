@@ -8,21 +8,36 @@
     <div class="dialog-header">
       <van-icon class="dialog__icon--close" name="cross" @click="close" />
       <div class="header__avatar-wrapper">
-        <img class="header__avatar" src="@/assets/images/promote/avatar.png" alt="avatar">
+        <img v-if="user.avatar" class="header__avatar" :src="user.avatar" alt="avatar">
+        <img v-else src="@/assets/images/promote/avatar.png" class="header__avatar" alt="avatar">
       </div>
       <div class="header__content">
-        <div class="header__title">中竞网瑞雯</div>
-        <div class="header__subtitle">ID:23569331311</div>
+        <div class="header__title">{{user.nickname}}</div>
+        <div class="header__subtitle">ID:{{user.id}}</div>
       </div>
     </div>
     <div class="dialog-body">
-      <div class="qrcode__image-wrapper"></div>
+      <vue-qrcode class="qrcode__image-wrapper" :value="url"></vue-qrcode>
     </div>
   </van-dialog>
 </template>
 
 <script>
+  import VueQrcode from 'vue-qrcode'
   export default {
+    props: {
+      user: {
+        type: Object,
+        default: () => ({})
+      },
+      url: {
+        type: String,
+        default: ''
+      }
+    },
+    components: {
+      VueQrcode
+    },
     data() {
       return {
         visible: false

@@ -6,7 +6,7 @@
           <img class="header-item__icon" src="@/assets/images/mall/bean.png" alt="bean">
           <div class="header-item__text">我的竞豆</div>
           <!-- TODO -->
-          <div class="header-item__count">888</div>
+          <div class="header-item__count">{{user.bean}}</div>
         </div>
         <div class="header-item" @click="onToBean">
           <img class="header-item__icon" src="@/assets/images/mall/exchange.png" alt="bean">
@@ -72,7 +72,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['token'])
+    ...mapGetters(['token', 'user'])
   },
   watch: {
     currentNav() {

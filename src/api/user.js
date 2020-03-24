@@ -203,3 +203,13 @@ export const userBindMail = data => {
     data
   })
 }
+// 申请房主
+export const applyHouseGroup = matchInfoId => {
+  return request({
+    method: 'post',
+    url: 'home/applyHouseOwner',
+    data: {
+      matchInfoId
+    }
+  })
+}

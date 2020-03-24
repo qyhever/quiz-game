@@ -202,6 +202,9 @@
     mounted() {
       this.queryVerifyCode()
       this.initCount()
+      if (this.$router.query.invitationCode) {
+        this.form.invitationCode = this.$router.query.invitationCode
+      }
     },
     methods: {
       async queryVerifyCode() {
@@ -249,8 +252,8 @@
             token: response.data,
             user: res.data
           }).then(() => {
-            this.$router.push('/')
-            // this.visible = true
+            // this.$router.push('/')
+            this.visible = true
           })
         } catch (err) {
           console.log(err)
@@ -361,11 +364,24 @@
   .form-item__content {
     flex: 1;
     /deep/ .van-cell {
+      // height: 37px;
+      // border-radius: 5px;
+      // background-color: #F0F0F0;
+      // .van-field__control {
+      //   @include input-placeholder(#A6A6A6, 12px);
+      // }
       height: 37px;
+      line-height: 37px;
+      padding: 0 16px;
       border-radius: 5px;
       background-color: #F0F0F0;
       .van-field__control {
         @include input-placeholder(#A6A6A6, 12px);
+        height: 26px;
+        line-height: 26px;
+      }
+      .van-field__body {
+        height: 100%;
       }
     }
   }

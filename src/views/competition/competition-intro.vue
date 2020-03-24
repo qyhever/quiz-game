@@ -3,7 +3,12 @@
     <div class="intro">
       <div class="intro-video-wrapper">
         <div class="intro-video">
-          <video class="video" controls src="@/assets/video/v.mp4"></video>
+          <video
+            class="video"
+            poster="@/assets/images/competition/video.png"
+            controls
+            src="@/assets/video/v.mp4">
+          </video>
         </div>
       </div>
       <div class="intro-header">
@@ -29,7 +34,8 @@
           <div class="item-body">
             <div class="item-body__left">
               <div class="item-body__team">
-                <div class="item-body__image-wrapper" @click="onToTeamDetail(item.ateamId)">
+                <!-- @click="onToTeamDetail(item.ateamId)" -->
+                <div class="item-body__image-wrapper">
                   <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
                 </div>
                 <p class="item-body__team-name">{{item.aName}}</p>
@@ -40,14 +46,15 @@
                 <span>{{item.bScore}}</span>
               </div>
               <div class="item-body__team">
-                <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bteamId)">
+                <!-- @click="onToTeamDetail(item.bteamId)" -->
+                <div class="item-body__image-wrapper">
                   <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
                 </div>
                 <p class="item-body__team-name">{{item.bName}}</p>
               </div>
             </div>
             <div class="item-body__right">
-              <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
+              <div class="item-body__right-title">{{item.number}}人竞猜</div>
               <!-- :disabled="item.status !== 0" -->
               <van-button
                 class="item-body__right-button"

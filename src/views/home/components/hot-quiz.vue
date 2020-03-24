@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="item-body__right">
-            <div class="item-body__right-title">{{item.beanNumber}}人竞猜</div>
+            <div class="item-body__right-title">{{item.number}}人竞猜</div>
             <van-button
               class="item-body__right-button"
               :class="getQuizStatusClass(item.status)"

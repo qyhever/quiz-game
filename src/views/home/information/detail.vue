@@ -13,7 +13,12 @@
         </div>
         <div class="detail__body">
           <div v-html="detail.content"></div>
-          <video class="video" controls src="@/assets/video/v.mp4"></video>
+          <video
+            class="video"
+            poster="@/assets/images/competition/video.png"
+            controls
+            src="@/assets/video/v.mp4">
+          </video>
         </div>
       </div>
     </com-page-navbar-wrapper>

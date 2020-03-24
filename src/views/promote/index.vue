@@ -9,7 +9,7 @@
       </div>
       <div class="commission-body">
         <div class="commission-body__text">999</div>
-        <van-button class="commission-body__button" @click="onToWithdrawal">立即提现</van-button>
+        <van-button class="commission-body__button" @click="onToWithdrawal">竞豆</van-button>
       </div>
     </div>
     <div class="com-gap"></div>
@@ -49,12 +49,13 @@
         
       </ul>
     </div>
-    <dialog-qrcode ref="dialogQrcode" />
-    <dialog-promote-code ref="dialogPromoteCode" />
+    <dialog-qrcode :user="user" :url="url" ref="dialogQrcode" />
+    <dialog-promote-code :user="user" :invitationCode="invitationCode" ref="dialogPromoteCode" />
   </com-page-navbar-wrapper>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import handleClipboard from '@/utils/clipboard'
   import DialogQrcode from './components/dialog-qrcode'
   import DialogPromoteCode from './components/dialog-promote-code'
@@ -65,15 +66,27 @@
     },
     data() {
       return {
-        info: {}
+        info: {},
+        invitationCode: '',
+        url: ''
       }
+    },
+    computed: {
+      ...mapGetters(['user'])
+    },
+    mounted() {
+      if (this.user.invitationCode) {
+        this.invitationCode = this.user.invitationCode
+      }
+      this.url = window.location.origin + `/#/register?invitationCode=${this.invitationCode}`
     },
     methods: {
       onToWithdrawal() {
-        this.$router.push('/withdrawal')
+        // this.$router.push('/withdrawal')
+        this.$router.push('/bean-detailed')
       },
       handleCopyLink($event) {
-        handleClipboard('test value', $event)
+        handleClipboard(this.url, $event)
           .then(() => {
             this.$dialog({
               message: '推广链接复制成功！',

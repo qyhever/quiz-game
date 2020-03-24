@@ -24,3 +24,9 @@ Vue.prototype.getQuizStatusClass = function(status) {
     2: 'button--end'
   }[status]
 }
+Vue.prototype.isInFourDays = function(date) {
+  const d = new Date(date)
+  const diffTime = Math.abs(new Date().getTime() - d.getTime()) / 1000
+  const fourDay = 60 * 60 * 24 * 4
+  return diffTime >= fourDay
+}

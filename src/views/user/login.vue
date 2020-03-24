@@ -251,13 +251,21 @@
     color: #4D4D4D;
   }
   .form-item__content {
+    height: 100%;
     flex: 1;
     /deep/ .van-cell {
-      padding: 6.5px 16px;
+      height: 100%;
+      line-height: 37px;
+      padding: 0 16px;
       border-radius: 0 5px 5px 0;
       background-color: #F0F0F0;
       .van-field__control {
         @include input-placeholder(#A6A6A6);
+        height: 26px;
+        line-height: 26px;
+      }
+      .van-field__body {
+        height: 100%;
       }
     }
   }

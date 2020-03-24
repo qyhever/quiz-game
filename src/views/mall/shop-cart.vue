@@ -60,7 +60,7 @@ export default {
     async query() {
       try {
         const res = await getCartData()
-        const list = res.rows || []
+        const list = res.data.cart || []
         this.list = list.map(item => Object.assign({}, item, {
           checked: false,
           count: 1

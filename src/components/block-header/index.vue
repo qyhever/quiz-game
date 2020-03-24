@@ -70,6 +70,7 @@ export default {
   }
   .block-header__angle {
     width: 20px;
+    margin-left: -1px;
     background: url("~@/assets/images/block-header-angle.png") no-repeat;
     background-size: 100%;
   }
