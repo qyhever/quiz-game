@@ -3,14 +3,14 @@
     <div class="circle_head">
       <img src="../../../assets/images/circle/chat_p01.png" alt />
       <div class="circle_info">
-        <p>英雄联盟那些事</p>
+        <p>{{item.nickname}}</p>
         <span>15分钟前</span>
       </div>
       <span class="circle_follow">关注</span>
     </div>
-    <div class="circle_body">
-      <div class="circle_text">LPL全明星周末11月30日海口冯小刚电影公社正式开幕</div>
-      <!-- <img src="../../../assets/images/circle/chat_p07.png" alt /> -->
+    <div class="circle_body" v-html="item.content">
+      <!-- <div class="circle_text">LPL全明星周末11月30日海口冯小刚电影公社正式开幕</div>
+      <img src="../../../assets/images/circle/chat_p07.png" alt />
       <ul class="img_list">
         <li>
           <img src="../../../assets/images/circle/chat_p08.png" alt />
@@ -27,7 +27,7 @@
         <li>
           <img src="../../../assets/images/circle/chat_p10.png" alt />
         </li>
-      </ul>
+      </ul> -->
     </div>
     <div class="circle_foot">
       <ul>
@@ -49,7 +49,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    item: {
+      type: Object,
+      default: () => ({})
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -98,6 +105,7 @@ export default {};
     }
   }
   .circle_body {
+    padding-top: 10px;
     .circle_text {
       margin: 0.29rem 0 0.4rem;
       font-size: 0.28rem;

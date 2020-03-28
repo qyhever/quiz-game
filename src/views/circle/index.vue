@@ -25,7 +25,7 @@
             <li class="recommend">{{typeVal}}</li>
             <li v-for="(item,index) in recommendList" :key="index">
               <img src="../../assets/images/circle/chat_p01.png" />
-              <p>{{item.circleName}}</p>
+              <p>{{item.nickname}}</p>
               <span @click="addFollowCircle(item)">关注</span>
             </li>
           </ul>
@@ -34,7 +34,7 @@
       <div class="tab__panel-wrapper">
         <com-loadmore :fetchData="query">
           <template slot-scope="{list}">
-            <circle-list v-for="(item,index) in list" :key="index" :item="index"></circle-list>
+            <circle-list v-for="(item,index) in list" :key="index" :item="item"></circle-list>
           </template>
         </com-loadmore>
       </div>
@@ -45,6 +45,7 @@
 <script>
 import {
   getCircleInfo,
+  getFollowCircleInfo,
   circleFollow,
   circleRecommend,
   addFollowCircle
@@ -103,11 +104,18 @@ export default {
     },
     query({ page, count }) {
       this.pagingInfo = { page, count };
-      return getCircleInfo({ page, count, type: this.type })
-        .then(res => res.rows)
-        .catch(err => {
-          console.log(err);
-        });
+      if (this.type === 1) {
+        return getCircleInfo({ page, count, type: this.type })
+            .then(res => res.rows)
+            .catch(err => {
+              console.log(err);
+            });
+      }
+      return getFollowCircleInfo({ page, count, type: this.type })
+            .then(res => res.rows)
+            .catch(err => {
+              console.log(err);
+            });
     },
 
     // 圈子关注列表
@@ -125,9 +133,12 @@ export default {
     },
     // 圈子关注
     addFollowCircle(item) {
-      addFollowCircle({ circleId: item.circleId }).then(
-        // item.
-      );
+      addFollowCircle({ circleId: item.circleId }).then(() => {
+        this.$toast.success({
+          forbidClick: true,
+          message: '关注成功'
+        })
+      });
     }
   }
 };

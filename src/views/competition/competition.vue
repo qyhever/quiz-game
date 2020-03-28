@@ -3,7 +3,7 @@
     <!-- 轮播区域 -->
     <van-swipe class="swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(item, index) in banners" :key="index">
-        <img class="swipe-item-image" :src="require(`@/assets/images/home/banner${item.picture}`)" alt="swipe">
+        <img class="swipe-item-image" :src="item.pic" alt="swipe">
       </van-swipe-item>
     </van-swipe>
     <!-- tab nav区域 -->
@@ -30,7 +30,7 @@
           <img class="item__status" src="@/assets/images/competition/going.png" alt="status">
           <!-- <img class="item__status" src="@/assets/images/competition/over.png" alt="status"> -->
           <div class="item__image-wrapper">
-            <img class="item__image" :src="require(`@/assets/images/home/competition${item.picture}`)" alt="competition">
+            <img class="item__image" :src="item.picture" alt="competition">
           </div>
         </div>
         <div class="item__footer">
@@ -128,6 +128,7 @@ export default {
 
 <style lang="scss" scoped>
   // swipe
+  .swipe,
   .swipe .van-swipe-item {
     height: 40vw;
   }
@@ -165,7 +166,7 @@ export default {
     color: $color-text-secondary;
     &.active {
       color: #000;
-      font-size: $font-size-medium;
+      // font-size: $font-size-medium;
       font-weight: 700;
       &:after {
         width: 100%;

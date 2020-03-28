@@ -6,7 +6,7 @@
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
-              <img class="item-header__image" :src="require('@/assets/images/home/gameicon1.png')" alt="game">
+              <img class="item-header__image" :src="item.picture" alt="game">
             </div>
             <div class="item-header__title">{{item.matchName}}</div>
           </div>
@@ -16,8 +16,7 @@
           <div class="item-body__left">
             <div class="item-body__team">
               <div class="item-body__image-wrapper" @click="onToTeamDetail(item.aTeamId)">
-                <!-- TODO aicon 1001.PNG -->
-                <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
+                <img class="item-body__image" :src="item.aIcon" alt="team">
               </div>
               <p class="item-body__team-name">{{item.aName}}</p>
             </div>
@@ -28,8 +27,7 @@
             </div>
             <div class="item-body__team">
               <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bTeamId)">
-                <!-- TODO bicon 114.PNG -->
-                <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
+                <img class="item-body__image" :src="item.bIcon" alt="team">
               </div>
               <p class="item-body__team-name">{{item.bName}}</p>
             </div>

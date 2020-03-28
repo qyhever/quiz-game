@@ -447,7 +447,7 @@
     margin-right: rem2px(30);
     margin-bottom: rem2px(30);
     background-color: #FFEBEB;
-    border: 2px solid #FF4F4F;
+    // border: 2px solid #FF4F4F;
     border-radius: 2px;
     &.small {
       width: 28.8%;

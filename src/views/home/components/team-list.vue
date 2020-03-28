@@ -13,8 +13,7 @@
             <div class="item van-hairline--bottom" @click="onToTeamDetail(team)">
               <div class="item__team">
                 <div class="item__team-image-wrapper">
-                  <!-- TODO combatTeamIcon 1001.PNG -->
-                  <img class="item__team-image" src="@/assets/images/home/team.png" alt="team">
+                  <img class="item__team-image" :src="team.combatTeamIcon" alt="team">
                 </div>
                 <p class="item__text">{{team.combatTeamName}}</p>
               </div>

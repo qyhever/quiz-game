@@ -15,11 +15,11 @@
         <div class="intro__title">{{match.matchName}}</div>
         <div class="intro-header__right">
           <div class="intro-header__text">{{match.gameName}}</div>
-          <img class="intro-header__icon" src="@/assets/images/home/icon2.png" alt="game">
+          <img class="intro-header__icon" :src="match.gameIcon" alt="game">
         </div>
       </div>
       <com-block-header title="最新竞猜" control-text="更多" @click-right="onToCompetition"/>
-      <div class="quiz-list">
+      <div class="quiz-list" v-if="guesses.length">
         <div class="quiz-item" v-for="(item, index) in guesses" :key="index">
           <div class="item-header">
             <div class="item-header__left">
@@ -66,8 +66,9 @@
           </div>
         </div>
       </div>
+      <div v-else class="com-empty">暂无数据</div>
       <com-block-header title="参赛战队" :right-visible="false"/>
-      <div class="team-list">
+      <div class="team-list" v-if="teams.length">
         <div class="team-item" v-for="(item, index) in teams" :key="index">
           <div class="team-item__image-wrapper" @click="onToTeamDetail(item.id)">
             <!-- TODO combatTeamIcon -->
@@ -76,6 +77,7 @@
           <div class="team-item__footer">{{item.combatTeamName}}</div>
         </div>
       </div>
+      <div v-else class="com-empty">暂无数据</div>
       <com-block-header title="相关资讯" control-text="更多" @click-right="onToInformation"/>
       <div class="info-list" v-if="infos.length">
         <div class="info-item" v-for="(item, index) in infos" :key="index" @click="onToInformationDetail(item)">

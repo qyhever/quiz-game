@@ -4,7 +4,7 @@
     <div class="quiz-header">
       <div class="header__team">
         <div class="header__image-wrapper">
-          <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+          <img class="com-image" :src="hotQuiz.aIcon" alt="team">
         </div>
         <p class="header__team-name">{{hotQuiz.aName}}</p>
       </div>
@@ -24,7 +24,7 @@
       </div>
       <div class="header__team">
         <div class="header__image-wrapper">
-          <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+          <img class="com-image" :src="hotQuiz.bIcon" alt="team">
         </div>
         <p class="header__team-name">{{hotQuiz.bName}}</p>
       </div>
@@ -51,8 +51,7 @@
         <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
-              <!-- TODO picture -->
-              <img class="item-header__image" src="@/assets/images/home/gameicon1.png" alt="game">
+              <img class="item-header__image" :src="item.picture" alt="game">
             </div>
             <div class="item-header__title">{{item.matchName}}</div>
           </div>
@@ -62,8 +61,7 @@
           <div class="item-body__left">
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
-                <!-- TODO aicon -->
-                <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
+                <img class="item-body__image" :src="item.aIcon" alt="team">
               </div>
               <p class="item-body__team-name">{{item.aName}}</p>
             </div>
@@ -75,7 +73,7 @@
             <div class="item-body__team">
               <div class="item-body__image-wrapper">
                 <!-- TODO aicon -->
-                <img class="item-body__image" src="@/assets/images/home/team.png" alt="team">
+                <img class="item-body__image" :src="item.bIcon" alt="team">
               </div>
               <p class="item-body__team-name">{{item.bName}}</p>
             </div>
@@ -254,7 +252,7 @@ export default {
     color: $color-text-secondary;
     &.active {
       color: #000;
-      font-size: $font-size-medium;
+      // font-size: $font-size-medium;
       font-weight: 700;
       &:after {
         width: 100%;

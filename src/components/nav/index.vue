@@ -92,7 +92,7 @@ export default {
     color: $color-text-secondary;
     &.active {
       color: #000;
-      font-size: $font-size-base;
+      // font-size: $font-size-base;
       font-weight: 700;
       &:after {
         width: 100%;

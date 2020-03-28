@@ -4,7 +4,7 @@
     <div class="info-list">
       <div class="item" v-for="(item, index) in list" :key="index" @click="onToInformationDetail(item)">
         <div class="item__cover-wrapper">
-          <img class="item__cover" :src="require(`@/assets/images/home/information1.png`)" alt="cover">
+          <img class="item__cover" :src="item.picture" alt="cover">
         </div>
         <div class="item__content">
           <div class="item__title">{{item.title}}</div>

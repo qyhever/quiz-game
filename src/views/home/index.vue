@@ -13,7 +13,7 @@
         <van-swipe-item v-for="(item, index) in banners" :key="index">
           <img
             class="swipe-item-image"
-            :src="require(`@/assets/images/home/banner${item.picture}`)"
+            :src="item.pic"
             alt="swipe"
           />
         </van-swipe-item>
@@ -25,7 +25,7 @@
             <img
               class="game-item__image"
               @load="onImageLoad"
-              :src="require(`@/assets/images/home/gameicon1.png`)"
+              :src="item.gameIcon"
               alt="game"
             />
           </div>
@@ -102,7 +102,7 @@ export default {
         .then(data => {
           this.$loading.close();
           const [banners, games, quizs, infos, competitions] = data;
-          this.banners = banners.concat(banners).concat(banners);
+          this.banners = banners;
           this.games = games;
           this.quizs = quizs;
           this.infos = infos;
@@ -202,9 +202,14 @@ export default {
     right: 0;
     bottom: 22px;
     padding: 0.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .game-item__image {
-    height: 100%;
+    width: 1.2rem;
+    height: 1.2rem;
+    object-fit: cover;
   }
   .game-item__title {
     position: absolute;

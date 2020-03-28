@@ -1,12 +1,20 @@
 import request from '@/utils/request'
 
-// 圈子动态
+// 所有圈子动态
 export const getCircleInfo = (data) => {
     return request({
         method: 'get',
         url: '/circle/info',
         params: data,
-        requiredToken: data.type === 0
+        requiredToken: false
+    })
+}
+// 关注圈子动态
+export const getFollowCircleInfo = (data) => {
+    return request({
+        method: 'get',
+        url: '/circle/followInfo',
+        params: data
     })
 }
 
@@ -49,7 +57,7 @@ export const circleFollow = (data) => {
 export const circleRecommend = (data) => {
     return request({
         method: 'get',
-        url: '/circle/recommend',
+        url: '/circle/all',
         params: data,
         requiredToken: false
     })
