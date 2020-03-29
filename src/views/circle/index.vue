@@ -24,7 +24,7 @@
           <ul>
             <li class="recommend">{{typeVal}}</li>
             <li v-for="(item,index) in recommendList" :key="index">
-              <img src="../../assets/images/circle/chat_p01.png" />
+              <img :src="item.avatar" />
               <p>{{item.nickname}}</p>
               <span @click="addFollowCircle(item)">关注</span>
             </li>
@@ -106,16 +106,16 @@ export default {
       this.pagingInfo = { page, count };
       if (this.type === 1) {
         return getCircleInfo({ page, count, type: this.type })
-            .then(res => res.rows)
-            .catch(err => {
-              console.log(err);
-            });
+          .then(res => res.rows)
+          .catch(err => {
+            console.log(err);
+          });
       }
       return getFollowCircleInfo({ page, count, type: this.type })
-            .then(res => res.rows)
-            .catch(err => {
-              console.log(err);
-            });
+        .then(res => res.rows)
+        .catch(err => {
+          console.log(err);
+        });
     },
 
     // 圈子关注列表
@@ -136,8 +136,8 @@ export default {
       addFollowCircle({ circleId: item.circleId }).then(() => {
         this.$toast.success({
           forbidClick: true,
-          message: '关注成功'
-        })
+          message: "关注成功"
+        });
       });
     }
   }
@@ -229,6 +229,7 @@ export default {
         img {
           width: 1.14rem;
           height: 1.14rem;
+          border-radius: 50%;
         }
         p {
           margin: 0.18rem 0 0.23rem;

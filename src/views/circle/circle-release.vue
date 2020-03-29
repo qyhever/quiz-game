@@ -129,7 +129,7 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       uploadFile(param, config).then(res => {
-        this.form.picture.push(res.data.realFileName);
+        this.form.picture.push(res.data.picture);
       });
     },
     // 获取地理位置

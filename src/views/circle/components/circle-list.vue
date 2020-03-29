@@ -1,47 +1,35 @@
 <template>
   <div class="circle_content">
     <div class="circle_head">
-      <img src="../../../assets/images/circle/chat_p01.png" alt />
+      <img :src="item.avatar" alt />
       <div class="circle_info">
         <p>{{item.nickname}}</p>
-        <span>15分钟前</span>
+        <span>{{item.before}}</span>
       </div>
       <span class="circle_follow">关注</span>
     </div>
-    <div class="circle_body" v-html="item.content">
-      <!-- <div class="circle_text">LPL全明星周末11月30日海口冯小刚电影公社正式开幕</div>
-      <img src="../../../assets/images/circle/chat_p07.png" alt />
-      <ul class="img_list">
-        <li>
-          <img src="../../../assets/images/circle/chat_p08.png" alt />
+    <div class="circle_body">
+      <div class="circle_text" v-if="item.content">{{item.content}}</div>
+      <img v-if="item.picture&&item.picture.split(',').length ===1" :src="item.picture" alt />
+      <ul v-else class="img_list">
+        <li v-for="(item,index) in item.picture.split(',')" :key="index">
+          <img :src="item" alt />
         </li>
-        <li>
-          <img src="../../../assets/images/circle/chat_p09.png" alt />
-        </li>
-        <li>
-          <img src="../../../assets/images/circle/chat_p10.png" alt />
-        </li>
-        <li>
-          <img src="../../../assets/images/circle/chat_p09.png" alt />
-        </li>
-        <li>
-          <img src="../../../assets/images/circle/chat_p10.png" alt />
-        </li>
-      </ul> -->
+      </ul>
     </div>
     <div class="circle_foot">
       <ul>
         <li>
           <van-icon name="share" size="0.32rem" />
-          <span>36</span>
+          <span>{{item.shareTotal || 0}}</span>
         </li>
         <li>
           <van-icon name="chat-o" size="0.32rem" />
-          <span>1020</span>
+          <span>{{item.commentTotal || 0}}</span>
         </li>
         <li>
           <van-icon name="good-job-o" size="0.32rem" />
-          <span>3020</span>
+          <span>{{item.zanTotal || 0}}</span>
         </li>
       </ul>
     </div>

@@ -1,8 +1,8 @@
 <template>
   <div class="team_content">
-    <img src="../../../assets/images/icon_g0131.png" alt />
+    <img :src="item.combatTeamIcon" alt />
     <div class="team_name van-multi-ellipsis--l2">{{item.combatTeamName}}</div>
-    <span class="team_count">12</span>
+    <span class="team_count">{{item.combatTeamId}}</span>
   </div>
 </template>
 
