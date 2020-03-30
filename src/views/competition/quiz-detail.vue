@@ -9,7 +9,6 @@
       <div class="quiz-header-wrapper">
         <div class="notice">
           <div class="notice__left">
-            <!-- TODO -->
             <img src="@/assets/images/my/user-p1.png" alt="user" class="notice__icon">
             <div class="notice__title">竞豆池{{match.beanNumber}}</div>
           </div>
@@ -19,8 +18,7 @@
           <div class="quiz-header-top">
             <div class="quiz-header-top__left">
               <div class="quiz-header-top__icon">
-                <!-- TODO picture -->
-                <img class="quiz-header-top__image" src="@/assets/images/home/gameicon1.png" alt="game">
+                <img class="quiz-header-top__image" :src="match.picture" alt="game">
               </div>
               <div class="quiz-header-top__title">{{match.matchName}}</div>
             </div>
@@ -29,13 +27,12 @@
           <div class="quiz-header-body">
             <div class="header__team">
               <div class="header__image-wrapper">
-                <!-- TODO aicon -->
-                <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+                <img class="com-image" :src="match.aIcon" alt="team">
               </div>
               <p class="header__team-name">{{match.aName}}</p>
             </div>
             <div class="header__score">
-              <div class="header__status">比赛进行中</div>
+              <div class="header__status">{{match.status | filterMatchStatus}}</div>
               <div class="header__score-text">
                 <span>{{match.aScore}}</span>
                 <span>:</span>
@@ -52,8 +49,7 @@
             </div>
             <div class="header__team">
               <div class="header__image-wrapper">
-                <!-- TODO bicon -->
-                <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+                <img class="com-image" :src="match.bIcon" alt="team">
               </div>
               <p class="header__team-name">{{match.bName}}</p>
             </div>

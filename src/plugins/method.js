@@ -2,7 +2,7 @@
  * global methods
  */
 import { formatDate, formatDateTime } from '@/utils/date'
-import { isNumber } from '@/utils/type'
+import { isNumber, isString } from '@/utils/type'
 import Loading from '@/components/loading'
 import Vue from 'vue'
 Vue.prototype.formatDate = formatDate
@@ -29,4 +29,10 @@ Vue.prototype.isInFourDays = function(date) {
   const diffTime = Math.abs(new Date().getTime() - d.getTime()) / 1000
   const fourDay = 60 * 60 * 24 * 4
   return diffTime >= fourDay
+}
+Vue.prototype.getHtmlContent = function(str) {
+  if (!isString(str)) {
+    return ''
+  }
+  return str.replace(/<img/ig, '<img class="img-size"')
 }

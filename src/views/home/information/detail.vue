@@ -12,13 +12,7 @@
           </div>
         </div>
         <div class="detail__body">
-          <div v-html="detail.content"></div>
-          <video
-            class="video"
-            poster="@/assets/images/competition/video.png"
-            controls
-            src="@/assets/video/v.mp4">
-          </video>
+          <div v-html="getHtmlContent(detail.content)"></div>
         </div>
       </div>
     </com-page-navbar-wrapper>
@@ -54,7 +48,9 @@
 
 <style lang="scss" scoped>
   .detail {
+    height: 100%;
     padding: 0 16px;
+    overflow-y: auto;
   }
   .detail__header {
     padding-top: 10px;

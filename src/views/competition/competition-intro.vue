@@ -55,7 +55,7 @@
             </div>
             <div class="item-body__right">
               <div class="item-body__right-title">{{item.number}}人竞猜</div>
-              <!-- :disabled="item.status !== 0" -->
+              <!-- :disabled="item.status !== 1" -->
               <van-button
                 class="item-body__right-button"
                 :class="getQuizStatusClass(item.status || 0)"

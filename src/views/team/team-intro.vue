@@ -3,8 +3,7 @@
     <div class="intro">
       <div class="intro-header">
         <div class="header__image-wrapper">
-          <!-- TODO combatTeamIcon -->
-          <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+          <img v-if="intro.combatTeamIcon" class="com-image" :src="intro.combatTeamIcon" alt=" ">
         </div>
         <div class="header__content">
           <div class="header__title">{{intro.fullName}}</div>
@@ -78,7 +77,8 @@ export default {
       try {
         const res = await getTeamIntro(this.$route.query.id)
         this.intro = res.data[0] || {}
-        this.memberIntro = this.intro.players[0].introduce
+        const players = this.intro.players || []
+        this.memberIntro = players[0] && players[0].introduce
       } catch (err) {
         console.log(err)
       }

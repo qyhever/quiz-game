@@ -21,8 +21,7 @@
       <div class="team-list" v-if="teams.length">
         <div class="team-item" v-for="(item, index) in teams" :key="index" @click="onToIntro(item)">
           <div class="team-item__image-wrapper">
-            <!-- TODO combatTeamIcon -->
-            <img class="com-image" src="@/assets/images/home/team.png" alt="team">
+            <img class="com-image" v-if="item.combatTeamIcon" :src="item.combatTeamIcon" alt="team">
           </div>
           <div class="team-item__footer">{{item.combatTeamName}}</div>
         </div>
@@ -144,7 +143,6 @@ export default {
     color: $color-text-secondary;
     &.active {
       color: #F95E5F;
-      font-size: $font-size-medium;
       font-weight: 700;
       &:after {
         width: 100%;

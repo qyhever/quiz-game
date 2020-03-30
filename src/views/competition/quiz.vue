@@ -17,7 +17,7 @@
         <van-button
           class="header__button"
           :class="getQuizStatusClass(hotQuiz.status)"
-          :disabled="hotQuiz.status !== 0"
+          :disabled="hotQuiz.status !== 1"
           @click="onToQuizDetail(hotQuiz)">
           {{hotQuiz.status | filterQuizStatus}}
         </van-button>
@@ -60,7 +60,7 @@
         <div class="item-body">
           <div class="item-body__left">
             <div class="item-body__team">
-              <div class="item-body__image-wrapper">
+              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.aTeamId)">
                 <img class="item-body__image" :src="item.aIcon" alt="team">
               </div>
               <p class="item-body__team-name">{{item.aName}}</p>
@@ -71,8 +71,7 @@
               <span>{{item.bScore}}</span>
             </div>
             <div class="item-body__team">
-              <div class="item-body__image-wrapper">
-                <!-- TODO aicon -->
+              <div class="item-body__image-wrapper" @click="onToTeamDetail(item.bTeamId)">
                 <img class="item-body__image" :src="item.bIcon" alt="team">
               </div>
               <p class="item-body__team-name">{{item.bName}}</p>
@@ -83,7 +82,7 @@
             <van-button
               class="item-body__right-button"
               :class="getQuizStatusClass(item.status)"
-              :disabled="item.status !== 0"
+              :disabled="item.status !== 1"
               @click="onToQuizDetail(item)">
               {{item.status | filterQuizStatus}}
             </van-button>
@@ -183,6 +182,9 @@ export default {
     },
     onToIntro({id}) {
       this.$router.push(`/competition-intro?id=${id}`)
+    },
+    onToTeamDetail(id) {
+      this.$router.push(`/team-intro?id=${id}`)
     }
   }
 }

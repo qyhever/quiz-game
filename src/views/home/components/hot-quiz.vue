@@ -37,7 +37,7 @@
             <van-button
               class="item-body__right-button"
               :class="getQuizStatusClass(item.status)"
-              :disabled="item.status !== 0"
+              :disabled="item.status !== 1"
               @click="onToQuizDetail(item)">
               {{item.status | filterQuizStatus}}
             </van-button>

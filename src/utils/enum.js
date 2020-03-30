@@ -21,7 +21,16 @@ function setEnumAndArray(list) {
 }
 
 export const enumQuizStatus = setEnumAndArray([
-  {k: 0, v: '参与竞猜'},
-  {k: 1, v: '结算中'},
-  {k: 2, v: '已结束'}
+  {k: 0, v: '未开始'},
+  {k: 1, v: '参与竞猜'}, // 预测中
+  {k: 2, v: '比赛中'},
+  {k: 3, v: '已结算'},
+  {k: 4, v: '已关闭'}
+])
+export const enumMatchStatus = setEnumAndArray([
+  {k: 0, v: '未开始'},
+  {k: 1, v: '预测中'},
+  {k: 2, v: '比赛中'},
+  {k: 3, v: '已结算'},
+  {k: 4, v: '已关闭'}
 ])
