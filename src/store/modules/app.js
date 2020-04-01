@@ -1,14 +1,10 @@
 const state = {
-  orderInfo: {},
-  gameList: []
+  orderInfo: {}
 }
 
 const mutations = {
   SET_ORDER_INFO(state, data) {
     state.orderInfo = data
-  },
-  SET_GAME_LIST(state, data) {
-    state.gameList = data
   }
 }
 

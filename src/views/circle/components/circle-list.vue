@@ -9,9 +9,9 @@
       <span class="circle_follow">关注</span>
     </div>
     <div class="circle_body">
-      <div class="circle_text" v-if="item.content">{{item.content}}</div>
+      <div class="circle_text" v-if="item.content" v-html="item.content"></div>
       <img v-if="item.picture&&item.picture.split(',').length ===1" :src="item.picture" alt />
-      <ul v-else class="img_list">
+      <ul v-else-if="item.picture&&item.picture.split(',').length >=1" class="img_list">
         <li v-for="(item,index) in item.picture.split(',')" :key="index">
           <img :src="item" alt />
         </li>

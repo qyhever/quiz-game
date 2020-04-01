@@ -2,7 +2,7 @@
   <div class="player_content">
      <img src="../../../assets/images/player-touxiang.png" alt="">
      <div class="player_message van-multi-ellipsis--l2">
-         <p>{{item.playerName}}</p>
+         <p>{{111}}</p>
          <p>QGhappy战队现役选手</p>
      </div>
      <span class="player_count">12</span>

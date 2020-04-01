@@ -6,10 +6,10 @@
         :class="{active:currentNav==index}"
         v-for="(item,index) in meunList"
         :key="index"
-         @click="onNavToggle(index)"
+        @click="onNavToggle(index)"
       >
-        <img :src="item.url" alt />
-        <span>{{item.name}}</span>
+        <img :src="item.gameIcon" alt />
+        <span>{{item.gameName}}</span>
       </li>
     </ul>
   </div>
@@ -19,30 +19,18 @@
 export default {
   data() {
     return {
-      meunList: [
-        {
-          name: "英雄联盟",
-          url: require("../../../assets/images/tubiao_lol.png")
-        },
-        {
-          name: "王者荣耀",
-          url: require("../../../assets/images/tubiao_wangzhe.png")
-        },
-        {
-          name: "DOTA",
-          url: require("../../../assets/images/tubiao_dota.png")
-        },
-        {
-          name: "守望先锋",
-          url: require("../../../assets/images/tubiao_sw.png")
-        }
-      ],
       currentNav: 0
     };
+  },
+  computed: {
+    meunList() {
+      return JSON.parse(window.sessionStorage.getItem("gameList"));
+    }
   },
   methods: {
     onNavToggle(value) {
       this.currentNav = value;
+      this.$emit("sendData", value);
     }
   }
 };

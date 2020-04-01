@@ -22,7 +22,7 @@
       </div>
     </div>
     <van-popup v-model="show" position="left" :style="{ width: '3.6rem',height:'100%' }">
-      <game-meun></game-meun>
+      <game-meun @sendData="getData"></game-meun>
     </van-popup>
   </com-page-navbar-wrapper>
 </template>
@@ -37,30 +37,38 @@ export default {
   },
   data() {
     return {
-      navs: [
-        { label: "全部", value: "" },
-        { label: "英雄联盟", value: "1" },
-        { label: "王者荣耀", value: "2" }
-      ],
-      currentNav: "1",
+      pagingInfo: {},
+      currentNav: "",
       show: false
     };
   },
   computed: {
     navList() {
-      console.log(this.$store.state.app.gameList);
-      return this.$store.state.app.gameList;
+      const arr = JSON.parse(window.sessionStorage.getItem("gameList"));
+      arr.unshift({ gameName: "全部", id: "" });
+      return arr.slice(0, 4);
     }
   },
   methods: {
     onNavToggle(value) {
       this.currentNav = value;
+      this.query(this.pagingInfo);
       if (!value) {
         this.show = true;
       }
     },
+    getData(value) {
+      this.currentNav = value;
+      this.query(this.pagingInfo);
+      this.show = false;
+    },
     query({ page, count }) {
-      return getFollowMatch({ page, count })
+      this.pagingInfo = { page, count };
+      return getFollowMatch({
+        pageNum: this.pagingInfo.page,
+        pageSize: this.pagingInfo.count,
+        gameId: this.currentNav
+      })
         .then(res => res.rows)
         .catch(err => {
           console.log(err);

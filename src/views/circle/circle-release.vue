@@ -66,6 +66,7 @@ export default {
   methods: {
     changeEmoji(val) {
       console.log(val);
+      this.form.content = val.url;
     },
     onToBack() {
       for (const key in this.form) {

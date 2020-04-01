@@ -105,13 +105,21 @@ export default {
     query({ page, count }) {
       this.pagingInfo = { page, count };
       if (this.type === 1) {
-        return getCircleInfo({ page, count, type: this.type })
+        return getCircleInfo({
+          pageNum: this.pagingInfo.page,
+          pageSize: this.pagingInfo.count,
+          type: this.type
+        })
           .then(res => res.rows)
           .catch(err => {
             console.log(err);
           });
       }
-      return getFollowCircleInfo({ page, count, type: this.type })
+      return getFollowCircleInfo({
+        pageNum: this.pagingInfo.page,
+        pageSize: this.pagingInfo.count,
+        type: this.type
+      })
         .then(res => res.rows)
         .catch(err => {
           console.log(err);
@@ -133,7 +141,7 @@ export default {
     },
     // 圈子关注
     addFollowCircle(item) {
-      addFollowCircle({ circleId: item.circleId }).then(() => {
+      addFollowCircle({ followUserId: item.id }).then(() => {
         this.$toast.success({
           forbidClick: true,
           message: "关注成功"
