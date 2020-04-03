@@ -14,7 +14,15 @@
         </div>
       </div>
       <div class="com-gap"></div>
-      <div class="tab-nav">
+      <van-tabs v-model="currentNav" class="com-tab-nav">
+        <van-tab
+          v-for="(item, index) in navs"
+          :key="index"
+          :name="item.value"
+          :title="item.label"
+          />
+      </van-tabs>
+      <!-- <div class="tab-nav">
         <div
           class="tab-nav-item"
           :class="{active: currentNav === item.value}"
@@ -23,7 +31,7 @@
           @click="onNavToggle(item.value)">
           {{item.label}}
         </div>
-      </div>
+      </div> -->
       <div class="goods-wrapper">
         <div class="goods-list">
           <com-loadmore ref="scroll" :fetchData="fetchData">
@@ -31,8 +39,7 @@
               <div class="goods-item" v-for="(item, index) in list" :key="index" @click="onToGoodsDetail(item)">
                 <div class="goods-item__image-container">
                   <div class="goods-item__image-wrapper">
-                    <!-- TODO picture -->
-                    <img class="com-image" src="@/assets/images/mall/goods.png" alt="goods">
+                    <img class="com-image" v-if="item.picture" :src="item.picture" alt="goods">
                   </div>
                 </div>
                 <div class="goods-item__footer">

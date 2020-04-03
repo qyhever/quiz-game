@@ -6,7 +6,15 @@
         <div class="tab-nav__icon-wrapper">
           <img class="com-image" src="@/assets/images/competition/menu-active.png" alt="menu">
         </div>
-        <div class="tab-nav">
+        <van-tabs v-model="activeNav" class="com-tab-nav">
+          <van-tab
+            v-for="(item, index) in navs"
+            :key="index"
+            :name="item.value"
+            :title="item.label"
+            />
+        </van-tabs>
+        <!-- <div class="tab-nav">
           <div
             class="tab-nav-item"
             :class="{active: activeNav === item.value}"
@@ -15,7 +23,7 @@
             @click="onNavToggle(item.value)">
             {{item.label}}
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- team -->
       <div class="team-list" v-if="teams.length">
@@ -117,7 +125,7 @@ export default {
   // tab
   .tab-nav-wrapper {
     margin-top: 15px;
-    padding: 0 17px;
+    padding-left: 17px;
     display: flex;
     align-items: center;
     border-bottom: 2px solid #F5F5F5;
@@ -125,6 +133,9 @@ export default {
   .tab-nav__icon-wrapper {
     width: 22px;
     height: 22px;
+  }
+  .com-tab-nav {
+    flex: 1;
   }
   .tab-nav {
     flex: 1;

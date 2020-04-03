@@ -32,7 +32,7 @@
         </div>
       </cube-scroll>
       <div class="tab__panel-wrapper">
-        <com-loadmore :fetchData="query">
+        <com-loadmore :fetchData="query" ref="scroll">
           <template slot-scope="{list}">
             <circle-list v-for="(item,index) in list" :key="index" :item="item"></circle-list>
           </template>
@@ -122,6 +122,7 @@ export default {
     circleFollow() {
       circleFollow().then(res => {
         this.recommendList = res.rows;
+        this.$refs.scroll.refresh()
       });
     },
 
@@ -129,6 +130,7 @@ export default {
     circleRecommend() {
       circleRecommend().then(res => {
         this.recommendList = res.rows;
+        this.$refs.scroll.refresh()
       });
     },
     // 圈子关注

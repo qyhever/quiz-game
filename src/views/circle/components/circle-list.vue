@@ -13,7 +13,7 @@
       <img v-if="item.picture&&item.picture.split(',').length ===1" :src="item.picture" alt />
       <ul v-else class="img_list">
         <li v-for="(item,index) in item.picture.split(',')" :key="index">
-          <img :src="item" alt />
+          <img v-if="item" :src="item" alt />
         </li>
       </ul>
     </div>

@@ -39,6 +39,17 @@
   text-align: center;
   color: $color-text-secondary;
 }
+.com-tab-nav {
+  .van-tabs__wrap {
+    height: 40px;
+  }
+  .van-tab {
+    line-height: 40px;
+  }
+  .van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after {
+    border-width: 0;
+  }
+}
 .button--settlement {
   background-color: #153561;
   color: #B9CAE0;

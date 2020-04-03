@@ -31,10 +31,18 @@
     </div>
     <!-- tab nav区域 -->
     <div class="tab-nav-wrapper">
-      <div class="tab-nav__icon-wrapper">
+      <!-- <div class="tab-nav__icon-wrapper">
         <img class="com-image" src="@/assets/images/competition/menu-active.png" alt="menu">
-      </div>
-      <div class="tab-nav">
+      </div> -->
+      <van-tabs v-model="activeNav" class="com-tab-nav">
+        <van-tab
+          v-for="(item, index) in navs"
+          :key="index"
+          :name="item.value"
+          :title="item.label"
+          />
+      </van-tabs>
+      <!-- <div class="tab-nav">
         <div
           class="tab-nav-item"
           :class="{active: activeNav === item.value}"
@@ -43,7 +51,7 @@
           @click="onNavToggle(item.value)">
           {{item.label}}
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- tab panel 区域 -->
     <div class="quiz-list" v-if="quizs.length">
@@ -78,7 +86,7 @@
             </div>
           </div>
           <div class="item-body__right">
-            <div class="item-body__right-title">{{item.number}}人竞猜</div>
+            <div class="item-body__right-title">{{item.hotValue}}竞猜热度</div>
             <van-button
               class="item-body__right-button"
               :class="getQuizStatusClass(item.status)"
@@ -228,7 +236,7 @@ export default {
   // tab
   .tab-nav-wrapper {
     margin-top: 15px;
-    padding: 0 17px;
+    // padding: 0 17px;
     display: flex;
     align-items: center;
     border-bottom: 2px solid #F5F5F5;
@@ -236,6 +244,9 @@ export default {
   .tab-nav__icon-wrapper {
     width: 22px;
     height: 22px;
+  }
+  .com-tab-nav {
+    flex: 1;
   }
   .tab-nav {
     flex: 1;

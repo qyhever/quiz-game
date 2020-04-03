@@ -5,7 +5,10 @@ export const getBannerData = () => {
   return request({
     url: '/home/banner',
     showLoading: false,
-    requiredToken: false
+    requiredToken: false,
+    config: {
+      loading: true
+    }
   })
 }
 // 全部游戏

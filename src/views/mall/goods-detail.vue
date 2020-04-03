@@ -2,8 +2,7 @@
   <com-page-navbar-wrapper title="商品详情">
     <div class="goods">
       <div class="cover-wrapper">
-        <!-- TODO picture -->
-        <img class="com-image" src="@/assets/images/mall/goods.png" alt="cover">
+        <img class="com-image" v-if="detail.picture" :src="detail.picture" alt="cover">
       </div>
       <div class="name-wrapper">
         <div class="name">{{detail.commodityName}}</div>

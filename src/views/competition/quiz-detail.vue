@@ -22,7 +22,7 @@
               </div>
               <div class="quiz-header-top__title">{{match.matchName}}</div>
             </div>
-            <div class="quiz-header-top__time">{{match.matchTime | formatDate('MM-DD HH:mm')}}</div>
+            <div class="quiz-header-top__time">{{match.remain}}</div>
           </div>
           <div class="quiz-header-body">
             <div class="header__team">
@@ -63,8 +63,7 @@
             <div class="block-header__tag">{{item.className}}</div>
             <div class="block-header__title">{{item.title}}</div>
           </div>
-          <!-- TODO -->
-          <div class="block-header__right">{{item.endTime | formatDateTime}} 结束</div>
+          <div class="block-header__right">{{match.remain}} 结束</div>
         </div>
         <div class="block-body" v-if="item.bettings && item.bettings.length">
           <div
@@ -172,8 +171,10 @@
   import { mapGetters } from 'vuex'
   import { getQuizDetail, bettingQuiz } from '@/api/home'
   import { applyHouseGroup } from '@/api/user'
+  import { secondToTime } from '@/utils'
   export default {
     data() {
+      this.timer = null
       return {
         active: '1',
         visible: false,
@@ -217,7 +218,6 @@
       ...mapGetters(['user', 'token'])
     },
     mounted() {
-      console.log(this.isInFourDays('2020-03-28 22:43'))
       if (!this.$route.query.id || !this.$route.query.matchInfoId) {
         this.$router.back()
       } else {
@@ -234,7 +234,17 @@
         this.activeRadio = this.user.bean
       }
     },
+    beforeDestroy() {
+      clearTimeout(this.timer)
+    },
     methods: {
+      countDown() {
+        const remain = secondToTime((new Date(this.match.gcEndTime.replace(/-/g, '/')) - Date.now()) / 1000)
+        this.$set(this.match, 'remain', remain)
+        this.timer = setTimeout(() => {
+          this.countDown()
+        }, 1000)
+      },
       async query() {
         try {
           const res = await getQuizDetail(this.$route.query.id, this.$route.query.matchInfoId)
@@ -242,6 +252,7 @@
           this.match = data.match || {}
           this.betting = data.betting || []
           this.join = (data.join || []).filter(Boolean)
+          this.countDown()
         } catch (err) {
           console.log(err)
         }

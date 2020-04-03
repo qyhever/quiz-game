@@ -68,3 +68,14 @@ export function currency(value, currencyUnit, decimals) {
     numInt.slice(i).replace(digitsRE, '$1,') +
     numFloat
 }
+
+export function secondToTime(value) {
+  const d = Math.floor(value / 3600 / 24)
+  let h = Math.floor(value / 3600 % 24)
+  h = h < 10 ? '0' + h : h
+  let m = Math.floor(value / 60 % 60)
+  m = m < 10 ? '0' + m : m
+  let s = Math.floor(value % 60)
+  s = s < 10 ? '0' + s : s
+  return d + '天 ' + h + ':' + m + ':' + s
+}
