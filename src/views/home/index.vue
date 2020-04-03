@@ -11,23 +11,14 @@
       <!-- 轮播区域 -->
       <van-swipe class="swipe" :autoplay="3000" indicator-color="white">
         <van-swipe-item v-for="(item, index) in banners" :key="index">
-          <img
-            class="swipe-item-image"
-            :src="item.pic"
-            alt="swipe"
-          />
+          <img class="swipe-item-image" :src="item.pic" alt="swipe" />
         </van-swipe-item>
       </van-swipe>
       <!-- 游戏列表 -->
       <ul class="game-list clearfix">
         <li class="game-item" v-for="(item, index) in games" :key="index">
           <div class="game-item__image-wrapper">
-            <img
-              class="game-item__image"
-              @load="onImageLoad"
-              :src="item.gameIcon"
-              alt="game"
-            />
+            <img class="game-item__image" @load="onImageLoad" :src="item.gameIcon" alt="game" />
           </div>
           <p class="game-item__title">{{item.gameName}}</p>
         </li>
@@ -120,7 +111,7 @@ export default {
     // 全部游戏
     queryTotalGames() {
       return getTotalGames().then(res => {
-        this.$store.commit("SET_GAME_LIST", res.rows);
+        window.sessionStorage.setItem("gameList", JSON.stringify(res.rows));
         return res.rows;
       });
     },

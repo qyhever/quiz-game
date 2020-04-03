@@ -4,11 +4,11 @@
       <ul class="tab__nav" @touchmove.prevent.stop>
         <li
           class="tab__nav-item"
-          :class="{active: currentNav === item.value}"
-          v-for="(item, index) in navs"
+          :class="{active: currentNav === item.id}"
+          v-for="(item, index) in navList"
           :key="index"
-          @click="onNavToggle(item.value)"
-        >{{item.label}}</li>
+          @click="onNavToggle(item.id)"
+        >{{item.gameName}}</li>
       </ul>
       <div class="tab__panel-wrapper">
         <div class="tab__panel">
@@ -20,31 +20,54 @@
         </div>
       </div>
     </div>
+    <van-popup v-model="show" position="left" :style="{ width: '3.6rem',height:'100%' }">
+      <game-meun @sendData="getData"></game-meun>
+    </van-popup>
   </com-page-navbar-wrapper>
 </template>
 <script>
 import TeamList from "./components/team-list";
+import GameMeun from "./components/game-meun";
 import { getFollowTeam } from "@/api/user";
 export default {
   components: {
-    TeamList
+    TeamList,
+    GameMeun
   },
   data() {
     return {
-      navs: [
-        { label: "全部", value: "" },
-        { label: "英雄联盟", value: "1" },
-        { label: "王者荣耀", value: "2" }
-      ],
-      currentNav: ""
+      pagingInfo: {},
+      currentNav: "",
+      show: false
     };
+  },
+  computed: {
+    navList() {
+      const arr = JSON.parse(window.sessionStorage.getItem("gameList"));
+      arr.unshift({ gameName: "全部", id: "" });
+      return arr.slice(0, 4);
+    }
   },
   methods: {
     onNavToggle(value) {
       this.currentNav = value;
+      this.query(this.pagingInfo);
+      if (!value) {
+        this.show = true;
+      }
+    },
+    getData(value) {
+      this.currentNav = value;
+      this.query(this.pagingInfo);
+      this.show = false;
     },
     query({ page, count }) {
-      return getFollowTeam({ page, count })
+      this.pagingInfo = { page, count };
+      return getFollowTeam({
+        pageNum: this.pagingInfo.page,
+        pageSize: this.pagingInfo.count,
+        gameId: this.currentNav
+      })
         .then(res => res.rows)
         .catch(err => {
           console.log(err);

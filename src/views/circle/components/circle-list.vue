@@ -8,14 +8,14 @@
       </div>
       <span class="circle_follow">关注</span>
     </div>
-    <div class="circle_body">
-      <div class="circle_text" v-if="item.content">{{item.content}}</div>
-      <img v-if="item.picture&&item.picture.split(',').length ===1" :src="item.picture" alt />
-      <ul v-else class="img_list">
+    <div class="circle_body" v-html="item.content">
+      <!-- <div class="circle_text" v-if="item.content" v-html="item.content"></div> -->
+      <!-- <img v-if="item.picture&&item.picture.split(',').length ===1" :src="item.picture" alt /> -->
+      <!-- <ul v-else-if="item.picture&&item.picture.split(',').length >=1" class="img_list">
         <li v-for="(item,index) in item.picture.split(',')" :key="index">
           <img v-if="item" :src="item" alt />
         </li>
-      </ul>
+      </ul>-->
     </div>
     <div class="circle_foot">
       <ul>
