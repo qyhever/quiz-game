@@ -23,11 +23,12 @@
         <div class="circle_recommend">
           <ul>
             <li class="recommend">{{typeVal}}</li>
-            <li v-for="(item,index) in recommendList" :key="index">
+            <li v-for="(item,index) in recommendData" :key="index">
               <img :src="item.avatar" />
               <p>{{item.nickname}}</p>
-              <span @click="addFollowCircle(item)">关注</span>
+              <!-- <span @click="addFollowCircle(item)">关注</span> -->
             </li>
+            <li style="width: 1em" @click="changeBatchData">换一批</li>
           </ul>
         </div>
       </cube-scroll>
@@ -72,13 +73,31 @@ export default {
       type: 1,
       pagingInfo: {},
       recommendList: [],
-      circleList: []
+      circleList: [],
+      currentIndex: 0
     };
+  },
+  computed: {
+    recommendData() {
+      const max = Math.floor(this.recommendList.length / 4)
+      if (this.currentIndex >= max) {
+        return this.recommendList.slice(this.currentIndex * 4, this.recommendList.length)
+      }
+      return this.recommendList.slice(this.currentIndex * 4, (this.currentIndex + 1) * 4)
+    }
   },
   mounted() {
     this.circleRecommend();
   },
   methods: {
+    changeBatchData() {
+      const max = Math.floor(this.recommendList.length / 4)
+      if (this.currentIndex >= max) {
+        this.currentIndex = 0
+      } else {
+        this.currentIndex += 1
+      }
+    },
     onSearch() {
       console.log("onSearch");
     },
