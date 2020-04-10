@@ -239,7 +239,14 @@
     },
     methods: {
       countDown() {
-        const remain = secondToTime((new Date(this.match.gcEndTime.replace(/-/g, '/')) - Date.now()) / 1000)
+        let remain = null
+        const diff = new Date(this.match.gcEndTime.replace(/-/g, '/')).getTime() - Date.now()
+        if (diff > 0) {
+          remain = secondToTime(diff / 1000)
+        } else {
+          clearTimeout(this.timer)
+          remain = '0天 00:00:00'
+        }
         this.$set(this.match, 'remain', remain)
         this.timer = setTimeout(() => {
           this.countDown()

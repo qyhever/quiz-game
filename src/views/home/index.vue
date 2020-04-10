@@ -16,7 +16,7 @@
       </van-swipe>
       <!-- 游戏列表 -->
       <ul class="game-list clearfix">
-        <li class="game-item" v-for="(item, index) in games" :key="index">
+        <li class="game-item" v-for="(item, index) in games" :key="index" @click="onToMatchDetail(item)">
           <div class="game-item__image-wrapper">
             <img class="game-item__image" @load="onImageLoad" :src="item.gameIcon" alt="game" />
           </div>
@@ -138,6 +138,9 @@ export default {
     },
     onToRegister() {
       this.$router.push("/register");
+    },
+    onToMatchDetail({id}) {
+      this.$router.push(`/competition-intro?id=${id}`)
     }
   }
 };

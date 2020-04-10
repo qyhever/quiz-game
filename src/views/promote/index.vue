@@ -4,11 +4,11 @@
     <div class="commission-container">
       <div class="commission-header">
         <router-link to="/promote-detail" class="commission-header__text">明细</router-link>
-        <div class="commission-header__title">您的当前佣金</div>
+        <div class="commission-header__title">您的当前竞豆</div>
         <router-link to="/friend" class="commission-header__text">好友</router-link>
       </div>
       <div class="commission-body">
-        <div class="commission-body__text">999</div>
+        <div class="commission-body__text">{{user.bean}}</div>
         <van-button class="commission-body__button" @click="onToWithdrawal">竞豆</van-button>
       </div>
     </div>

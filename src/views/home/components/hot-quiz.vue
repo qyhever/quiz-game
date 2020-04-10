@@ -2,8 +2,8 @@
   <div>
     <com-block-header title="热门竞猜" @click-right="onToCompetition"/>
     <div class="hot-list">
-      <div class="item" v-for="(item, index) in list" :key="index">
-        <div class="item-header">
+      <div class="item" v-for="(item, index) in list" :key="index" @click="onToQuizDetail(item)">
+        <!-- <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
               <img class="item-header__image" :src="item.picture" alt="game">
@@ -42,7 +42,36 @@
               {{item.status | filterQuizStatus}}
             </van-button>
           </div>
+        </div> -->
+        <div class="item-game__icon">
+          <img class="item-game__image" :src="item.picture" alt="game">
         </div>
+        <div class="item-center">
+          <div class="item__row">
+            <span>{{item.matchName}}</span>
+            <span>{{item.matchTime | formatDate('MM-DD HH:mm')}}</span>
+          </div>
+          <div class="item__row item__row--center">
+            <div class="item__team">
+              <span class="item__team-name">{{item.aName}}</span>
+              <div class="item-team__image-wrapper" @click="onToTeamDetail(item.aTeamId)">
+                <img class="item-team__image" :src="item.aIcon" alt="team">
+              </div>
+            </div>
+            <div class="item__split">VS</div>
+            <div class="item__team">
+              <div class="item-team__image-wrapper" @click="onToTeamDetail(item.bTeamId)">
+                <img class="item-team__image" :src="item.bIcon" alt="team">
+              </div>
+              <span class="item__team-name">{{item.bName}}</span>
+            </div>
+          </div>
+          <div class="item__row">
+            <span>{{item.status | filterQuizStatus}}</span>
+            <span>{{item.hotValue}}竞猜热度</span>
+          </div>
+        </div>
+        <div class="item-tag">猜</div>
       </div>
     </div>
     <div class="more">
@@ -198,5 +227,66 @@ export default {
     .more__text {
       margin-right: 7px;
     }
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .item-game__icon {
+    width: 20px;
+    height: 20px;
+    margin: 0 15px;
+  }
+  .item-tag {
+    padding: 3px 5px;
+    border-radius: 3px;
+    color: #fff;
+    margin: 0 15px;
+    background-color: orange;
+  }
+  .item-game__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .item-team__image-wrapper {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+  }
+  .item-team__image {
+    width: 100%;
+    height: 100%
+  }
+  .item-center {
+    flex: 1;
+  }
+  .item__row {
+    display: flex;
+    justify-content: space-between;
+    color: #999;
+  }
+  .item__row--center {
+    margin: 10px 0;
+    justify-content: center;
+    align-items: center;
+  }
+  .item__team {
+    display: flex;
+    align-items: center;
+  }
+  .item__team-name {
+    margin: 0 10px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .item__split {
+    margin: 0 15px;
+    color: orange;
+    font-size: 18px;
+    font-weight: 700;
   }
 </style>

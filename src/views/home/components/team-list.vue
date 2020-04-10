@@ -20,8 +20,7 @@
               <div class="item__member-list" v-if="team.players && team.players.length">
                 <div class="member-item" v-for="(member, memberIndex) in team.players" :key="memberIndex">
                   <div class="item__team-image-wrapper">
-                    <!-- TODO playerPicture -->
-                    <img class="item__team-image" src="@/assets/images/home/member.png" alt="member">
+                    <img class="item__team-image" :src="member.playerPicture" alt="member">
                   </div>
                   <p class="item__text">{{member.position}}{{member.playerName}}</p>
                 </div>
