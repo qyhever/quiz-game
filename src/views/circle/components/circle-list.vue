@@ -6,7 +6,7 @@
         <p>{{item.nickname}}</p>
         <span>{{item.before}}</span>
       </div>
-      <span class="circle_follow">关注</span>
+      <!-- <span class="circle_follow" @click="addFollowCircle(item)">关注</span> -->
     </div>
     <div class="circle_body" v-html="item.content">
       <!-- <div class="circle_text" v-if="item.content" v-html="item.content"></div> -->
@@ -27,7 +27,7 @@
           <van-icon name="chat-o" size="0.32rem" />
           <span>{{item.commentTotal || 0}}</span>
         </li>
-        <li>
+        <li @click="onGiveLike(item)">
           <van-icon name="good-job-o" size="0.32rem" />
           <span>{{item.zanTotal || 0}}</span>
         </li>
@@ -37,11 +37,35 @@
 </template>
 
 <script>
+import {
+  addFollowCircle,
+  giveLike
+} from "@/api/circle";
 export default {
   props: {
     item: {
       type: Object,
       default: () => ({})
+    }
+  },
+  methods: {
+    onGiveLike({id}) {
+      giveLike({ postId: id }).then(() => {
+        this.$toast.success({
+          forbidClick: true,
+          message: "点赞成功"
+        });
+        this.$emit('success')
+      });
+    },
+    // 圈子关注
+    addFollowCircle(item) {
+      addFollowCircle({ followUserId: item.id }).then(() => {
+        this.$toast.success({
+          forbidClick: true,
+          message: "关注成功"
+        });
+      });
     }
   }
 };

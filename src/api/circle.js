@@ -71,3 +71,12 @@ export const addFollowCircle = (data) => {
         data
     })
 }
+
+// 点赞
+export const giveLike = (data) => {
+    return request({
+        method: 'post',
+        url: '/user/fabulous',
+        data
+    })
+}

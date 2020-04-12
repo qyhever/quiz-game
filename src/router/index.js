@@ -106,6 +106,11 @@ const createRouter = () => new Router({
       component: () => import('@/views/circle/circle-release')
     },
     {
+      path: '/person-dynamic',
+      name: 'personDynamic',
+      component: () => import('@/views/circle/person-dynamic')
+    },
+    {
       path: '/personal-data',
       name: 'personalData',
       component: () => import('@/views/my/personal-data')

@@ -8,12 +8,10 @@ export const getGoodsCategorys = () => {
   })
 }
 // 商品列表
-export const getGoodsList = categoryId => {
+export const getGoodsList = params => {
   return request({
     url: '/mall/commodity',
-    params: {
-      categoryId
-    },
+    params,
     requiredToken: false
   })
 }

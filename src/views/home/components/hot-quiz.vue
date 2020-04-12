@@ -2,7 +2,7 @@
   <div>
     <com-block-header title="热门竞猜" @click-right="onToCompetition"/>
     <div class="hot-list">
-      <div class="item" v-for="(item, index) in list" :key="index" @click="onToQuizDetail(item)">
+      <div class="quiz-item" v-for="(item, index) in list" :key="index" @click="onToQuizDetail(item)">
         <!-- <div class="item-header">
           <div class="item-header__left">
             <div class="item-header__icon">
@@ -54,13 +54,13 @@
           <div class="item__row item__row--center">
             <div class="item__team">
               <span class="item__team-name">{{item.aName}}</span>
-              <div class="item-team__image-wrapper" @click="onToTeamDetail(item.aTeamId)">
+              <div class="item-team__image-wrapper" @click.stop="onToTeamDetail(item.aTeamId)">
                 <img class="item-team__image" :src="item.aIcon" alt="team">
               </div>
             </div>
             <div class="item__split">VS</div>
             <div class="item__team">
-              <div class="item-team__image-wrapper" @click="onToTeamDetail(item.bTeamId)">
+              <div class="item-team__image-wrapper" @click.stop="onToTeamDetail(item.bTeamId)">
                 <img class="item-team__image" :src="item.bIcon" alt="team">
               </div>
               <span class="item__team-name">{{item.bName}}</span>
@@ -229,10 +229,14 @@ export default {
     }
   }
 
-  .item {
+  .quiz-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 14px;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
   }
   .item-game__icon {
     width: 20px;

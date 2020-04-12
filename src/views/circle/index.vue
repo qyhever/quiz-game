@@ -19,25 +19,29 @@
           @click="onNavToggle(item.value)"
         >{{item.name}}</li>
       </ul>
-      <cube-scroll ref="scroll" class="scroll" direction="horizontal">
-        <div class="circle_recommend">
-          <ul>
-            <li class="recommend">{{typeVal}}</li>
-            <li v-for="(item,index) in recommendData" :key="index">
-              <img :src="item.avatar" />
-              <p>{{item.nickname}}</p>
-              <!-- <span @click="addFollowCircle(item)">关注</span> -->
-            </li>
-            <li style="width: 1em" @click="changeBatchData">换一批</li>
-          </ul>
-        </div>
-      </cube-scroll>
+      <div>
+        <cube-scroll ref="scroll" class="scroll" direction="horizontal">
+          <div class="circle_recommend">
+            <ul>
+              <li class="recommend">{{typeVal}}</li>
+              <li v-for="(item,index) in recommendData" :key="index" @click="onToPerson(item)">
+                <img :src="item.avatar" />
+                <p>{{item.nickname}}</p>
+                <!-- <span @click="addFollowCircle(item)">关注</span> -->
+              </li>
+              <li style="width: 1em" v-if="recommendList.length" @click="changeBatchData">换一批</li>
+            </ul>
+          </div>
+        </cube-scroll>
+      </div>
       <div class="tab__panel-wrapper">
-        <com-loadmore :fetchData="query" ref="scroll">
-          <template slot-scope="{list}">
-            <circle-list v-for="(item,index) in list" :key="index" :item="item"></circle-list>
-          </template>
-        </com-loadmore>
+        <div class="tab__panel">
+          <com-loadmore :fetchData="query" ref="scroll" :backTop="false">
+            <template slot-scope="{list}">
+              <circle-list v-for="(item,index) in list" :key="index" :item="item" @success="$refs.scroll.onPullingDown()"></circle-list>
+            </template>
+          </com-loadmore>
+        </div>
       </div>
     </div>
   </com-page-tabbar-wrapper>
@@ -168,6 +172,14 @@ export default {
           message: "关注成功"
         });
       });
+    },
+    onToPerson({id}) {
+      this.$router.push({
+        path: '/person-dynamic',
+        query: {
+          id
+        }
+      })
     }
   }
 };
@@ -199,14 +211,18 @@ export default {
 }
 
 .tab__panel-wrapper {
-  height: calc(100vh - 0.88rem);
+  flex: 1;
   overflow: hidden;
 }
-
+.tab__panel {
+  height: 100%;
+  overflow: hidden;
+}
 .info-container {
   width: 100%;
-  position: absolute;
-  top: 0.88rem;
+  height: 100%;
+  // position: absolute;
+  // top: 0.88rem;
   display: flex;
   flex-direction: column;
   .circle_meun {

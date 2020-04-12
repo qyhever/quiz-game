@@ -26,15 +26,17 @@
         </div> -->
       </div>
       <!-- team -->
-      <div class="team-list" v-if="teams.length">
-        <div class="team-item" v-for="(item, index) in teams" :key="index" @click="onToIntro(item)">
-          <div class="team-item__image-wrapper">
-            <img class="com-image" v-if="item.combatTeamIcon" :src="item.combatTeamIcon" alt="team">
+      <div class="team-container">
+        <div class="team-list" v-if="teams.length">
+          <div class="team-item" v-for="(item, index) in teams" :key="index" @click="onToIntro(item)">
+            <div class="team-item__image-wrapper">
+              <img class="com-image" v-if="item.combatTeamIcon" :src="item.combatTeamIcon" alt="team">
+            </div>
+            <div class="team-item__footer">{{item.combatTeamName}}</div>
           </div>
-          <div class="team-item__footer">{{item.combatTeamName}}</div>
         </div>
+        <div v-else class="com-empty">暂无数据</div>
       </div>
-      <div v-else class="com-empty">暂无数据</div>
     </div>
   </com-page-navbar-wrapper>
 </template>
@@ -173,7 +175,13 @@ export default {
     }
   }
   // team
+  .team-container {
+    flex: 1;
+    overflow: hidden;
+  }
   .team-list {
+    height: 100%;
+    overflow-y: auto;
     padding: 11px 0 0 8.27%;
     font-size: 0;
   }
@@ -195,14 +203,17 @@ export default {
     bottom: 26px;
   }
   .team-item__footer {
+    padding-top: 2px;
     position: absolute;
     left: -10px;
     right: -10px;
     bottom: 0;
     height: 26px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    @include ellipsis();
+    line-height: 16px;
+    text-align: center;
+    // display: flex;
+    // align-items: flex-end;
+    // justify-content: center;
+    // @include ellipsis();
   }
 </style>

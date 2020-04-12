@@ -128,8 +128,12 @@ export default {
     onToCart() {
       this.$router.push('/shopcart')
     },
-    fetchData() {
-      return getGoodsList(this.currentNav).then(res => {
+    fetchData({ page, count }) {
+      return getGoodsList({
+        categoryId: this.currentNav,
+        pageNum: page,
+        pageSize: count
+      }).then(res => {
         return res.rows || []
       })
     },

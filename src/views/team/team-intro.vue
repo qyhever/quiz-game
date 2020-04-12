@@ -37,8 +37,7 @@
               @click="onMemberToggle(member, memberIndex, $event)">
               <div class="member-item__inner">
                 <div class="item__image-wrapper">
-                  <!-- TODO playerPicture -->
-                  <img class="com-image" src="@/assets/images/home/member.png" alt="member">
+                  <img class="com-image" :src="member.playerPicture" alt="member">
                 </div>
                 <p class="item__text">{{member.position}}{{member.playerName}}</p>
               </div>
@@ -187,6 +186,10 @@ export default {
     width: 50px;
     height: 50px;
     margin: 0 auto;
+    border-radius: 50%;
+    img {
+      border-radius: 50%;
+    }
   }
   .item__text {
     padding-top: 10px;

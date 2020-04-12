@@ -135,12 +135,10 @@ export const getMatchJoinTeam = matchId => {
   })
 }
 // 资讯列表
-export const getInfoList = (classId = '') => {
+export const getInfoList = params => {
   return request({
     url: 'home/information',
-    params: {
-      classId
-    },
+    params,
     requiredToken: false
   })
 }

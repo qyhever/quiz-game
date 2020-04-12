@@ -76,9 +76,13 @@
           console.log(err)
         }
       },
-      async queryInfoList() {
+      async queryInfoList({ page, count }) {
         try {
-          const res = await getInfoList(this.activeNav)
+          const res = await getInfoList({
+            classId: this.activeNav,
+            pageNum: page,
+            pageSize: count
+          })
           return res.rows || []
         } catch (err) {
           console.log(err)
