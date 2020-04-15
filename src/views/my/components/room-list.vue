@@ -1,28 +1,28 @@
 <template>
   <div class="room_content">
     <div class="room_time">
-      <span>11-28 23:09</span>
-      <span>未结算</span>
+      <span>{{item.matchTime | formatDate('MM-DD HH:mm')}}</span>
+      <span>{{item.status | filterQuizStatus}}</span>
     </div>
     <ul>
       <li>
-        <img src="../../../assets/images/player-touxiang.png" alt />
+        <img v-if="item.gameIcon" :src="item.gameIcon" alt="game" />
         <div class="room_info">
-          <span>LPL职业联赛</span>
+          <span>{{item.matchName}}</span>
           <p>
             <span>
-              KPL
+              {{item.aName}}
               <s>vs</s>
-              LPL
+              {{item.bName}}
             </span>
           </p>
         </div>
-        <span>2</span>
+        <span>{{item.ownerNumber}}</span>
       </li>
       <li>
         <div class="room_left">
           <span>共计投注</span>
-          <span>5000</span>
+          <span>{{item.beanNumber}}</span>
         </div>
         <div class="room_right">
           <span>赛果</span>
@@ -44,7 +44,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    item: {
+      type: Object,
+      default: () => ({})
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

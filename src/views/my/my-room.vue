@@ -5,7 +5,7 @@
         <div class="tab__panel">
           <com-loadmore :fetchData="query">
             <template slot-scope="{list}">
-              <room-list v-for="(item,index) in list" :key="index" :item="index"></room-list>
+              <room-list v-for="(item,index) in list" :key="index" :item="item"></room-list>
             </template>
           </com-loadmore>
         </div>

@@ -80,3 +80,13 @@ export const giveLike = (data) => {
         data
     })
 }
+
+// 个人圈子
+export const getPersonalCircle = (userId) => {
+    return request({
+        url: '/circle/personal',
+        params: {
+            userId
+        }
+    })
+}

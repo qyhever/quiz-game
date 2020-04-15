@@ -24,11 +24,12 @@ Vue.prototype.getQuizStatusClass = function(status) {
     2: 'button--end'
   }[status]
 }
-Vue.prototype.isInFourDays = function(date) {
+Vue.prototype.inInApplyHomeOwnerTime = function(date) {
   const d = new Date(date)
   const diffTime = Math.abs(new Date().getTime() - d.getTime()) / 1000
   const fourDay = 60 * 60 * 24 * 4
-  return diffTime >= fourDay
+  const fiveDay = 60 * 60 * 24 * 5
+  return diffTime >= fourDay && diffTime <= fiveDay // 差距时间 在距离比赛时间 5天 到 4天之间
 }
 Vue.prototype.getHtmlContent = function(str) {
   if (!isString(str)) {

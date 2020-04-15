@@ -40,7 +40,7 @@
               </div>
               <!-- ownerStatus 0:未申请/1:已申请/2：已过期 -->
               <van-button
-                v-if="isInFourDays(match.matchTime)"
+                v-if="inInApplyHomeOwnerTime(match.matchTime)"
                 class="header__button"
                 @click="onApplyHouseGroup"
                 :disabled="match.ownerStatus !== 0">
@@ -293,6 +293,10 @@
           this.$router.push('/login')
           return
         }
+        if (this.inInApplyHomeOwnerTime(this.match.matchTime)) { // 申请房主期间，不能投注
+          this.$showModal('申请房主期间，不能投注!')
+          return
+        }
         try {
           const bean = this.count ? this.count : this.activeRadio
           await bettingQuiz({
@@ -305,6 +309,9 @@
             forbidClick: true,
             message: '投注成功'
           })
+          this.$store.commit('SET_USER', Object.assign({}, this.user, {
+            bean: this.user.bean - Number(bean)
+          }))
           setTimeout(() => {
             this.$router.back()
           }, 2000)

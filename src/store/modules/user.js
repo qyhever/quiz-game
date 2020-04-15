@@ -7,6 +7,13 @@ const state = {
 }
 
 const mutations = {
+  SET_USER(state, user) {
+    state.info = user
+    setUser({
+      user,
+      token: getToken()
+    }) // setUser local
+  },
   SET_INFO(state, data) {
     state.info = data.user
     setUser(data) // setUser local

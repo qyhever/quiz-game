@@ -173,13 +173,9 @@ export default {
         });
       });
     },
-    onToPerson({id}) {
-      this.$router.push({
-        path: '/person-dynamic',
-        query: {
-          id
-        }
-      })
+    onToPerson(data) {
+      this.$store.commit('SET_PERSON_CIRCLE', data)
+      this.$router.push('/person-dynamic')
     }
   }
 };
@@ -230,6 +226,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin-top: 44px;
     li {
       padding: 0.37rem 0.2rem 0.24rem;
       font-size: 0.28rem;

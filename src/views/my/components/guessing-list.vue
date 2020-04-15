@@ -8,7 +8,7 @@
     </div>
     <ul>
       <li>
-        <img src="../../../assets/images/player-touxiang.png" alt />
+        <img v-if="item.picture" :src="item.picture" alt="game" />
         <p>{{item.matchName}}</p>
         <span>{{item.className}}</span>
       </li>
