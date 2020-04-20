@@ -43,33 +43,31 @@
       <!-- 上次地址 -->
       <div class="history_address">
         <h1>上次地址</h1>
-        <cube-scroll ref="scroll">
-          <ul>
-            <li v-for="(item,index) in addressList" :key="index">
-              <div class="address_message">
-                <p>
-                  <span>{{item.name}}</span>
-                  <span>{{item.phone}}</span>
-                </p>
-                <p>{{`${item.province}${item.city}市${item.region}${item.detailAddress}`}}</p>
-              </div>
-              <div class="address_opertion">
-                <p v-if="item.defaultStatus===1" class="address_default">
-                  <img src="../../assets/images/sel01.png" alt />
-                  <span>已默认</span>
-                </p>
-                <p v-else @click="setDefaultAddress(item)" class="address_undefault">
-                  <img src="../../assets/images/sel02.png" alt />
-                  <span>设为默认</span>
-                </p>
-                <p>
-                  <span @click="useAddress(item)">使用</span>
-                  <span @click="deleteAddress(item.id)">删除</span>
-                </p>
-              </div>
-            </li>
-          </ul>
-        </cube-scroll>
+        <ul>
+          <li v-for="(item,index) in addressList" :key="index">
+            <div class="address_message">
+              <p>
+                <span>{{item.name}}</span>
+                <span>{{item.phone}}</span>
+              </p>
+              <p>{{`${item.province}${item.city}市${item.region}${item.detailAddress}`}}</p>
+            </div>
+            <div class="address_opertion">
+              <p v-if="item.defaultStatus===1" class="address_default">
+                <img src="../../assets/images/sel01.png" alt />
+                <span>已默认</span>
+              </p>
+              <p v-else @click="setDefaultAddress(item)" class="address_undefault">
+                <img src="../../assets/images/sel02.png" alt />
+                <span>设为默认</span>
+              </p>
+              <p>
+                <span @click="useAddress(item)">使用</span>
+                <span @click="deleteAddress(item.id)">删除</span>
+              </p>
+            </div>
+          </li>
+        </ul>
       </div>
       <!-- 省份选择 -->
       <van-popup v-model="show" :round="true" position="bottom" :style="{ height: '40%' }">
@@ -180,8 +178,8 @@ export default {
     },
     // 使用地址
     useAddress(item) {
-      this.$store.commit("SET_ORDER_INFO", item);
-      this.$router.push("/mall-order");
+      this.$store.commit("SET_ORDER_ADDRESS", item);
+      this.$router.replace("/mall-order");
     },
     // 返回上一步
     onToBack() {
@@ -209,11 +207,10 @@ export default {
   color: rgba(255, 255, 255, 1);
 }
 .info-container {
+  height: calc(100vh - 46px);
+  overflow-y: auto;
   position: relative;
   top: 0.88rem;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   .new_address {
     padding: 0.3rem 0.3rem 0;
     border-top: 0.12rem solid rgba(245, 245, 245, 1);
@@ -252,8 +249,6 @@ export default {
   }
   .history_address {
     padding: 0.3rem 0.3rem 0;
-    height: calc(100vh - 2.1rem - 4.5rem);
-    overflow: hidden;
     h1 {
       margin: 0 0 0.42rem 0;
       font-size: 0.28rem;

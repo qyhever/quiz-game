@@ -7,14 +7,19 @@
             class="goods-item"
             v-for="(item) in list"
             :key="item.id">
-            <van-checkbox :key="item.id" v-model="item.checked" checked-color="#F95E5F"></van-checkbox>
+            <van-checkbox
+              :key="item.id"
+              v-model="item.checked"
+              checked-color="#F95E5F"
+              @click="onCheckBoxClick"
+            />
             <div class="goods-item__image-wrapper">
               <img class="com-image" src="@/assets/images/mall/goods.png" alt="goods">
             </div>
             <div class="goods-item__content">
               <div>
-                <div class="goods-item__name">游戏手办A款</div>
-                <div class="goods-item__amount">￥60+60竞豆</div>
+                <div class="goods-item__name">{{item.commodityName}}</div>
+                <div class="goods-item__amount">￥{{item.price}}竞豆</div>
               </div>
               <div class="goods-item__content-footer">
                 <div class="shopcart-control">
@@ -28,10 +33,10 @@
       </div>
       <div class="footer">
         <div class="footer__left">
-          <van-checkbox v-model="totalChecked" checked-color="#F95E5F">全选</van-checkbox>
-          <div class="footer__left-amount">￥120+120竞豆</div>
+          <van-checkbox v-model="totalChecked" checked-color="#F95E5F" @click="onTotalCheckBoxClick">全选</van-checkbox>
+          <div class="footer__left-amount">￥{{total}}竞豆</div>
         </div>
-        <van-button class="footer__button">结算</van-button>
+        <van-button class="footer__button" @click="onSubmit" :disabled="!selectedList.length">结算</van-button>
       </div>
     </div>
   </com-page-navbar-wrapper>
@@ -46,11 +51,14 @@ export default {
       list: []
     }
   },
-  watch: {
-    totalChecked(newVal) {
-      this.list = this.list.map(item => Object.assign({}, item, {
-        checked: newVal
-      }))
+  computed: {
+    selectedList() {
+      return this.list.filter(item => item.checked)
+    },
+    total() {
+      return this.selectedList.reduce((x, y) => {
+        return x + Number(y.count) * y.price
+      }, 0)
     }
   },
   mounted() {
@@ -62,12 +70,26 @@ export default {
         const res = await getCartData()
         const list = res.data.cart || []
         this.list = list.map(item => Object.assign({}, item, {
-          checked: false,
-          count: 1
+          checked: false
         }))
       } catch (err) {
         console.log(err)
       }
+    },
+    onCheckBoxClick() {
+      // checked 更新是异步的，必须在更新完成之后操作
+      setTimeout(() => {
+        this.totalChecked = this.list.every(item => item.checked)
+      }, 20)
+    },
+    onTotalCheckBoxClick() {
+      this.list = this.list.map(item => Object.assign({}, item, {
+        checked: !this.totalChecked
+      }))
+    },
+    onSubmit() {
+      localStorage.setItem('order-data', JSON.stringify(this.selectedList))
+      this.$router.push('/mall-order')
     }
   }
 }

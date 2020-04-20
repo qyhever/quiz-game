@@ -2,14 +2,14 @@
   <com-page-navbar-wrapper title="确认订单">
     <div class="info-container">
       <!-- 订单地址(已选地址) -->
-      <div class="mall_message" v-if="addressInfo.name">
+      <div class="mall_message" v-if="orderAddress.name">
         <van-icon name="location-o" size="0.4rem" />
         <div class="mall_info">
           <p>
-            <span>{{addressInfo.name}}</span>
-            <span>{{addressInfo.phone}}</span>
+            <span>{{orderAddress.name}}</span>
+            <span>{{orderAddress.phone}}</span>
           </p>
-          <p>{{`${addressInfo.province}${addressInfo.city}${addressInfo.region}${addressInfo.detailAddress}`}}</p>
+          <p>{{`${orderAddress.province}${orderAddress.city}${orderAddress.region}${orderAddress.detailAddress}`}}</p>
         </div>
         <van-icon name="arrow" size="0.3rem" @click="toAddAddress" />
       </div>
@@ -56,6 +56,10 @@
 </template>
 <script>
 import OrderPay from "./components/order-pay";
+import {
+  getAddressList
+} from "@/api/mall";
+import { mapGetters } from 'vuex'
 export default {
   components: {
     OrderPay
@@ -64,11 +68,31 @@ export default {
     return {};
   },
   computed: {
-    addressInfo() {
-      return this.$store.state.app.orderInfo;
+    ...mapGetters(['orderAddress'])
+  },
+  mounted() {
+    if (!this.orderAddress.id) {
+      this.query()
     }
+    let orderData = []
+    try {
+      orderData = JSON.parse(localStorage.getItem('order-data'))
+    } catch (err) {
+      console.log(err)
+    }
+    console.log(orderData)
   },
   methods: {
+    async query() {
+      try {
+        const res = await getAddressList()
+        const list = res.rows || []
+        const defaultAddress = list.find(item => item.defaultStatus === 1) || {}
+        this.$store.commit('SET_ORDER_ADDRESS', defaultAddress)
+      } catch (err) {
+        console.log(err)
+      }
+    },
     toAddAddress() {
       this.$router.push("/add-address");
     }
