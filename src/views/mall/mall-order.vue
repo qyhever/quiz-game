@@ -24,13 +24,13 @@
       <div class="order_list">
         <cube-scroll ref="scroll">
           <ul>
-            <li v-for="(item,index) in 25" :key="index">
+            <li v-for="(item,index) in orderList" :key="index">
               <img src="../../assets/images/dingdan_p2.png" alt />
               <div class="order_message">
-                <span>游戏手办A款</span>
-                <span>￥60+60竞豆</span>
+                <span>{{item.commodityName}}</span>
+                <span>￥{{item.price}}竞豆</span>
               </div>
-              <span class="order_count">x 1</span>
+              <span class="order_count">x {{item.count}}</span>
             </li>
           </ul>
           <!-- 订单运费及留言 -->
@@ -65,7 +65,10 @@ export default {
     OrderPay
   },
   data() {
-    return {};
+    return {
+      orderList: [],
+      total: ''
+    };
   },
   computed: {
     ...mapGetters(['orderAddress'])
@@ -80,7 +83,8 @@ export default {
     } catch (err) {
       console.log(err)
     }
-    console.log(orderData)
+    this.orderList = orderData.orderList || []
+    this.total = orderData.total || 0
   },
   methods: {
     async query() {

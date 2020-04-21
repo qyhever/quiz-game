@@ -88,7 +88,10 @@ export default {
       }))
     },
     onSubmit() {
-      localStorage.setItem('order-data', JSON.stringify(this.selectedList))
+      localStorage.setItem('order-data', JSON.stringify({
+        orderList: this.selectedList,
+        total: this.total
+      }))
       this.$router.push('/mall-order')
     }
   }

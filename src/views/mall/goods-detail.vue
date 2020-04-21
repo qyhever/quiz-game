@@ -48,7 +48,7 @@
           </div>
           <div class="footer__left-text" @click="onJoinCart">加购物车</div>
         </div>
-        <van-button class="footer__button">立即兑换</van-button>
+        <van-button class="footer__button" @click="onSubmit">立即兑换</van-button>
       </div>
     </div>
   </com-page-navbar-wrapper>
@@ -102,6 +102,17 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    onSubmit() {
+      localStorage.setItem('order-data', JSON.stringify({
+        orderList: [
+          Object.assign({}, this.detail, {
+            count: this.count
+          })
+        ],
+        total: this.detail.price * Number(this.count)
+      }))
+      this.$router.push('/mall-order')
     }
   }
 }
