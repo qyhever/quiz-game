@@ -21,18 +21,18 @@
       <div class="exchange-wrapper">
         <div class="goods__label">兑换方式</div>
         <div class="exchange-list">
-          <van-radio-group v-model="exchangeType" checked-color="#F95E5F">
+          <van-radio-group v-model="payMode" checked-color="#F95E5F">
             <van-radio name="1">
               <div class="exchange-label">竞豆兑换：</div>
-              <div class="exchange-amount">120竞豆</div>
+              <div class="exchange-amount">{{detail.bean}}竞豆</div>
             </van-radio>
             <van-radio name="2">
               <div class="exchange-label">现金兑换：</div>
-              <div class="exchange-amount">¥100</div>
+              <div class="exchange-amount">¥{{detail.conversionPrice}}</div>
             </van-radio>
             <van-radio name="3">
               <div class="exchange-label">现金+竞豆：</div>
-              <div class="exchange-amount">¥60+60竞豆</div>
+              <div class="exchange-amount">¥{{detail.combinationPrice}}+{{detail.combinationBean}}竞豆</div>
             </van-radio>
           </van-radio-group>
         </div>
@@ -60,7 +60,7 @@ import { getGoodsDetail, addGoodsToCart } from '@/api/mall'
 export default {
   data() {
     return {
-      exchangeType: '1',
+      payMode: '1',
       count: 1,
       detail: {}
     }
@@ -110,7 +110,8 @@ export default {
             count: this.count
           })
         ],
-        total: this.detail.price * Number(this.count)
+        total: this.detail.price * Number(this.count),
+        payMode: this.payMode
       }))
       this.$router.push('/mall-order')
     }
