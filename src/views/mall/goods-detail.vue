@@ -93,7 +93,7 @@ export default {
         return
       }
       try {
-        await addGoodsToCart(this.$route.query.id)
+        await addGoodsToCart(this.$route.query.id, this.count)
         this.$toast.success({
           mask: true,
           forbidClick: true,
@@ -217,6 +217,9 @@ export default {
         color: #F95E6E;
         font-size: $font-size-medium;
       }
+    }
+    /deep/ .van-icon {
+      display: none;
     }
   }
   .goods__detail {

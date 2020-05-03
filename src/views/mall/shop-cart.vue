@@ -1,5 +1,8 @@
 <template>
   <com-page-navbar-wrapper title="购物车">
+    <div slot="header-right" class="delete-wrapper" @click="onDelete">
+      <van-icon name="delete" />
+    </div>
     <div class="shopcart">
       <div class="goods-list">
         <cube-scroll :data="list">
@@ -19,12 +22,20 @@
             <div class="goods-item__content">
               <div>
                 <div class="goods-item__name">{{item.commodityName}}</div>
-                <div class="goods-item__amount">￥{{item.price}}竞豆</div>
+                <div class="goods-item__paytype" @click="onShowPicker(item)">
+                  <div class="goods-item__amount">￥{{item.price}}</div>
+                  <!-- <van-icon name="arrow-down" /> -->
+                </div>
               </div>
               <div class="goods-item__content-footer">
                 <div class="shopcart-control">
                   <!--  TODO max -->
-                  <van-stepper class="step" v-model="item.count" />
+                  <van-stepper
+                    class="step"
+                    v-model="item.count"
+                    @plus="onUpdateCount(item, 1)"
+                    @minus="onUpdateCount(item, -1)"
+                  />
                 </div>
               </div>
             </div>
@@ -34,16 +45,17 @@
       <div class="footer">
         <div class="footer__left">
           <van-checkbox v-model="totalChecked" checked-color="#F95E5F" @click="onTotalCheckBoxClick">全选</van-checkbox>
-          <div class="footer__left-amount">￥{{total}}竞豆</div>
+          <div class="footer__left-amount">￥{{total}}</div>
         </div>
         <van-button class="footer__button" @click="onSubmit" :disabled="!selectedList.length">结算</van-button>
       </div>
     </div>
+    <com-paytype-picker ref="paytypePicker"/>
   </com-page-navbar-wrapper>
 </template>
 
 <script>
-import { getCartData } from '@/api/mall'
+import { getCartData, deleteCart, updateCartCount } from '@/api/mall'
 export default {
   data() {
     return {
@@ -93,6 +105,54 @@ export default {
         total: this.total
       }))
       this.$router.push('/mall-order')
+    },
+    onShowPicker(data) {
+      console.log(data)
+      // const columns = [
+      //   {
+      //     text: `竞豆兑换: ¥${data.bean}竞豆`,
+      //     value: '1'
+      //   },
+      //   {
+      //     text: `现金兑换: ¥${data.conversionPrice}`,
+      //     value: '2'
+      //   },
+      //   {
+      //     text: `现金+竞豆: ${data.combinationPrice}+${data.combinationBean}竞豆`,
+      //     value: '3'
+      //   }
+      // ]
+      // this.$refs.paytypePicker.show(columns, '3')
+    },
+    onDelete() {
+      if (!this.selectedList.length) {
+        return this.$showModal('请先选择商品')
+      }
+      this.$dialog.confirm({
+        message: '确定要删除选中商品吗？'
+      })
+        .then(() => {
+          const idList = this.selectedList.map(v => v.id)
+          deleteCart({
+            checkList: idList.join(',')
+          })
+          .then(() => {
+            this.list = this.list.filter(v => idList.indexOf(v.id) < 0)
+          })
+          .catch(console.log)
+        })
+        .catch(console.log)
+    },
+    async onUpdateCount(data, count) {
+      try {
+        const res = await updateCartCount({
+          cartId: String(data.id),
+          count
+        })
+        console.log(res)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -151,7 +211,11 @@ export default {
     color: #4D4D4D;
     font-size: $font-size-medium;
   }
+  .goods-item__paytype {
+    display: flex;
+  }
   .goods-item__amount {
+    margin-right: 10px;
     color: #F06262;
   }
   .goods-item__content-footer {
@@ -185,5 +249,12 @@ export default {
     line-height: 47px;
     background-color: #F95E5F;
     color: #fff;
+  }
+  .delete-wrapper {
+    padding: 0 15px;
+    margin-right: -16px;
+    /deep/ .van-icon-delete {
+      font-size: 18px;
+    }
   }
 </style>

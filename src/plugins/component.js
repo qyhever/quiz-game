@@ -11,6 +11,7 @@ import DatetimePicker from '@/components/datetime-picker'
 import Loadmore from '@/components/loadmore'
 import Longtap from '@/components/longtap-container'
 import Nav from '@/components/nav'
+import PaytypePicker from '@/components/paytype-picker'
 
 Vue.component('com-page-tabbar-wrapper', PageTabbarWrapper)
 Vue.component('com-page-navbar-wrapper', PageNavbarWrapper)
@@ -21,3 +22,4 @@ Vue.component('com-datetime-picker', DatetimePicker)
 Vue.component('com-loadmore', Loadmore)
 Vue.component('com-longtap', Longtap)
 Vue.component('com-nav', Nav)
+Vue.component('com-paytype-picker', PaytypePicker)

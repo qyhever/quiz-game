@@ -4,12 +4,12 @@
     <div class="info-list">
       <div class="item" v-for="(item, index) in list" :key="index" @click="onToInformationDetail(item)">
         <div class="item__cover-wrapper">
-          <img class="item__cover" :src="item.picture" alt="cover">
+          <img class="item__cover" :src="getImage(item.picture)" alt="cover" :onerror="onImageError">
         </div>
         <div class="item__content">
           <div class="item__title">{{item.title}}</div>
           <div class="item__content-footer">
-            <div class="item__tag">{{item.className}}</div>
+            <div class="item__tag" v-if="item.className">{{item.className}}</div>
             <div class="item__date">{{item.releaseTime | formatDate('MM-DD HH:mm')}}</div>
           </div>
         </div>

@@ -25,7 +25,8 @@
         <cube-scroll ref="scroll">
           <ul>
             <li v-for="(item,index) in orderList" :key="index">
-              <img src="../../assets/images/dingdan_p2.png" alt />
+              <!-- <img src="../../assets/images/dingdan_p2.png" alt /> -->
+              <img :src="item.picture" alt />
               <div class="order_message">
                 <span>{{item.commodityName}}</span>
                 <span>￥{{item.price}}竞豆</span>
@@ -36,21 +37,26 @@
           <!-- 订单运费及留言 -->
           <div class="order_freight">
             <ul>
-              <li>
+              <!-- <li>
                 <span>运费</span>
                 <span>￥6</span>
-              </li>
+              </li> -->
               <li>
                 <span>留言:</span>
                 <span>买家留言，选填</span>
               </li>
             </ul>
-            <textarea></textarea>
+            <textarea v-model="message"></textarea>
           </div>
         </cube-scroll>
       </div>
       <!-- 订单支付 -->
-      <order-pay></order-pay>
+      <order-pay
+        :total="total"
+        :cartVos="cartVos"
+        :addressId="addressId"
+        :message="message"
+      />
     </div>
   </com-page-navbar-wrapper>
 </template>
@@ -67,11 +73,24 @@ export default {
   data() {
     return {
       orderList: [],
-      total: ''
-    };
+      total: '',
+      message: ''
+    }
   },
   computed: {
-    ...mapGetters(['orderAddress'])
+    ...mapGetters(['orderAddress']),
+    cartVos() {
+      return this.orderList.map(v => ({
+        commodityId: v.commodityId,
+        count: v.count
+      }))
+    },
+    addressId() {
+      if (this.orderAddress) {
+        return this.orderAddress.id
+      }
+      return null
+    }
   },
   mounted() {
     if (!this.orderAddress.id) {

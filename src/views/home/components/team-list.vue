@@ -117,6 +117,7 @@ export default {
     display: inline-block;
     padding: 6px 22px;
     text-align: center;
+    width: 120px;
   }
   .item__team-image-wrapper {
     display: inline-block;

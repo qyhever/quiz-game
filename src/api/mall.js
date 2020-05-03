@@ -76,3 +76,37 @@ export const addGoodsToCart = (commodityId, count = 1) => {
     }
   })
 }
+// 购物车删除
+export const deleteCart = data => {
+  return request({
+    method: 'post',
+    url: '/mall/deleteCart',
+    data
+  })
+}
+// 购物车更新数量
+export const updateCartCount = data => {
+  return request({
+    method: 'post',
+    url: '/mall/updateCount',
+    data
+  })
+}
+
+// 确认订单数据
+export const getConfirmOrderData = data => {
+  return request({
+    method: 'post',
+    url: '/user/confirmOrder',
+    data
+  })
+}
+
+// 支付
+export const payOrder = data => {
+  return request({
+    method: 'post',
+    url: '/pay',
+    data
+  })
+}

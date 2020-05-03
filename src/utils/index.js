@@ -79,3 +79,14 @@ export function secondToTime(value) {
   s = s < 10 ? '0' + s : s
   return d + '天 ' + h + ':' + m + ':' + s
 }
+export function debounce(fn, delay = 200) {
+  let timer = null
+  return function() {
+    const context = this
+    const args = arguments
+    clearTimeout(timer)
+    timer = setTimeout(function() {
+      fn.apply(context, args)
+    }, delay)
+  }
+}
