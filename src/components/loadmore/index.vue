@@ -1,13 +1,6 @@
 <template>
-  <cube-scroll
-    class="cube-scroll"
-    ref="scrollContainer"
-    :data="list"
-    :options="options"
-    :scrollEvents="['scroll']"
-    @pulling-down="onPullingDown"
-    @pulling-up="onPullingUp"
-    @scroll="onScroll">
+  <cube-scroll class="cube-scroll" ref="scrollContainer" :data="list" :options="options" :scrollEvents="['scroll']"
+    @pulling-down="onPullingDown" @pulling-up="onPullingUp" @scroll="onScroll">
     <slot :list="list"></slot>
     <!-- <div class="loadmore loadmore_line" v-if="allLoaded">
       <span class="loadmore__tips">我是有底线的</span>
@@ -17,29 +10,32 @@
       暂无数据
     </div>
     <!--<template slot="pulldown" slot-scope="props">-->
-      <!--<div-->
-        <!--v-if="props.pullDownRefresh"-->
-        <!--class="cube-pulldown-wrapper"-->
-        <!--:style="props.pullDownStyle">-->
-        <!--<div-->
-          <!--v-show="props.beforePullDown"-->
-          <!--class="before-trigger"-->
-          <!--:style="{paddingTop: props.bubbleY + 'px'}">-->
-          <!--<span :class="{rotate: props.bubbleY > pullDownRefreshThreshold - 40}">↓</span>-->
-        <!--</div>-->
-        <!--<div class="after-trigger" v-show="!props.beforePullDown">-->
-          <!--<div v-show="props.isPullingDown" class="loading">-->
-            <!--<cube-loading></cube-loading>-->
-          <!--</div>-->
-          <!--<div v-show="!props.isPullingDown" class="text"><span class="refresh-text">更新成功</span></div>-->
-        <!--</div>-->
-      <!--</div>-->
+    <!--<div-->
+    <!--v-if="props.pullDownRefresh"-->
+    <!--class="cube-pulldown-wrapper"-->
+    <!--:style="props.pullDownStyle">-->
+    <!--<div-->
+    <!--v-show="props.beforePullDown"-->
+    <!--class="before-trigger"-->
+    <!--:style="{paddingTop: props.bubbleY + 'px'}">-->
+    <!--<span :class="{rotate: props.bubbleY > pullDownRefreshThreshold - 40}">↓</span>-->
+    <!--</div>-->
+    <!--<div class="after-trigger" v-show="!props.beforePullDown">-->
+    <!--<div v-show="props.isPullingDown" class="loading">-->
+    <!--<cube-loading></cube-loading>-->
+    <!--</div>-->
+    <!--<div v-show="!props.isPullingDown" class="text"><span class="refresh-text">更新成功</span></div>-->
+    <!--</div>-->
+    <!--</div>-->
     <!--</template>-->
   </cube-scroll>
 </template>
 
 <script>
-  import { addClass, removeClass } from '@/utils/dom'
+  import {
+    addClass,
+    removeClass
+  } from '@/utils/dom'
   import Loading from '../loading'
   export default {
     name: 'cube-loadmore',
@@ -109,34 +105,34 @@
       query() {
         Loading.open()
         this.fetchData(this.paper)
-        .then(list => {
-          Loading.close()
-          if (this.paper.page === 1) {
-            this.list = list
-            if (!this.firstQuery) {
-              this.$refs.scrollContainer.disable()
-              setTimeout(() => {
-                this.$refs.scrollContainer.enable()
-              }, 600)
+          .then(list => {
+            Loading.close()
+            if (this.paper.page === 1) {
+              this.list = list
+              if (!this.firstQuery) {
+                this.$refs.scrollContainer.disable()
+                setTimeout(() => {
+                  this.$refs.scrollContainer.enable()
+                }, 600)
+              }
+              if (this.firstQuery) {
+                this.firstQuery = false
+              }
+              // this.$nextTick(() => {
+              //   this.$refs.scrollContainer.refresh()
+              // })
+            } else {
+              this.list = this.list.concat(list);
             }
-            if (this.firstQuery) {
-              this.firstQuery = false
+            if (list.length < this.paper.count) {
+              this.allLoaded = true
+              this.options.pullUpLoad = false
             }
-            // this.$nextTick(() => {
-            //   this.$refs.scrollContainer.refresh()
-            // })
-          } else {
-            this.list = this.list.concat(list)
-          }
-          if (list.length < this.paper.count) {
-            this.allLoaded = true
-            this.options.pullUpLoad = false
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          Loading.close()
-        })
+          })
+          .catch(err => {
+            console.log(err)
+            Loading.close()
+          })
       },
       onPullingDown() {
         this.paper.page = 1
@@ -154,7 +150,9 @@
         this.paper.page = this.paper.page + 1
         this.query()
       },
-      onScroll({y}) {
+      onScroll({
+        y
+      }) {
         if (Math.abs(y) >= 1000) {
           addClass(this.backTopDom, 'show')
         } else {
@@ -186,31 +184,37 @@
       color: #999;
       font-size: 14px;
     }
+
     /deep/ .cube-pullup-wrapper .before-trigger {
       color: #999;
       font-size: 14px;
     }
   }
+
   .cube-pulldown-wrapper {
-    .before-trigger  {
+    .before-trigger {
       font-size: 30px;
       line-height: 30px;
       align-self: flex-end;
+
       span {
         display: inline-block;
         transition: all 0.3s;
         color: #666;
+
         &.rotate {
           transform: rotate(180deg);
         }
       }
     }
+
     .after-trigger {
       .refresh-text {
         color: grey;
       }
     }
   }
+
   .loadmore {
     margin: 1.5em auto;
     line-height: 1.6em;

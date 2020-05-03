@@ -12,7 +12,7 @@
       </ul>
       <div class="tab__panel-wrapper">
         <div class="tab__panel">
-          <com-loadmore :fetchData="query">
+          <com-loadmore ref="loadmore" :fetchData="query">
             <template slot-scope="{list}">
               <team-list v-for="(item,index) in list" :key="index" :item="item"></team-list>
             </template>
@@ -51,14 +51,14 @@ export default {
   methods: {
     onNavToggle(value) {
       this.currentNav = value;
-      this.query(this.pagingInfo);
+       this.$refs.loadmore.onPullingDown();
       if (!value) {
         this.show = true;
       }
     },
     getData(value) {
       this.currentNav = value;
-      this.query(this.pagingInfo);
+       this.$refs.loadmore.onPullingDown();
       this.show = false;
     },
     query({ page, count }) {
