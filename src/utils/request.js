@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-// import store from '@/store'
-// import router from '@/router'
+import store from '@/store'
+import router from '@/router'
 import { getToken } from '@/utils/local'
 import Loading from '@/components/loading'
 import { Dialog } from 'vant'
@@ -126,16 +126,16 @@ const _request = (
         return responseData
       }
       // not success code
-      if (showWarningMsg) {
-        Dialog({
-          message: responseData.msg || '操作失败',
-          confirmButtonText: '我知道了'
-        })
-        // Toast.clear()
-        // Toast.fail({
-        //   message: responseData.msg || '操作失败',
-        //   forbidClick: true
-        // })
+      if (responseData.code !== 401) {
+        if (showWarningMsg) {
+          Dialog({
+            message: responseData.msg || '操作失败',
+            confirmButtonText: '我知道了'
+          })
+        }
+      } else {
+        store.dispatch('user/clearInfo')
+        router.push('/login')
       }
       // 主动抛出 请求成功，但接口状态码非成功状态 的错误
       const err = new Error(JSON.stringify(responseData, null, 2))

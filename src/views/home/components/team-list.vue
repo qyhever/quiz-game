@@ -13,14 +13,14 @@
             <div class="item van-hairline--bottom" @click="onToTeamDetail(team)">
               <div class="item__team">
                 <div class="item__team-image-wrapper">
-                  <img class="item__team-image" :src="team.combatTeamIcon" alt="team">
+                  <img class="item__team-image" :src="team.combatTeamIcon" alt="team" :onerror="onImageError">
                 </div>
                 <p class="item__text">{{team.combatTeamName}}</p>
               </div>
               <div class="item__member-list" v-if="team.players && team.players.length">
                 <div class="member-item" v-for="(member, memberIndex) in team.players" :key="memberIndex">
                   <div class="item__team-image-wrapper">
-                    <img class="item__team-image" :src="member.playerPicture" alt="member">
+                    <img class="item__team-image" :src="getImage(member.playerPicture)" alt="member" :onerror="onImageError">
                   </div>
                   <p class="item__text">{{member.position}}{{member.playerName}}</p>
                 </div>
@@ -148,6 +148,7 @@ export default {
     background-color: #FAFAFA;
     border: 1px solid #E6E6E6;
     text-align: center;
+    vertical-align: middle;
   }
   .member-item + .member-item {
     margin-left: 8px;

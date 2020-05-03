@@ -1,10 +1,11 @@
 /**
  * global methods
  */
+import Vue from 'vue'
 import { formatDate, formatDateTime } from '@/utils/date'
 import { isNumber, isString } from '@/utils/type'
 import Loading from '@/components/loading'
-import Vue from 'vue'
+const transparentImage = require('@/assets/images/transparent.png')
 Vue.prototype.formatDate = formatDate
 Vue.prototype.formatDateTime = formatDateTime
 Vue.prototype.$showModal = message => {
@@ -36,4 +37,8 @@ Vue.prototype.getHtmlContent = function(str) {
     return ''
   }
   return str.replace(/<img/ig, '<img class="img-size"')
+}
+Vue.prototype.onImageError = `this.src = '${transparentImage}'`
+Vue.prototype.getImage = function(url) {
+  return url || transparentImage
 }
