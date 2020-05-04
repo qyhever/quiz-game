@@ -11,8 +11,8 @@
     <span class="pay_btn" @click="onShow">马上支付</span>
 
     <!-- 选择支付方式 -->
-    <van-popup v-model="visible">
-      <div class="pay_way">
+    <van-popup v-model="visible" closeable>
+      <div class="pay_way" v-if="!wxUrl">
         <!-- <h1>选择支付方式</h1> -->
         <div class="form-item">
           <div class="form-title">支付类型</div>
@@ -86,12 +86,20 @@
         </ul> -->
       </div>
     </van-popup>
+    <van-popup v-model="codeVisible" class="code-popup">
+      <div class="tip">请使用微信扫码完成支付</div>
+      <vue-qrcode class="qrcode" :value="wxUrl"/>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getConfirmOrderData, payOrder } from '@/api/mall'
+import VueQrcode from 'vue-qrcode'
 export default {
+  components: {
+    VueQrcode
+  },
   props: {
     total: {
       default: 0
@@ -111,13 +119,20 @@ export default {
   data() {
     return {
       visible: false,
+      codeVisible: false,
       loading: false,
       form: {
         payMode: '1',
         payType: '1',
         password: ''
       },
-      detail: {}
+      detail: {},
+      wxUrl: ''
+    }
+  },
+  watch: {
+    visible(val) {
+      console.log(val)
     }
   },
   methods: {
@@ -146,7 +161,11 @@ export default {
           orderSn: this.detail.orderSn
         })
         const res = await payOrder(params)
-        console.log(res) 
+        console.log(res)
+        // weixin://wxpay/bizpayurl?pr=NV6leEK
+        this.wxUrl = res.msg
+        this.visible = false
+        this.codeVisible = true
       } catch (err) {
         console.log(err)
       }
@@ -325,6 +344,17 @@ export default {
     color: #fff;
     &.van-button--disabled {
       background-color: #D9D9D9;
+    }
+  }
+  .qrcode {
+    width: 120px;
+    height: 120px;
+  }
+  .code-popup {
+    padding: 20px;
+    text-align: center;
+    .tip {
+      white-space: nowrap;
     }
   }
 </style>
