@@ -123,6 +123,8 @@ export default {
     display: inline-block;
     width: 50px;
     height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
   }
   .item__team-image {
     width: 100%;
