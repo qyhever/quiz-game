@@ -2,13 +2,13 @@
   <com-page-navbar-wrapper title="赛事介绍">
     <div class="intro">
       <div class="intro-video-wrapper">
-        <div class="intro-video">
-          <video
+        <div class="intro-video" v-html="match.matchIntroduce">
+          <!-- <video
             class="video"
             poster="@/assets/images/competition/video.png"
             controls
             src="@/assets/video/v.mp4">
-          </video>
+          </video> -->
         </div>
       </div>
       <div class="intro-header">
@@ -190,6 +190,14 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
+    /deep/ .ql-video {
+      width: 100%;
+      height: 100%;
+    }
+    /deep/ iframe {
+      width: 100%;
+      height: 100%;
+    }
   }
   .video {
     width: 100%;
